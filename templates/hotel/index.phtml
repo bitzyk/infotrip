@@ -352,7 +352,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
     <script src="/js/ionrangeslider.js"></script>
     <script src="/js/icheck.js"></script>
     <script src="/js/fotorama.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&key=AIzaSyBfAwXF9K5MrG_9cLHBJhMu5TcKizjLvgI"></script>
     <script src="/js/typeahead.js"></script>
     <script src="/js/card-payment.js"></script>
     <script src="/js/magnific.js"></script>
@@ -479,6 +479,42 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
     </script>
     <?php endif; ?>
+
+    <script>
+        if ($('#map-canvas').length) {
+            var map,
+                service;
+
+            jQuery(function($) {
+                $(document).ready(function() {
+                    var latlng = new google.maps.LatLng('<?= $hotel->getLatitude(); ?>', '<?= $hotel->getLongitude(); ?>');
+                    var myOptions = {
+                        zoom: 16,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP,
+                        scrollwheel: false
+                    };
+
+                    map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+
+
+                    var marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map,
+                        label: '<?= $hotel->getName(); ?>',
+                        animation: google.maps.Animation.DROP,
+                    });
+                    marker.setMap(map);
+
+
+                    $('a[href="#google-map-tab"]').on('shown.bs.tab', function(e) {
+                        google.maps.event.trigger(map, 'resize');
+                        map.setCenter(latlng);
+                    });
+                });
+            });
+        }
+    </script>
 </div>
 </body>
 
