@@ -1,0 +1,954 @@
+<?php
+/** @var $hotel \Infotrip\Domain\Entity\Hotel */
+/** @var $hotelInfo \Infotrip\HotelParser\Entity\HotelInfo */
+$hotelInfo = $hotel->getExternalHotelInfo();
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+    $routeHelper = $viewHelpers['routeHelper'];
+?>
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title><?= $hotel->getName(); ?> - <?= $hotel->getCityHotel(); ?> - Hotel details</title>
+
+
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta name="keywords" content="Template, html, premium, themeforest" />
+    <meta name="description" content="Traveler - Premium template for travel companies">
+    <meta name="author" content="Tsoy">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- GOOGLE FONTS -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600' rel='stylesheet' type='text/css'>
+    <!-- /GOOGLE FONTS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/font-awesome.css">
+    <link rel="stylesheet" href="/css/icomoon.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/mystyles.css">
+    <script src="/js/modernizr.js"></script>
+
+
+</head>
+
+<body>
+
+<!-- FACEBOOK WIDGET -->
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+<!-- /FACEBOOK WIDGET -->
+<div class="global-wrap">
+    <header id="main-header">
+        <div class="header-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a class="logo" href="/index.html">
+                            <img src="/img/logo-invert.png" alt="Image Alternative text" title="Image Title" />
+                        </a>
+                    </div>
+                    <div class="col-md-3 col-md-offset-2">
+                        <form class="main-header-search">
+                            <div class="form-group form-group-icon-left">
+                                <i class="fa fa-search input-icon"></i>
+                                <input type="text" class="form-control">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="nav">
+                <ul class="slimmenu" id="slimmenu">
+                    <li><a href="/index.html">Home</a>
+                        <ul>
+                            <li><a href="/index.html">Default</a>
+                            </li>
+                            <li><a href="/index-1.html">Layout 1</a>
+                            </li>
+                            <li><a href="/index-2.html">Layout 2</a>
+                            </li>
+                            <li><a href="/index-3.html">Layout 3</a>
+                            </li>
+                            <li><a href="/index-4.html">Layout 4</a>
+                            </li>
+                            <li><a href="/index-5.html">Layout 5</a>
+                            </li>
+                            <li><a href="/index-6.html">Layout 6</a>
+                            </li>
+                            <li><a href="/index-7.html">Layout 7</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/success-payment.html">Pages</a>
+                        <ul>
+                            <li><a href="/success-payment.html">Success Payment</a>
+                            </li>
+                            <li><a href="/user-profile.html">User Profile</a>
+                                <ul>
+                                    <li><a href="/user-profile.html">Overview</a>
+                                    </li>
+                                    <li><a href="/user-profile-settings.html">Settings</a>
+                                    </li>
+                                    <li><a href="/user-profile-photos.html">Photos</a>
+                                    </li>
+                                    <li><a href="/user-profile-booking-history.html">Booking History</a>
+                                    </li>
+                                    <li><a href="/user-profile-cards.html">Cards</a>
+                                    </li>
+                                    <li><a href="/user-profile-wishlist.html">Wishlist</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/blog.html">Blog</a>
+                                <ul>
+                                    <li><a href="/blog.html">Sidebar Right</a>
+                                    </li>
+                                    <li><a href="/blog-sidebar-left.html">Sidebar Left</a>
+                                    </li>
+                                    <li><a href="/blog-full-width.html">Full Width</a>
+                                    </li>
+                                    <li><a href="/blog-post.html">Post</a>
+                                        <ul>
+                                            <li><a href="/blog-post.html">Sidebar Right</a>
+                                            </li>
+                                            <li><a href="/blog-post-sidebar-left.html">Sidebar Left</a>
+                                            </li>
+                                            <li><a href="/blog-post-full-width.html">Full Width</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/404.html">404 page</a>
+                            </li>
+                            <li><a href="/contact-us.html">Contact Us</a>
+                            </li>
+                            <li><a href="/about.html">About</a>
+                            </li>
+                            <li><a href="/login-register.html">Login/Register</a>
+                                <ul>
+                                    <li><a href="/login-register.html">Full Page</a>
+                                    </li>
+                                    <li><a href="/login-register-normal.html">Normal</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/loading.html">Loading</a>
+                            </li>
+                            <li><a href="/comming-soon.html">Comming Soon</a>
+                            </li>
+                            <li><a href="/gallery.html">Gallery</a>
+                                <ul>
+                                    <li><a href="/gallery.html">4 Columns</a>
+                                    </li>
+                                    <li><a href="/gallery-3-col.html">3 columns</a>
+                                    </li>
+                                    <li><a href="/gallery-2-col.html">2 columns</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/page-full-width.html">Full Width</a>
+                            </li>
+                            <li><a href="/page-sidebar-right.html">Sidebar Right</a>
+                            </li>
+                            <li><a href="/page-sidebar-left.html">Sidebar Left</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/feature-typography.html">Features</a>
+                        <ul>
+                            <li><a href="/feature-typography.html">Typography</a>
+                            </li>
+                            <li><a href="/feature-icons.html">Icons</a>
+                            </li>
+                            <li><a href="/feature-forms.html">Forms</a>
+                            </li>
+                            <li><a href="/feature-icon-effects.html">Icon Effects</a>
+                            </li>
+                            <li><a href="/feature-elements.html">Elements</a>
+                            </li>
+                            <li><a href="/feature-grid.html">Grid</a>
+                            </li>
+                            <li><a href="/feature-hovers.html">Hover effects</a>
+                            </li>
+                            <li><a href="/feature-lightbox.html">Lightbox</a>
+                            </li>
+                            <li><a href="/feature-media.html">Media</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="active"><a href="/hotels.html">Hotels</a>
+                        <ul>
+                            <li class="active"><a href="/hotel-details.html">Details</a>
+                                <ul>
+                                    <li class="active"><a href="/hotel-details.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/hotel-details-2.html">Layout 2</a>
+                                    </li>
+                                    <li><a href="/hotel-details-3.html">Layout 3</a>
+                                    </li>
+                                    <li><a href="/hotel-details-4.html">Layout 4</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/hotel-payment.html">Payment</a>
+                                <ul>
+                                    <li><a href="/hotel-payment.html">Registered</a>
+                                    </li>
+                                    <li><a href="/hotel-payment-registered-card.html">Existed Cards</a>
+                                    </li>
+                                    <li><a href="/hotel-payment-unregistered.html">Unregistered</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/hotel-search.html">Search</a>
+                                <ul>
+                                    <li><a href="/hotel-search.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/hotel-search-2.html">Layout 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/hotels.html">Results</a>
+                                <ul>
+                                    <li><a href="/hotels.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/hotels-search-results-2.html">Layout 2</a>
+                                    </li>
+                                    <li><a href="/hotels-search-results-3.html">Layout 3</a>
+                                    </li>
+                                    <li><a href="/hotels-search-results-4.html">Layout 4</a>
+                                    </li>
+                                    <li><a href="/hotel-search-results-5.html">Layout 5</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/flights.html">Flights</a>
+                        <ul>
+                            <li><a href="/flight-payment.html">Payment</a>
+                                <ul>
+                                    <li><a href="/flight-payment.html">Registered</a>
+                                    </li>
+                                    <li><a href="/flight-payment-registered-card.html">Existed Cards</a>
+                                    </li>
+                                    <li><a href="/flight-payment-unregistered.html">Unregistered</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/flight-search.html">Search</a>
+                                <ul>
+                                    <li><a href="/flight-search.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/flight-search-2.html">Layout 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/flights.html">List</a>
+                                <ul>
+                                    <li><a href="/flights.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/flights-search-results-2.html">Layout 2</a>
+                                    </li>
+                                    <li><a href="/flights-search-results-3.html">Layout 3</a>
+                                    </li>
+                                    <li><a href="/flights-search-results-4.html">Layout 4</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/rentals.html">Rentals</a>
+                        <ul>
+                            <li><a href="/rentals-details.html">Details</a>
+                                <ul>
+                                    <li><a href="/rentals-details.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/rentals-details-2.html">Layout 2</a>
+                                    </li>
+                                    <li><a href="/rentals-details-3.html">Layout 3</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/rental-payment.html">Payment</a>
+                                <ul>
+                                    <li><a href="/rental-payment.html">Registered</a>
+                                    </li>
+                                    <li><a href="/rental-payment-registered-card.html">Existed Cards</a>
+                                    </li>
+                                    <li><a href="/rental-payment-unregistered.html">Unregistered</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/rentals-search.html">Search</a>
+                                <ul>
+                                    <li><a href="/rentals-search.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/rentals-search-2.html">Layout 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/rentals.html">Results</a>
+                                <ul>
+                                    <li><a href="/rentals.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/rentals-search-results-2.html">Layout 2</a>
+                                    </li>
+                                    <li><a href="/rentals-search-results-3.html">Layout 3</a>
+                                    </li>
+                                    <li><a href="/rentals-search-results-4.html">Layout 4</a>
+                                    </li>
+                                    <li><a href="/rentals-search-results-5.html">Layout 5</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/cars.html">Cars</a>
+                        <ul>
+                            <li><a href="/car-details.html">Details</a>
+                            </li>
+                            <li><a href="/car-payment.html">Payment</a>
+                                <ul>
+                                    <li><a href="/car-payment.html">Registered</a>
+                                    </li>
+                                    <li><a href="/car-payment-registered-card.html">Existed Cards</a>
+                                    </li>
+                                    <li><a href="/car-payment-unregistered.html">Unregistered</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/car-search.html">Search</a>
+                                <ul>
+                                    <li><a href="/car-search.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/car-search-2.html">Layout 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/cars.html">Results</a>
+                                <ul>
+                                    <li><a href="/cars.html">Layout 1</a>
+                                    </li>
+                                    Exeptional              <li><a href="/cars-results-2.html">Layout 2</a>
+                                    </li>
+                                    <li><a href="/cars-results-3.html">Layout 3</a>
+                                    </li>
+                                    <li><a href="/cars-results-4.html">Layout 4</a>
+                                    </li>
+                                    <li><a href="/cars-results-5.html">Layout 5</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/activities.html">Activities</a>
+                        <ul>
+                            <li><a href="/activitiy-details.html">Details</a>
+                                <ul>
+                                    <li><a href="/activitiy-details.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/activitiy-details-2.html">Layout 2</a>
+                                    </li>
+                                    <li><a href="/activitiy-details-3.html">Layout 3</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/activity-search.html">Search</a>
+                                <ul>
+                                    <li><a href="/activity-search.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/activity-search-2.html">Layout 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/activitiy-payment.html">Payment</a>
+                                <ul>
+                                    <li><a href="/activitiy-payment.html">Registered</a>
+                                    </li>
+                                    <li><a href="/activity-payment-registered-card.html">Existed Cards</a>
+                                    </li>
+                                    <li><a href="/activitiy-payment-unregistered.html">Unregistered</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="/activities.html">Results</a>
+                                <ul>
+                                    <li><a href="/activities.html">Layout 1</a>
+                                    </li>
+                                    <li><a href="/activities-search-results-2.html">Layout 2</a>
+                                    </li>
+                                    <li><a href="/activities-search-results-3.html">Layout 3</a>
+                                    </li>
+                                    <li><a href="/activities-search-results-4.html">Layout 4</a>
+                                    </li>
+                                    <li><a href="/activities-search-results-5.html">Layout 5</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <ul class="breadcrumb">
+            <li><a href="<?= $routeHelper->getHomepageUrl(); ?>">Home</a>
+            </li>
+            <li><a href="<?= $routeHelper->getContinentUrl($hotel->getContinentName()); ?>"><?= $hotel->getContinentName(); ?></a>
+            </li>
+            <li><a href="<?= $routeHelper->getCountryUrl($hotel->getCountryCode()); ?>">
+                    <?= $hotel->getCountryName(); ?>
+                </a>
+            </li>
+            <li><a href="<?= $routeHelper->getCityUrl($hotel->getCityUnique()); ?>"><?= $hotel->getCityHotel(); ?></a></li>
+            <li class="active"><?php echo $hotel->getName(); ?></li>
+        </ul>
+        <div class="booking-item-details">
+            <header class="booking-item-header">
+                <div class="row">
+                    <div class="col-md-9">
+                        <h2 class="lh1em"><?php echo $hotel->getName(); ?></h2>
+                        <p class="lh1em text-small"><i class="fa fa-map-marker"></i>
+                            <?= $hotel->getAddress(); ?>, <?= $hotel->getZip(); ?>, <?= $hotel->getCityHotel(); ?>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="booking-item-header-price"><small>price from</small>  <span class="text-lg"><?= $hotel->getCurrencucodeShort(); ?><?= $hotel->getMinrate(); ?></span>/night</p>
+                    </div>
+                </div>
+            </header>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="tabbable booking-details-tabbable">
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active"><a href="/#tab-1" data-toggle="tab"><i class="fa fa-camera"></i>Photos</a>
+                            </li>
+                            <li><a href="#google-map-tab" data-toggle="tab"><i class="fa fa-map-marker"></i>On the Map</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="tab-1">
+                                <div class="fotorama" id="hotelImageGallery" data-allowfullscreen="true" data-nav="thumbs" data-width="100%">
+                                    <?php foreach ($hotel->getImages() as $image): ?>
+                                        <img src="<?= $image->getSrc(); ?>"
+                                             <?php if (! $image->isCached()): ?>
+                                             data-no-cache-image="1"
+                                             <?php endif; ?>
+                                             data-hotel-id="<?= $hotel->getId(); ?>" data-city-unique="<?= $hotel->getCityUnique(); ?>"
+                                             alt="Gallery image of this property"
+                                             title="Gallery image of this property">
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="google-map-tab">
+                                <div id="map-canvas" style="width:100%; height:500px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mt40 to-load <?php if($hotelInfo instanceof \Infotrip\HotelParser\Entity\NullHotelInfo): ?> bg-holder <?php endif; ?>">
+                    <?php if($hotelInfo instanceof \Infotrip\HotelParser\Entity\NullHotelInfo): ?><div class="bg-mask"></div><?php endif; ?>
+                    <div class="booking-item-meta">
+                        <h2 class="lh1em">
+                            <span id="hotelInfo_ratingText"><?= $hotelInfo->getRatingText(); ?>!</span>
+                        </h2>
+                        <h3><span id="hotelInfo_guestRecommendPercent"><?= $hotelInfo->getGuestRecommendPercent(); ?></span>% <small >of guests recommend</small></h3>
+                        <div class="booking-item-rating">
+                            <ul class="icon-list icon-group booking-item-rating-stars" id="hotelInfostarsScore">
+                                <?php for ($i= 1; $i<=$hotelInfo->getStarsScore(); $i++): ?>
+                                    <li><i class="fa fa-star"></i></li>
+                                <?php endfor; ?>
+                            </ul><span class="booking-item-rating-number"><b><span id="hotelInfo_reviewScoreTotal"><?= $hotelInfo->getReviewScoreTotal(); ?></span></b> of 5 <small class="text-smaller">guest rating</small></span>
+                            <p class="text-default">based on <span id="hotelInfo_totalReviewsNo"><?= $hotelInfo->getTotalReviewsNo(); ?></span> reviews</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="bg-holder"><div class="bg-mask"></div></div>
+                            <h4 class="lh1em">Traveler rating</h4>
+                            <ul class="list booking-item-raiting-list" id="hotelInforeviewScores">
+                                <?php foreach ($hotelInfo->getReviewScores() as $reviewScore): ?>
+                                <li>
+                                    <div class="booking-item-raiting-list-title">
+                                        <?= $reviewScore->getLabel(); ?>
+                                    </div>
+                                    <div class="booking-item-raiting-list-bar">
+                                        <div style="width:<?= $reviewScore->getPercent(); ?>%;"></div>
+                                    </div>
+                                    <div class="booking-item-raiting-list-number">
+                                        <?= $reviewScore->getScore(); ?>
+                                    </div>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <div class="col-md-5">
+                            <h4 class="lh1em">Summary</h4>
+                            <ul class="list booking-item-raiting-summary-list" id="hotelInforeviewFunctionsScores">
+                                <?php foreach ($hotelInfo->getReviewFunctionsScores() as $reviewScore): ?>
+                                <li>
+                                    <div class="booking-item-raiting-list-title"><?= $reviewScore->getLabel(); ?></div>
+                                    <ul class="icon-group booking-item-rating-stars">
+                                        <?php for($i=1; $i<=$reviewScore->getStarBase5(); $i++): ?>
+                                        <li><i class="fa fa-smile-o"></i></li>
+                                        <?php endfor; ?>
+                                    </ul>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="gap"></div>
+            <h3>Available Rooms</h3>
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="booking-item-dates-change">
+                        <form method="get"
+                              id="checkAvailabilityForm"
+                              action="<?= $routeHelper->getHotelCheckAvailabilityUrl($hotel->getName(), $hotel->getId()); ?>"
+                              target="_blank">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-daterange" data-date-format="MM d, D">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                                    <label>Check in</label>
+                                                    <input class="form-control" name="start" type="text" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
+                                                    <label>Check out</label>
+                                                    <input class="form-control" name="end" type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-group-select-plus">
+                                        <label>Adults</label>
+                                        <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                            <label class="btn btn-primary active">
+                                                <input type="radio" name="adults" value="1" />1</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="adults" value="2" />2</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="adults" value="3" />3</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="adults" value="noRadio" />4+</label>
+                                        </div>
+                                        <select name="adultsSelect" class="form-control hidden">
+                                            <?php for($i=1; $i<=6; $i++): ?>
+                                            <option value="<?= $i; ?>"><?= $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-group-select-plus">
+                                        <label>Children</label>
+                                        <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                            <label class="btn btn-primary active">
+                                                <input type="radio" name="childrens" value="0" />0</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="childrens" value="1" />1</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="childrens" value="2" />2</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="childrens" value="noRadio"/>2+</label>
+                                        </div>
+                                        <select name="childrensSelect" class="form-control hidden">
+                                            <?php for($i=1; $i<=6; $i++): ?>
+                                                <option value="<?= $i; ?>"><?= $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group form-group-select-plus">
+                                        <label>Rooms</label>
+                                        <div class="btn-group btn-group-select-num" data-toggle="buttons">
+                                            <label class="btn btn-primary active">
+                                                <input type="radio" name="rooms" value="1" />1</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="rooms" value="2" />2</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="rooms" value="3" />3</label>
+                                            <label class="btn btn-primary">
+                                                <input type="radio" name="rooms" value="noRadio"/>3+</label>
+                                        </div>
+                                        <select name="roomsSelect" class="form-control hidden">
+                                            <?php for($i=1; $i<=6; $i++): ?>
+                                                <option value="<?= $i; ?>"><?= $i; ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="hidden" name="hid" value="<?= $hotel->getId(); ?>">
+                                    <input type="submit" name="checkAvailability" value="Check availability"
+                                           id="checkAvailabilitySubmit"
+                                           class="btn btn-primary">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="gap gap-small"></div>
+
+                </div>
+                <div class="col-md-3">
+                    <h4>About the Hotel</h4>
+                    <p class="mb30">
+                        <?= $hotel->getDescEn(); ?>
+                    </p>
+                </div>
+            </div>
+
+            <?php /*
+            <h3 class="mb20">Hotel Reviews</h3>
+            <div class="row row-wrap">
+                <div class="col-md-8">
+                    <ul class="booking-item-reviews list" id="hotelInfohotelComments">
+                        <?php foreach ($hotelInfo->getHotelComments() as $hotelComment): ?>
+                        <li>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="booking-item-review-person">
+                                        <p class="booking-item-review-person-name"><?= $hotelComment->getReviewUser(); ?>
+                                        </p>
+                                        <p class="booking-item-review-person-loc"><?= $hotelComment->getReviewUserLocation(); ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="booking-item-review-content">
+                                        <p>
+                                            <?= $hotelComment->getReviewComment(); ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <?php endforeach; ?>
+                    </ul>
+                    <div class="gap gap-small"></div>
+                </div>
+                <div class="col-md-4">
+                    <h4>Hotels Near <?php echo $hotel->getName(); ?></h4>
+                    <ul class="booking-list">
+                        <?php for ($i=3; $i < 9; $i++): ?>
+                        <?php if (isset($hotel->getRelatedHotels()[$i]) && ($relatedHotel = $hotel->getRelatedHotels()[$i])): ?>
+                        <li>
+                            <a href="<?= $routeHelper->getHotelUrl($relatedHotel->getName(), $relatedHotel->getId()); ?>"
+                               target="_blank">
+                                <div class="booking-item booking-item-small">
+                                    <div class="row">
+                                        <div class="col-xs-4" style="height: 120px; overflow: hidden;">
+                                            <img src="<?= $relatedHotel->getImages()[0]->getSrc(); ?>"
+                                                <?php if (! $relatedHotel->getImages()[0]->isCached()): ?>
+                                                    data-no-cache-image="1" data-city-unique="<?= $hotel->getCityUnique(); ?>"
+                                                <?php endif; ?>
+                                                 data-hotel-id="<?= $relatedHotel->getId(); ?>"
+                                                 alt="<?= $relatedHotel->getName(); ?> photo" title="<?= $relatedHotel->getName(); ?> photo" />
+                                        </div>
+                                        <div class="col-xs-8" style="margin: 0; padding: 0;">
+                                            <div class="col-xs-8">
+                                                <h5 class="booking-item-title"><?= $relatedHotel->getName(); ?></h5>
+                                            </div>
+                                            <div class="col-xs-4"><span class="booking-item-price-from">from</span><span class="booking-item-price"><?= $relatedHotel->getCurrencucodeShort(); ?><?= $relatedHotel->getMinrate(); ?></span>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                            <p class="text-small" style="margin-top: 5px;">
+                                                <?= mb_substr($relatedHotel->getDescEn(), 0, 120); ?>...
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <?php endif; ?>
+                        <?php endfor; ?>
+                    </ul>
+                </div>
+            </div>
+
+            <?php */ ?>
+
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <h4>Hotels Near <?php echo $hotel->getName(); ?></h4>
+
+                    <ul class="booking-list">
+                        <?php for ($i=0; $i < 9; $i++): ?>
+                            <?php if (isset($hotel->getRelatedHotels()[$i]) && ($relatedHotel = $hotel->getRelatedHotels()[$i])): ?>
+                                <li>
+                                    <a class="booking-item"
+                                       href="<?= $routeHelper->getHotelUrl($relatedHotel->getName(), $relatedHotel->getId()); ?>"
+                                       target="_blank">
+                                        <div class="row">
+                                            <div class="col-md-3" style="height: 130px; overflow: hidden;">
+                                                <img src="<?= $relatedHotel->getImages()[0]->getSrc(); ?>"
+                                                    <?php if (! $relatedHotel->getImages()[0]->isCached()): ?>
+                                                        data-no-cache-image="1"
+                                                    <?php endif; ?>
+                                                     data-hotel-id="<?= $relatedHotel->getId(); ?>" data-city-unique="<?= $hotel->getCityUnique(); ?>"
+                                                     alt="<?= $relatedHotel->getName(); ?> photo" title="hotel PORTO BAY RIO INTERNACIONAL rooftop pool" />
+                                            </div>
+                                            <div class="col-md-5">
+                                                <h5 class="booking-item-title"><?= $relatedHotel->getName(); ?></h5>
+                                                <p class="text-small"><?= $relatedHotel->getDescEn(); ?></p>
+                                            </div>
+                                            <div class="col-md-4"><span class="booking-item-price"><?= $relatedHotel->getCurrencucodeShort(); ?><?= $relatedHotel->getMinrate(); ?></span><span>/night</span>
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="gap gap-small"></div>
+    </div>
+
+
+
+    <footer id="main-footer">
+        <div class="container">
+            <div class="row row-wrap">
+                <div class="col-md-3">
+                    <a class="logo" href="/index.html">
+                        <img src="/img/logo-invert.png" alt="Image Alternative text" title="Image Title" />
+                    </a>
+                    <p class="mb20">Booking, reviews and advices on hotels, resorts, flights, vacation rentals, travel packages, and lots more!</p>
+                    <ul class="list list-horizontal list-space">
+                        <li>
+                            <a class="fa fa-facebook box-icon-normal round animate-icon-bottom-to-top" href="/#"></a>
+                        </li>
+                        <li>
+                            <a class="fa fa-twitter box-icon-normal round animate-icon-bottom-to-top" href="/#"></a>
+                        </li>
+                        <li>
+                            <a class="fa fa-google-plus box-icon-normal round animate-icon-bottom-to-top" href="/#"></a>
+                        </li>
+                        <li>
+                            <a class="fa fa-linkedin box-icon-normal round animate-icon-bottom-to-top" href="/#"></a>
+                        </li>
+                        <li>
+                            <a class="fa fa-pinterest box-icon-normal round animate-icon-bottom-to-top" href="/#"></a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3">
+                    <h4>Newsletter</h4>
+                    <form>
+                        <label>Enter your E-mail Address</label>
+                        <input type="text" class="form-control">
+                        <p class="mt5"><small>*We Never Send Spam</small>
+                        </p>
+                        <input type="submit" class="btn btn-primary" value="Subscribe">
+                    </form>
+                </div>
+                <div class="col-md-2">
+                    <ul class="list list-footer">
+                        <li><a href="/#">About US</a>
+                        </li>
+                        <li><a href="/#">Press Centre</a>
+                        </li>
+                        <li><a href="/#">Best Price Guarantee</a>
+                        </li>
+                        <li><a href="/#">Travel News</a>
+                        </li>
+                        <li><a href="/#">Jobs</a>
+                        </li>
+                        <li><a href="/#">Privacy Policy</a>
+                        </li>
+                        <li><a href="/#">Terms of Use</a>
+                        </li>
+                        <li><a href="/#">Feedback</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4>Have Questions?</h4>
+                    <h4 class="text-color">+1-202-555-0173</h4>
+                    <h4><a href="/#" class="text-color">support@traveler.com</a></h4>
+                    <p>24/7 Dedicated Customer Support</p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/slimmenu.js"></script>
+    <script src="/js/bootstrap-datepicker.js"></script>
+    <script src="/js/bootstrap-timepicker.js"></script>
+    <script src="/js/nicescroll.js"></script>
+    <script src="/js/dropit.js"></script>
+    <script src="/js/ionrangeslider.js"></script>
+    <script src="/js/icheck.js"></script>
+    <script src="/js/fotorama.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="/js/typeahead.js"></script>
+    <script src="/js/card-payment.js"></script>
+    <script src="/js/magnific.js"></script>
+    <script src="/js/owl-carousel.js"></script>
+    <script src="/js/fitvids.js"></script>
+    <script src="/js/tweet.js"></script>
+    <script src="/js/countdown.js"></script>
+    <script src="/js/gridrotator.js"></script>
+    <script src="/js/custom.js"></script>
+
+    <script>
+        var nonCachedImages = new Array();
+        $('[data-no-cache-image]').each(function (index) {
+            var $this = $(this);
+            nonCachedImages.push({
+                src: $this.attr('src'),
+                hotelId: $this.data('hotel-id'),
+                cityUnique: $this.data('city-unique')
+            });
+        });
+
+        if (nonCachedImages.length >= 1) {
+            $.post(
+                "<?= $routeHelper->getCacheImagesUrl(); ?>",
+                {
+                    nonCachedImages: nonCachedImages
+                }
+            ).done(function (data) {
+            });
+        }
+    </script>
+
+    <?php if ($hotelInfo instanceof \Infotrip\HotelParser\Entity\NullHotelInfo): ?>
+    <script>
+
+        $.ajax({
+            type: 'POST',
+            url: '<?= $routeHelper->getCacheHotelUrl(); ?>',
+            data: {
+                hid: <?= $hotel->getId(); ?>
+            },
+            success: function (data) {
+
+                $('.bg-mask').remove();
+
+                if (data["externalHotelInfo"]) {
+                    for (var key in data["externalHotelInfo"]) {
+                        var $placeholderElm = $('#hotelInfo_' + key);
+                        var $placeholderIterator = $('#hotelInfo' + key);
+
+                        if ($placeholderElm.length) {
+                            $placeholderElm.html(
+                                data["externalHotelInfo"][key]
+                            );
+                        }
+
+                        if(key === 'starsScore') {
+                            for (var i=1; i<=data["externalHotelInfo"][key]; i++ ) {
+                                $placeholderIterator.append('<i class="fa fa-star"></i>')
+                            }
+                        } else if(key === 'reviewScores') {
+                            if (data["externalHotelInfo"][key].length) {
+                                for (var i=0; i<data["externalHotelInfo"][key].length; i++) {
+                                    var label = data["externalHotelInfo"][key][i]["label"];
+                                    var score = data["externalHotelInfo"][key][i]["score"];
+                                    var percent = data["externalHotelInfo"][key][i]["percent"];
+
+                                    $placeholderIterator.append(
+                                        '<li><div class="booking-item-raiting-list-title">'+label+'</div><div class="booking-item-raiting-list-bar"><div style="width:'+percent+'%;"></div></div><div class="booking-item-raiting-list-number">'+score+'</div></li>'
+                                    )
+                                }
+                            }
+                        } else if(key === 'reviewFunctionsScores') {
+                            if (data["externalHotelInfo"][key].length) {
+                                for (var i=0; i<data["externalHotelInfo"][key].length; i++) {
+                                    var label = data["externalHotelInfo"][key][i]["label"];
+                                    var starBase5 = data["externalHotelInfo"][key][i]["starBase5"];
+
+                                    var html = '<li><div class="booking-item-raiting-list-title">'+label+'</div><ul class="icon-group booking-item-rating-stars">'
+                                    for (var j=1; j<=starBase5; j++) {
+                                        html += '<li><i class="fa fa-smile-o"></i></li>';
+                                    }
+                                    html += '</ul></li>';
+                                    $placeholderIterator.append(html)
+                                }
+                            }
+                        } else if(key === 'hotelComments') {
+                            if (data["externalHotelInfo"][key].length) {
+                                for (var i=0; i<data["externalHotelInfo"][key].length; i++) {
+                                    var reviewComment = data["externalHotelInfo"][key][i]["reviewComment"];
+                                    var reviewUser = data["externalHotelInfo"][key][i]["reviewUser"];
+                                    var reviewUserLocation = data["externalHotelInfo"][key][i]["reviewUserLocation"];
+
+                                    $placeholderIterator.append(
+                                        '<li><div class="row"><div class="col-md-2"><div class="booking-item-review-person"><p class="booking-item-review-person-name">'+reviewUser+'</p><p class="booking-item-review-person-loc">'+reviewUserLocation+'</p></div></div><div class="col-md-10"><div class="booking-item-review-content"><p>'+reviewComment+'</p></div></div></div></li>'
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    <?php if (
+                        (count($hotel->getImages()) <= 1)
+                    ): ?>
+                    if(key === 'images') {
+                        if (data["externalHotelInfo"][key].length) {
+                            // get the API fotorama object.
+                            var fotorama = $('#hotelImageGallery').data('fotorama');
+                            for (var i=0; i<data["externalHotelInfo"][key].length; i++) {
+                                var src = data["externalHotelInfo"][key][i]["src"];
+                                fotorama.push({img: src, thumb: src});
+                            }
+                        }
+                    }
+                    <?php endif; ?>
+
+                }
+            },
+            dataType: 'json',
+            beforeSend: function (jqXHT, settings) {
+            }
+        });
+
+
+    </script>
+    <?php endif; ?>
+</div>
+</body>
+
+</html>
+
+

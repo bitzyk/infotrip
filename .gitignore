@@ -1,0 +1,10 @@
+/vendor/
+/exclude/
+/var/
+/logs/*
+!/logs/README.md
+/public_html/fonts/
+/public_html/img/
+/public_html/includes/
+/public_html/media/
+/public_html/var/
