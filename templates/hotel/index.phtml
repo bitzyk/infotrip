@@ -62,6 +62,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                             </div>
                             <div class="tab-pane fade" id="google-map-tab">
                                 <div id="map-canvas" style="width:100%; height:500px;"></div>
+                                <div id="directionsPanel"></div>
                             </div>
                         </div>
                     </div>
@@ -352,7 +353,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
     <script src="/js/ionrangeslider.js"></script>
     <script src="/js/icheck.js"></script>
     <script src="/js/fotorama.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&key=AIzaSyBfAwXF9K5MrG_9cLHBJhMu5TcKizjLvgI"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBfAwXF9K5MrG_9cLHBJhMu5TcKizjLvgI"></script>
     <script src="/js/typeahead.js"></script>
     <script src="/js/card-payment.js"></script>
     <script src="/js/magnific.js"></script>
@@ -485,8 +486,19 @@ $hotelInfo = $hotel->getExternalHotelInfo();
             var map,
                 service;
 
-            jQuery(function($) {
-                $(document).ready(function() {
+
+                    var directionsDisplay = new google.maps.DirectionsRenderer();
+                    var directionsService = new google.maps.DirectionsService();
+
+                    // arrays to hold copies of the markers and html used by the side_bar
+                    // because the function closure trick doesnt work there
+                    var gmarkers = [];
+                    var htmls = [];
+
+                    // arrays to hold variants of the info window html with get direction forms open
+                    var to_htmls = [];
+                    var from_htmls = [];
+
                     var latlng = new google.maps.LatLng('<?= $hotel->getLatitude(); ?>', '<?= $hotel->getLongitude(); ?>');
                     var myOptions = {
                         zoom: 16,
@@ -497,22 +509,108 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
                     map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
 
+                    var infowindow = new google.maps.InfoWindow({
+                        size: new google.maps.Size(150, 50)
+                    });
 
                     var marker = new google.maps.Marker({
                         position: latlng,
                         map: map,
                         label: '<?= $hotel->getName(); ?>',
+                        title: '<?= $hotel->getName(); ?>',
                         animation: google.maps.Animation.DROP,
                     });
                     marker.setMap(map);
 
+                    directionsDisplay.setMap(map);
+                    directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+
+                    var i = gmarkers.length;
+
+                    // The info window version with the "to here" form open
+                    to_htmls[i] = html + '<br>Directions: <b>To here<\/b> - <a href="javascript:fromhere(' + i + ')">From here<\/a>' +
+                        '<br>Start address:<form action="javascript:getDirections()">' +
+                        '<input type="text" SIZE=40 MAXLENGTH=40 name="saddr" id="saddr" value="" /><br>' +
+                        '<INPUT value="Get Directions" TYPE="button" onclick="getDirections()"><br>' +
+                        'Walk <input type="checkbox" name="walk" id="walk" /> &nbsp; Avoid Highways <input type="checkbox" name="highways" id="highways" />' +
+                        '<input type="hidden" id="daddr" value="' + latlng.lat() + ',' + latlng.lng() +
+                        '"/>';
+                    // The info window version with the "from here" form open
+                    from_htmls[i] = html + '<br>Directions: <a href="javascript:tohere(' + i + ')">To here<\/a> - <b>From here<\/b>' +
+                        '<br>End address:<form action="javascript:getDirections()">' +
+                        '<input type="text" SIZE=40 MAXLENGTH=40 name="daddr" id="daddr" value="" /><br>' +
+                        '<INPUT value="Get Directions" TYPE="SUBMIT"><br>' +
+                        'Walk <input type="checkbox" name="walk" id="walk" /> &nbsp; Avoid Highways <input type="checkbox" name="highways" id="highways" />' +
+                        '<input type="hidden" id="saddr" value="' + latlng.lat() + ',' + latlng.lng() +
+                        '"/>';
+                    // The inactive version of the direction info
+                    var html = marker.getTitle() + '<br>Directions: <a href="javascript:tohere(' + i + ')">To here<\/a> - <a href="javascript:fromhere(' + i + ')">From here<\/a>';
+                    var contentString = html;
+
+                    google.maps.event.addListener(marker, 'click', function() {
+                        map.setZoom(15);
+                        map.setCenter(marker.getPosition());
+                        infowindow.setContent(contentString);
+                        infowindow.open(map, marker);
+                    });
+                    // save the info we need to use later for the side_bar
+                    gmarkers.push(marker);
+                    htmls[i] = html;
 
                     $('a[href="#google-map-tab"]').on('shown.bs.tab', function(e) {
                         google.maps.event.trigger(map, 'resize');
                         map.setCenter(latlng);
                     });
-                });
-            });
+
+                    // ===== request the directions =====
+                    function getDirections() {
+                        // ==== Set up the walk and avoid highways options ====
+                        var request = {};
+                        if (document.getElementById("walk").checked) {
+                            request.travelMode = google.maps.DirectionsTravelMode.WALKING;
+                        } else {
+                            request.travelMode = google.maps.DirectionsTravelMode.DRIVING;
+                        }
+
+                        if (document.getElementById("highways").checked) {
+                            request.avoidHighways = true;
+                        }
+                        // ==== set the start and end locations ====
+                        var saddr = document.getElementById("saddr").value;
+                        var daddr = document.getElementById("daddr").value;
+
+                        request.origin = saddr;
+                        request.destination = daddr;
+                        directionsService.route(request, function(response, status) {
+                            if (status == google.maps.DirectionsStatus.OK) {
+                                directionsDisplay.setDirections(response);
+                            } else alert("Directions not found:" + status);
+                        });
+                    }
+
+
+                    // This function picks up the click and opens the corresponding info window
+                    function myclick(i) {
+                        google.maps.event.trigger(gmarkers[i], "click");
+                    }
+
+                    // functions that open the directions forms
+                    function tohere(i) {
+                        // gmarkers[i].openInfoWindowHtml(to_htmls[i]);
+                        infowindow.setContent(to_htmls[i]);
+                        infowindow.open(map, gmarkers[i]);
+                    }
+
+                    function fromhere(i) {
+                        // gmarkers[i].openInfoWindowHtml(from_htmls[i]);
+                        infowindow.setContent(from_htmls[i]);
+                        infowindow.open(map, gmarkers[i]);
+                    }
+
+
+
+
+
         }
     </script>
 </div>
