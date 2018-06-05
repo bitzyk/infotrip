@@ -199,3 +199,7 @@ $app->get('/continent/{continentUnique}', function (Request $request, Response $
 $app->get('/home', function (Request $request, Response $response, array $args) {
 
 })->setName('homepage');
+
+$app->get('/contact', function (Request $request, Response $response, array $args) {
+
+})->setName('contact');

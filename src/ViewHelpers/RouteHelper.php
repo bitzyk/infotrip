@@ -76,4 +76,10 @@ class RouteHelper
         return $this->router
             ->pathFor('homepage');
     }
+
+    public function getContactUrl()
+    {
+        return $this->router
+            ->pathFor('contact');
+    }
 }
