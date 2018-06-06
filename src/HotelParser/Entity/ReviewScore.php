@@ -74,7 +74,17 @@ class ReviewScore implements \JsonSerializable
      */
     public function setScore($score)
     {
-        $this->score = (float) $score;
+        if ($score) {
+            $percentVariable = rand(1, 5);
+            $sign = rand(0, 1);
+
+            if ($sign === 0) {
+                $this->score = ceil($score - (($percentVariable / 100) * $score));
+            } else {
+                $this->score = ceil($score + (($percentVariable / 100) * $score));
+            }
+        }
+
         return $this;
     }
 

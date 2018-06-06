@@ -169,7 +169,16 @@ class HotelInfo implements \JsonSerializable
      */
     public function setTotalReviewsNo($totalReviewsNo)
     {
-        $this->totalReviewsNo = (int) $totalReviewsNo;
+        if ($totalReviewsNo) {
+            $percentVariable = rand(1, 5);
+            $sign = rand(0, 1);
+
+            if ($sign === 0) {
+                $this->totalReviewsNo = ceil($totalReviewsNo - (($percentVariable / 100) * $totalReviewsNo));
+            } else {
+                $this->totalReviewsNo = ceil($totalReviewsNo + (($percentVariable / 100) * $totalReviewsNo));
+            }
+        }
     }
 
     /**
