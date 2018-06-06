@@ -1,7 +1,10 @@
 <?php
-/** @var $hotel \Infotrip\Domain\Entity\Hotel */
-/** @var $hotelInfo \Infotrip\HotelParser\Entity\HotelInfo */
+
+/** @var \Infotrip\Domain\Entity\Hotel $hotel */
+
+/** @var \Infotrip\HotelParser\Entity\HotelInfo $hotelInfo */
 $hotelInfo = $hotel->getExternalHotelInfo();
+
 /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
     $routeHelper = $viewHelpers['routeHelper'];
 

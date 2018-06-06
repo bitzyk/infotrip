@@ -36,10 +36,16 @@ $app->get('/hotel/{hotelName}', function (Request $request, Response $response, 
 
     // safe check hotel name against url
     if (strtolower($hotel->getName()) != strtolower(urldecode($args['hotelName']))) {
+        /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
+        $routerHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
+
+        // redirect to the correct url
         return $response
-            ->withStatus(404)
-            ->withHeader('Content-Type', 'text/html')
-            ->write("Page not found");
+            ->withRedirect($routerHelper->getHotelUrl(
+                $hotel->getName(),
+                $hotel->getId()
+            ), 301);
+
     }
 
     /** @var \Infotrip\HotelParser\BookingComParser $bookingParser */

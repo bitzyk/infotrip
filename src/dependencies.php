@@ -48,12 +48,17 @@ $container[\Infotrip\HotelParser\ImageCatcher\ImageCatcher::class] = function (C
     return $service;
 };
 
+$container[\Infotrip\ViewHelpers\RouteHelper::class] = function (Container $container) {
+    $routeHelper = new \Infotrip\ViewHelpers\RouteHelper(
+        $container->get('router')
+    );
+
+    return $routeHelper;
+};
 
 $container['viewHelpers'] = function (Container $container) {
     return array(
-        'routeHelper' => new \Infotrip\ViewHelpers\RouteHelper(
-            $container->get('router')
-        )
+        'routeHelper' => $container->get(\Infotrip\ViewHelpers\RouteHelper::class)
     );
 };
 
