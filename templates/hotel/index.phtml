@@ -245,7 +245,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                             <?php if (isset($hotel->getRelatedHotels()[$i]) && ($relatedHotel = $hotel->getRelatedHotels()[$i])): ?>
                                 <li>
                                     <a class="booking-item"
-                                       href="<?= $routeHelper->getHotelUrl($relatedHotel->getName(), $relatedHotel->getId()); ?>"
+                                       href="<?= $hotel->getRelatedHotels()[$i]->getBookingHotelUrl(); ?>"
                                        target="_blank">
                                         <div class="row">
                                             <div class="col-md-3" style="height: 130px; overflow: hidden;">
