@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 use Infotrip\Domain\Entity\Hotel;
 
-class HotelRepository extends EntityRepository
+class CitylRepository extends EntityRepository
 {
 
     public function __construct(EntityManager $em, Mapping\ClassMetadata $class)
@@ -23,8 +23,8 @@ class HotelRepository extends EntityRepository
      * @throws \Doctrine\ORM\TransactionRequiredException
      * @throws \Exception
      */
-    public function getHotel(
-        $hotelId
+    public function getCity(
+        $cityId
     )
     {
         $hotel = $this->getEntityManager()
@@ -100,78 +100,5 @@ class HotelRepository extends EntityRepository
         return $hotels;
     }
 
-
-    /**
-     * Get related hotels for the given hotel in the specified area
-     *
-     * @param array $areas
-     * @param int $relatedHotelsNo
-     *
-     * @return Hotel[]
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function getHotelsInArea(
-        array $areas,
-        $relatedHotelsNo = 12
-    )
-    {
-        $where = [];
-        if (isset($areas['city']) && $areas['city']) {
-            $where[] = 'h.cityUnique = :cityUnique';
-        }
-
-        if (isset($areas['country']) && $areas['country']) {
-            $where[] = 'h.cc1 = :country';
-        }
-
-        $sql = sprintf(
-            'SELECT COUNT(h) FROM Infotrip\Domain\Entity\Hotel h WHERE %s',
-            implode('AND', $where)
-        );
-
-        // count how many related hotels there is
-        $query = $this->getEntityManager()->createQuery(
-            $sql
-        );
-
-        if (isset($areas['city']) && $areas['city']) {
-            $query->setParameter('cityUnique', $areas['city']);
-        }
-
-        $relatedHotelsCount = $query->getSingleScalarResult();
-
-        if ($relatedHotelsCount == 0) {
-            return array();
-        }
-        // compute offset
-        $offset = rand(
-            0,
-            (($relatedHotelsCount - $relatedHotelsNo) > 0) ?
-                ($relatedHotelsCount - $relatedHotelsNo) : 0
-        );
-
-        // get related hotels
-        $qb = $this->getEntityManager()
-            ->getRepository('Infotrip\Domain\Entity\Hotel')
-            ->createQueryBuilder('h');
-
-        if (isset($areas['city']) && $areas['city']) {
-            $qb
-                ->where(
-                    'h.cityUnique = :cityUnique'
-                )
-                ->setParameter(
-                    ':cityUnique', $areas['city']
-                );
-        }
-
-        $qb->setFirstResult($offset)
-            ->setMaxResults($relatedHotelsNo);
-
-        $hotels = $qb->getQuery()->getResult();
-
-        return $hotels;
-    }
 
 }

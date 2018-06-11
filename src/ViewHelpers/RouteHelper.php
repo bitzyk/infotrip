@@ -46,10 +46,10 @@ class RouteHelper
             ->pathFor(self::HOTEL_ROUTE_NAME, ['hotelName' => urlencode($hotelName)], ['hid' => $hotelId]);
     }
 
-    public function getCityUrl($cityUnique)
+    public function getHotelsInUrl($cityUnique)
     {
         return $this->router
-            ->pathFor('cityRoute', ['cityUnique' => $cityUnique]);
+            ->pathFor('hotelsIn', [], ['city' => $cityUnique]);
     }
 
     public function getCountryUrl($countryUnique)

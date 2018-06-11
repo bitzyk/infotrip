@@ -23,7 +23,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                     <?= $hotel->getCountryName(); ?>
                 </a>
             </li>
-            <li><a href="<?= $routeHelper->getCityUrl($hotel->getCityUnique()); ?>"><?= $hotel->getCityHotel(); ?></a></li>
+            <li><a href="<?= $routeHelper->getHotelsInUrl($hotel->getCityUnique()); ?>"><?= $hotel->getCityHotel(); ?></a></li>
             <li class="active"><?php echo $hotel->getName(); ?></li>
         </ul>
         <div class="booking-item-details">

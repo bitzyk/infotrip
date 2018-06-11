@@ -191,16 +191,29 @@ $app->post('/cache-hotel', function (Request $request, Response $response, array
 
 })->setName('cacheHotelRoute');
 
-$app->get('/city/{cityUnique}', function (Request $request, Response $response, array $args) {
+$app->get('/hotels-in', function (Request $request, Response $response, array $args) {
 
+    /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
+    $hotelRepository = $this->get(\Infotrip\Domain\Repository\HotelRepository::class);
+
+    $areaSearch = [
+        'city' => $request->getParam('city'),
+        'country' => $request->getParam('country'),
+        'continent' => $request->getParam('continent'),
+    ];
+    $hotelsInArea = $hotelRepository
+        ->getHotelsInArea($areaSearch);
 
     $viewHelpers = $this->get('viewHelpers');
+
     $args['viewHelpers'] = $viewHelpers($request);
+    $args['hotels'] = $hotelsInArea;
+    $args['areaSearch'] = $areaSearch;
 
     // Render index view
-    return $this->renderer->render($response, 'city/index.phtml', $args);
+    return $this->renderer->render($response, 'hotelsIn/index.phtml', $args);
 
-})->setName('cityRoute');
+})->setName('hotelsIn');
 
 
 
