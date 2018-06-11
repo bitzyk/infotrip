@@ -36,6 +36,11 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
                         <div class="hover-inner hover-inner-block hover-inner-bottom hover-inner-bg-black hover-hold">
                             <div class="text-small">
                                 <h5><?= $hotel->getName(); ?></h5>
+                                <p>
+                                    <?php if (isset($areaSearch['country']) && $areaSearch['country']): ?>
+                                        City: <?= strtoupper($hotel->getCityHotel()); ?>
+                                    <?php endif; ?>
+                                </p>
                             </div>
                         </div>
                     </a>
