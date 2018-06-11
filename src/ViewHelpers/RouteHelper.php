@@ -8,6 +8,7 @@
 
 namespace Infotrip\ViewHelpers;
 
+use Slim\Http\Request;
 use Slim\Router;
 
 class RouteHelper
@@ -17,16 +18,32 @@ class RouteHelper
      * @var Router
      */
     private $router;
+    /**
+     * @var Request
+     */
+    private $request;
 
-    public function __construct(Router $router)
+    /**
+     * @var string
+     */
+    private $routeName;
+
+    const HOTEL_ROUTE_NAME = 'hotelRoute';
+
+    public function __construct(Router $router, Request $request)
     {
         $this->router = $router;
+        $this->request = $request;
+
+        if ($request->getAttribute('route')) {
+            $this->routeName = $request->getAttribute('route')->getName();
+        }
     }
 
     public function getHotelUrl($hotelName, $hotelId)
     {
         return $this->router
-            ->pathFor('hotelRoute', ['hotelName' => urlencode($hotelName)], ['hid' => $hotelId]);
+            ->pathFor(self::HOTEL_ROUTE_NAME, ['hotelName' => urlencode($hotelName)], ['hid' => $hotelId]);
     }
 
     public function getCityUrl($cityUnique)
@@ -81,5 +98,13 @@ class RouteHelper
     {
         return $this->router
             ->pathFor('contact');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHotelPage()
+    {
+        return $this->routeName === self::HOTEL_ROUTE_NAME;
     }
 }

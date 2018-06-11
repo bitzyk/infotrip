@@ -1,0 +1,14 @@
+<?php
+
+    /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+    $routeHelper = $viewHelpers['routeHelper'];
+?>
+
+<?php if ($routeHelper->isHotelPage()): ?>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<title><?= $hotel->getName(); ?> - <?= $hotel->getCityHotel(); ?> - Hotel details</title>
+<meta name="keywords" content="Template, html, premium, themeforest" />
+<meta name="description" content="Traveler - Premium template for travel companies">
+<meta name="author" content="Tsoy">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php endif; ?>

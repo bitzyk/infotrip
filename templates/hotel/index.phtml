@@ -274,11 +274,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
     </div>
 
 
-<?php
-
-require_once $this->getTemplatePath() . 'includes/footer.phtml';
-
-?>
+<?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
 
 
     <script>
@@ -530,9 +526,8 @@ require_once $this->getTemplatePath() . 'includes/footer.phtml';
 
         }
     </script>
-</div>
-</body>
 
-</html>
+
+<?php require_once $this->getTemplatePath() . 'includes/footer.phtml'; ?>
 
 

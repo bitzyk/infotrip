@@ -36,8 +36,10 @@ $app->get('/hotel/{hotelName}', function (Request $request, Response $response, 
 
     // safe check hotel name against url
     if (strtolower($hotel->getName()) != strtolower(urldecode($args['hotelName']))) {
+
+        $routeHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
         /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
-        $routerHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
+        $routerHelper = $routeHelper($request);
 
         // redirect to the correct url
         return $response
@@ -64,7 +66,9 @@ $app->get('/hotel/{hotelName}', function (Request $request, Response $response, 
 //    exit;
 
     $args['hotel'] = $hotel;
-    $args['viewHelpers'] = $this->get('viewHelpers');
+    $viewHelpers = $this->get('viewHelpers');
+    $args['viewHelpers'] = $viewHelpers($request);
+
 
     // Render index view
     return $this->renderer->render($response, 'hotel/index.phtml', $args);
@@ -188,6 +192,13 @@ $app->post('/cache-hotel', function (Request $request, Response $response, array
 })->setName('cacheHotelRoute');
 
 $app->get('/city/{cityUnique}', function (Request $request, Response $response, array $args) {
+
+
+    $viewHelpers = $this->get('viewHelpers');
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    // Render index view
+    return $this->renderer->render($response, 'city/index.phtml', $args);
 
 })->setName('cityRoute');
 

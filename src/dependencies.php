@@ -49,17 +49,28 @@ $container[\Infotrip\HotelParser\ImageCatcher\ImageCatcher::class] = function (C
 };
 
 $container[\Infotrip\ViewHelpers\RouteHelper::class] = function (Container $container) {
-    $routeHelper = new \Infotrip\ViewHelpers\RouteHelper(
-        $container->get('router')
-    );
 
-    return $routeHelper;
+    return function($request) use ($container) {
+        $routeHelper = new \Infotrip\ViewHelpers\RouteHelper(
+            $container->get('router'),
+            $request
+        );
+
+        return $routeHelper;
+    };
 };
 
 $container['viewHelpers'] = function (Container $container) {
-    return array(
-        'routeHelper' => $container->get(\Infotrip\ViewHelpers\RouteHelper::class)
-    );
+
+    return function($request) use ($container) {
+
+        $routeHelper = $container->get(\Infotrip\ViewHelpers\RouteHelper::class);
+        $routeHelper = $routeHelper($request);
+
+        return array(
+            'routeHelper' => $routeHelper
+        );
+    };
 };
 
 // doctrine
