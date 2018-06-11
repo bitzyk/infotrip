@@ -17,9 +17,9 @@ $hotelInfo = $hotel->getExternalHotelInfo();
         <ul class="breadcrumb">
             <li><a href="<?= $routeHelper->getHomepageUrl(); ?>">Home</a>
             </li>
-            <li><a href="<?= $routeHelper->getContinentUrl($hotel->getContinentName()); ?>"><?= $hotel->getContinentName(); ?></a>
+            <li><a href="<?= $routeHelper->getHotelsInUrl('', '', $hotel->getContinentName()); ?>"><?= $hotel->getContinentName(); ?></a>
             </li>
-            <li><a href="<?= $routeHelper->getCountryUrl($hotel->getCountryCode()); ?>">
+            <li><a href="<?= $routeHelper->getHotelsInUrl('', $hotel->getCountryCode()); ?>">
                     <?= $hotel->getCountryName(); ?>
                 </a>
             </li>

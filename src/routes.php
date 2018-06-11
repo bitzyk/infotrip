@@ -217,15 +217,6 @@ $app->get('/hotels-in', function (Request $request, Response $response, array $a
 
 
 
-
-$app->get('/country/{countryUnique}', function (Request $request, Response $response, array $args) {
-
-})->setName('countryRoute');
-
-$app->get('/continent/{continentUnique}', function (Request $request, Response $response, array $args) {
-
-})->setName('continentRoute');
-
 $app->get('/home', function (Request $request, Response $response, array $args) {
 
 })->setName('homepage');

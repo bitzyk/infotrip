@@ -46,28 +46,24 @@ class RouteHelper
             ->pathFor(self::HOTEL_ROUTE_NAME, ['hotelName' => urlencode($hotelName)], ['hid' => $hotelId]);
     }
 
-    public function getHotelsInUrl($cityUnique)
+    public function getHotelsInUrl($cityUnique = '', $country = '', $continent = '')
     {
-        return $this->router
-            ->pathFor('hotelsIn', [], ['city' => $cityUnique]);
-    }
+        $queryParams = [];
 
-    public function getCountryUrl($countryUnique)
-    {
-        return $this->router
-            ->pathFor('countryRoute', ['countryUnique' => $countryUnique]);
-    }
+        if($cityUnique) {
+            $queryParams['city'] = $cityUnique;
+        }
 
-    public function getContinentUrl($continentName)
-    {
-        $continentUnique = urlencode(strtolower($continentName));
+        if($country) {
+            $queryParams['country'] = $country;
+        }
 
-        if (!$continentUnique) {
-            $continentUnique = 'europe';
+        if($continent) {
+            $queryParams['continent'] = $continent;
         }
 
         return $this->router
-            ->pathFor('continentRoute', ['continentUnique' => $continentUnique]);
+            ->pathFor('hotelsIn', [], $queryParams);
     }
 
     public function getHotelCheckAvailabilityUrl($hotelName, $hotelId)

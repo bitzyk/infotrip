@@ -122,7 +122,7 @@ class HotelRepository extends EntityRepository
         }
 
         if (isset($areas['country']) && $areas['country']) {
-            $where[] = 'h.cc1 = :country';
+            $where[] = 'h.countryCode = :country';
         }
 
         $sql = sprintf(
@@ -137,6 +137,10 @@ class HotelRepository extends EntityRepository
 
         if (isset($areas['city']) && $areas['city']) {
             $query->setParameter('cityUnique', $areas['city']);
+        }
+
+        if (isset($areas['country']) && $areas['country']) {
+            $query->setParameter('country', $areas['country']);
         }
 
         $relatedHotelsCount = $query->getSingleScalarResult();
@@ -163,6 +167,16 @@ class HotelRepository extends EntityRepository
                 )
                 ->setParameter(
                     ':cityUnique', $areas['city']
+                );
+        }
+
+        if (isset($areas['country']) && $areas['country']) {
+            $qb
+                ->where(
+                    'h.countryCode = :country'
+                )
+                ->setParameter(
+                    ':country', $areas['country']
                 );
         }
 

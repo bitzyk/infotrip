@@ -16,6 +16,12 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
         <?php if (isset($areaSearch['city']) && $areaSearch['city']): ?>
         <?= strtoupper($areaSearch['city']); ?>
         <?php endif; ?>
+
+        <?php if (isset($areaSearch['country']) && $areaSearch['country']): ?>
+            <?= strtoupper(\Infotrip\Domain\Entity\Hotel::$COUNTRY_CODE_LIST[strtoupper($areaSearch['country'])]); ?>
+        <?php endif; ?>
+
+
     </h3>
     <div class="row row-wrap">
         <?php foreach ($hotels as $hotel): ?>
