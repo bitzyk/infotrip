@@ -110,6 +110,7 @@ class HotelRepository extends EntityRepository
      * @return Hotel[]
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Exception
      */
     public function getHotelsInArea(
         array $areas,
@@ -123,6 +124,14 @@ class HotelRepository extends EntityRepository
 
         if (isset($areas['country']) && $areas['country']) {
             $where[] = 'h.countryCode = :country';
+        }
+
+        if (
+            isset($areas['continent']) &&
+            $areas['continent']
+        ) {
+            $continentId = $this->getContinentId($areas['continent']);
+            $where[] = 'h.continentId = :continentId';
         }
 
         $sql = sprintf(
@@ -141,6 +150,10 @@ class HotelRepository extends EntityRepository
 
         if (isset($areas['country']) && $areas['country']) {
             $query->setParameter('country', $areas['country']);
+        }
+
+        if (isset($continentId)) {
+            $query->setParameter('continentId', $continentId);
         }
 
         $relatedHotelsCount = $query->getSingleScalarResult();
@@ -180,12 +193,40 @@ class HotelRepository extends EntityRepository
                 );
         }
 
+        if (isset($continentId)) {
+            $qb
+                ->where(
+                    'h.continentId = :continentId'
+                )
+                ->setParameter(
+                    ':continentId', $continentId
+                );
+        }
+
         $qb->setFirstResult($offset)
             ->setMaxResults($relatedHotelsNo);
 
         $hotels = $qb->getQuery()->getResult();
 
         return $hotels;
+    }
+
+    /**
+     * @param $continentName
+     * @return false|int|string
+     * @throws \Exception
+     */
+    protected function getContinentId(
+        $continentName
+    )
+    {
+        $continentId = array_search($continentName, Hotel::$CONTINENT_ID);
+
+        if ($continentId === false) {
+            throw new \Exception('Invalid continent');
+        }
+
+        return $continentId;
     }
 
 }

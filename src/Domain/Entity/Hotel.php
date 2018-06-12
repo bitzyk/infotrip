@@ -356,6 +356,18 @@ class Hotel extends Base implements \JsonSerializable
         'ZW' => 'Zimbabwe'
     );
 
+    public static $CONTINENT_ID = [
+        1 => 'North America',
+        2 => 'South America',
+        3 => 'South America',
+        5 => 'Africa',
+        6 => 'Europe',
+        7 => 'Asia',
+        8 => 'Asia',
+        9 => 'Australia',
+        10 => 'North America',
+    ];
+
     /**
      * @return string
      */
@@ -691,20 +703,8 @@ class Hotel extends Base implements \JsonSerializable
      */
     public function getContinentName()
     {
-        $continents = [
-            1 => 'North America',
-            2 => 'South America',
-            3 => 'South America',
-            5 => 'Africa',
-            6 => 'Europe',
-            7 => 'Asia',
-            8 => 'Asia',
-            9 => 'Australia',
-            10 => 'North America',
-        ];
-
-        if (isset($continents[$this->continentId])) {
-            return $continents[$this->continentId];
+        if (isset(self::$CONTINENT_ID[$this->continentId])) {
+            return self::$CONTINENT_ID[$this->continentId];
         }
 
         return '';

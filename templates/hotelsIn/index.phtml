@@ -21,6 +21,9 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
             <?= strtoupper(\Infotrip\Domain\Entity\Hotel::$COUNTRY_CODE_LIST[strtoupper($areaSearch['country'])]); ?>
         <?php endif; ?>
 
+        <?php if (isset($areaSearch['continent']) && $areaSearch['continent']): ?>
+            <?= strtoupper($areaSearch['continent']); ?>
+        <?php endif; ?>
 
     </h3>
     <div class="row row-wrap">
@@ -36,11 +39,19 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
                         <div class="hover-inner hover-inner-block hover-inner-bottom hover-inner-bg-black hover-hold">
                             <div class="text-small">
                                 <h5><?= $hotel->getName(); ?></h5>
+                                <?php if (isset($areaSearch['continent']) && $areaSearch['continent']): ?>
                                 <p>
-                                    <?php if (isset($areaSearch['country']) && $areaSearch['country']): ?>
-                                        City: <?= strtoupper($hotel->getCityHotel()); ?>
-                                    <?php endif; ?>
+                                    Country: <?= strtoupper($hotel->getCountryName()); ?>
                                 </p>
+                                <?php endif; ?>
+                                <?php if (
+                                    (isset($areaSearch['country']) && $areaSearch['country']) ||
+                                    (isset($areaSearch['continent']) && $areaSearch['continent'])
+                                ): ?>
+                                <p>
+                                    City: <?= strtoupper($hotel->getCityHotel()); ?>
+                                </p>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </a>
