@@ -90,6 +90,12 @@ class RouteHelper
             ->pathFor('homepage');
     }
 
+    public function getHotelsSearchUrl()
+    {
+        return $this->router
+            ->pathFor('hotelsSearchRoute');
+    }
+
     public function getContactUrl()
     {
         return $this->router

@@ -215,9 +215,39 @@ $app->get('/hotels-in', function (Request $request, Response $response, array $a
 
 })->setName('hotelsIn');
 
+$app->get('/hotels-search', function (Request $request, Response $response, array $args) {
+
+    /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
+    $hotelRepository = $this->get(\Infotrip\Domain\Repository\HotelRepository::class);
+
+    $term = $request->getParam('term');
+
+    $hotelsInArea = $hotelRepository
+        ->getHotelsByTerm($term);
+
+    print_r(count($hotelsInArea));
+    exit;
+
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+    $args['hotels'] = $hotelsInArea;
+    $args['areaSearch'] = $areaSearch;
+
+    // Render index view
+    return $this->renderer->render($response, 'hotelsIn/index.phtml', $args);
+
+})->setName('hotelsSearchRoute');
 
 
-$app->get('/home', function (Request $request, Response $response, array $args) {
+$app->get('/', function (Request $request, Response $response, array $args) {
+
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    // Render index view
+    return $this->renderer->render($response, 'homepage/index.phtml', $args);
 
 })->setName('homepage');
 

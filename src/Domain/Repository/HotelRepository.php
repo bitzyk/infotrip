@@ -134,6 +134,14 @@ class HotelRepository extends EntityRepository
             $where[] = 'h.continentId = :continentId';
         }
 
+        if (isset($areas['hotelName']) && $areas['hotelName']) {
+            $where[] = 'LOWER(h.name) = :hotelName';
+        }
+
+        if (isset($areas['hotelNameLike']) && $areas['hotelNameLike']) {
+            $where[] = "LOWER(h.name) LIKE :hotelNameLike";
+        }
+
         $sql = sprintf(
             'SELECT COUNT(h) FROM Infotrip\Domain\Entity\Hotel h WHERE %s',
             implode('AND', $where)
@@ -154,6 +162,14 @@ class HotelRepository extends EntityRepository
 
         if (isset($continentId)) {
             $query->setParameter('continentId', $continentId);
+        }
+
+        if (isset($areas['hotelName']) && $areas['hotelName']) {
+            $query->setParameter('hotelName', strtolower($areas['hotelName']));
+        }
+
+        if (isset($areas['hotelNameLike']) && $areas['hotelNameLike']) {
+            $query->setParameter('hotelNameLike', "%".strtolower($areas['hotelNameLike'] ."%" ));
         }
 
         $relatedHotelsCount = $query->getSingleScalarResult();
@@ -203,12 +219,66 @@ class HotelRepository extends EntityRepository
                 );
         }
 
+        if (isset($areas['hotelName']) && $areas['hotelName']) {
+            $qb
+                ->where(
+                    'LOWER(h.name) = :hotelName'
+                )
+                ->setParameter(
+                    ':hotelName', strtolower($areas['hotelName'])
+                );
+        }
+
+        if (isset($areas['hotelNameLike']) && $areas['hotelNameLike']) {
+            $qb
+                ->where(
+                    'LOWER(h.name) LIKE :hotelNameLike'
+                )
+                ->setParameter(
+                    ':hotelNameLike', '%' . strtolower($areas['hotelName'] . '%')
+                );
+        }
+
         $qb->setFirstResult($offset)
             ->setMaxResults($relatedHotelsNo);
 
         $hotels = $qb->getQuery()->getResult();
 
         return $hotels;
+    }
+
+    /**
+     * @param $term
+     * @return Hotel[]
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getHotelsByTerm(
+        $term
+    )
+    {
+        if ($this->isTermACountry($term) === true) {
+            $cc1 = array_search(strtolower($term), array_map('strtolower', Hotel::$COUNTRY_CODE_LIST));
+            return $this->getHotelsInArea(
+                ['country' => $cc1],
+                20
+            );
+        } elseif ($this->isTermACity($term) === true) {
+            return $this->getHotelsInArea(
+                ['city' => $term],
+                20
+            );
+        } elseif ($this->isTermAHotel($term) === true) {
+            return $this->getHotelsInArea(
+                ['hotelName' => $term],
+                20
+            );
+        } else {
+            return $this->getHotelsInArea(
+                ['hotelNameLike' => $term],
+                20
+            );
+        }
     }
 
     /**
@@ -227,6 +297,85 @@ class HotelRepository extends EntityRepository
         }
 
         return $continentId;
+    }
+
+    /**
+     * @param $term
+     * @return bool - true if the terms is a country, false otherwise
+     */
+    private function isTermACountry($term)
+    {
+        // count how many related hotels there is
+        $query = $this->getEntityManager()
+            ->createQuery(
+            "SELECT h.id FROM Infotrip\Domain\Entity\Hotel h
+                  WHERE h.countryCode = :cc1"
+            )
+            ->setMaxResults(1);
+
+        $cc1 = array_search(strtolower($term), array_map('strtolower', Hotel::$COUNTRY_CODE_LIST));
+        if (! $cc1) {
+            return false;
+        }
+        $query->setParameter('cc1', strtolower($cc1));
+
+        $hotels = $query->getResult();
+
+        if (count($hotels)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $term
+     * @return bool
+     */
+    private function isTermACity(
+        $term
+    )
+    {
+        // count how many related hotels there is
+        $query = $this->getEntityManager()
+            ->createQuery(
+                "SELECT h.id FROM Infotrip\Domain\Entity\Hotel h
+                  WHERE LOWER(h.cityUnique) = :cityUnique"
+            )
+            ->setMaxResults(1);
+
+        $query->setParameter('cityUnique', strtolower($term));
+
+        $hotels = $query->getResult();
+
+        if (count($hotels)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function isTermAHotel(
+        $term
+    )
+    {
+        // count how many related hotels there is
+        $query = $this->getEntityManager()
+            ->createQuery(
+                "SELECT h.id FROM Infotrip\Domain\Entity\Hotel h
+                  WHERE LOWER(h.name) = :name"
+            )
+            ->setMaxResults(1);
+
+        $query->setParameter('name', strtolower($term));
+
+        $hotels = $query->getResult();
+
+        if (count($hotels)) {
+            return true;
+        }
+
+        return false;
     }
 
 }

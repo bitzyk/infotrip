@@ -40,8 +40,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        <a class="logo" href="/index.html">
-                            <img src="/img/logo-invert.png" alt="Image Alternative text" title="Image Title" />
+                        <a class="logo" href="<?= $routeHelper->getHomepageUrl(); ?>">
+                            <img src="/img/logo-invert.png" alt="Homepage" title="Homepage" />
                         </a>
                     </div>
                     <div class="col-md-3 col-md-offset-2">
@@ -60,8 +60,8 @@
         <div class="container">
             <div class="nav">
                 <ul class="slimmenu" id="slimmenu">
-                    <li><a href="/index.html">Home</a></li>
-                    <li><a href="/activities.html">Continents</a>
+                    <li><a href="<?= $routeHelper->getHomepageUrl(); ?>">Home</a></li>
+                    <li><a href="<?= $routeHelper->getHotelsInUrl('','','Europe'); ?>">Continents</a>
                         <ul>
                             <li><a href="<?= $routeHelper->getHotelsInUrl('','','Europe'); ?>">Europe</a>
                             <li><a href="<?= $routeHelper->getHotelsInUrl('','','Asia'); ?>">Asia</a>
