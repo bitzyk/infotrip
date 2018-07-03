@@ -668,7 +668,7 @@ class Hotel extends Base implements \JsonSerializable
             $hotelInfo = $hotelParser->getCachedEntity($this);
         } else {
             $hotelInfo = $hotelParser
-                ->parse($this);
+                ->parse($this, $cached);
         }
 
         if ($hotelInfo instanceof HotelInfo) {

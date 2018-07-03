@@ -17,10 +17,11 @@ interface HotelParser
 
     /**
      * @param Hotel $hotel
+     * @param bool $cached
      * @return HotelInfo
      */
     public function parse(
-        Hotel $hotel
+        Hotel $hotel, $cached = true
     );
 
     /**

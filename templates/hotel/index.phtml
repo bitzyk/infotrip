@@ -236,7 +236,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-9">
 
                     <h4>Hotels Near <?php echo $hotel->getName(); ?></h4>
 
@@ -266,6 +266,14 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                             <?php endif; ?>
                         <?php endfor; ?>
                     </ul>
+                </div>
+                <div class="col-md-3">
+
+                    <h4>Hotel Facilities</h4>
+
+                    <div>
+                        <?php echo $hotelInfo->getFacilities(); ?>
+                    </div>
                 </div>
             </div>
 

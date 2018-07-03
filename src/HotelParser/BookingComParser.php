@@ -50,21 +50,23 @@ class BookingComParser extends AbstractHotelParser
 
     /**
      * @param Hotel $hotel
+     * @param bool $cached
      * @return HotelInfo
      */
     public function parse(
-        Hotel $hotel
+        Hotel $hotel,
+        $cached = true
     )
     {
         // set hotel
         $this->hotel = $hotel;
 
         // get hotel html
-        $this->html = $this->getHotelHtml();
+        $this->html = $this->getHotelHtml($cached);
 
         // parse html and return booking hotel info
         try {
-            $hotelInfo = $this->parseHtml();
+            $hotelInfo = $this->parseHtml($cached);
         } catch (\Exception $e) {
         }
 
@@ -72,13 +74,19 @@ class BookingComParser extends AbstractHotelParser
     }
 
     /**
+     * @param bool $cached
      * @return HotelInfo
-     * @throws \PHPHtmlParser\Exceptions\UnknownChildTypeException
+     * @throws UnknownChildTypeException
      */
-    private function parseHtml()
+    private function parseHtml(
+        $cached = true
+    )
     {
         // check first if the entity is in cache
-        if ($hotelInfo = $this->getCachedEntity($this->hotel)) {
+        if (
+            $cached &&
+            ($hotelInfo = $this->getCachedEntity($this->hotel))
+        ) {
             return $hotelInfo;
         }
 
@@ -107,6 +115,9 @@ class BookingComParser extends AbstractHotelParser
 
         // hydrate image urls
         $this->hydrateImageUrls($hotelInfo);
+
+        // hydrate facilities
+        $this->hydrateFacilities($hotelInfo);
 
         // hydration complete -> compute some maths
         $hotelInfo->compute();
@@ -141,15 +152,19 @@ class BookingComParser extends AbstractHotelParser
     }
 
     /**
+     * @param bool $cached
      * @return string
      */
-    private function getHotelHtml()
+    private function getHotelHtml($cached = true)
     {
         $keyCache = $this->getKeyCache($this->hotel->getId());
 
         $html = '';
 
-        if ($this->fileCache->has($keyCache)) {
+        if (
+            $cached &&
+            $this->fileCache->has($keyCache)
+        ) {
             $html = $this->fileCache->get($keyCache);
         } else {
             $html = $this->curlRequestHotelPage();
@@ -191,6 +206,25 @@ class BookingComParser extends AbstractHotelParser
         ) {
             $hotelInfo->setTotalReviewsNo(
                 filter_var($item[0]->innerHtml(), FILTER_SANITIZE_NUMBER_INT)
+            );
+        }
+    }
+
+
+    /**
+     * @param HotelInfo $hotelInfo
+     */
+    private function hydrateFacilities(HotelInfo $hotelInfo)
+    {
+        $element = $this->dom->find('#hp_facilities_box div.facilitiesChecklist');
+
+        if (
+            count($element) == 1 &&
+            $element[0] instanceof Dom\HtmlNode
+        ) {
+
+            $hotelInfo->setFacilities(
+                str_replace('facilitiesChecklistSection', 'facilities-checklist',$element[0]->innerHtml())
             );
         }
     }

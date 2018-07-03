@@ -55,15 +55,8 @@ $app->get('/hotel/{hotelName}', function (Request $request, Response $response, 
 
     // request external hotel info (cached)
     $hotel
-        ->requestExternalHotelInfo($bookingParser);
+        ->requestExternalHotelInfo($bookingParser, true);
 
-//    print_r(
-//        $hotel->getExternalHotelInfo()
-//    );
-//    print_r(
-//        $hotel->getBookingHotelUrl()
-//    );
-//    exit;
 
     $args['hotel'] = $hotel;
     $viewHelpers = $this->get('viewHelpers');

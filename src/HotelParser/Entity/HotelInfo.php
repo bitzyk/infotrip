@@ -65,6 +65,11 @@ class HotelInfo implements \JsonSerializable
     private $images = array();
 
     /**
+     * @var string
+     */
+    private $facilities;
+
+    /**
      * @return string
      */
     public function getRatingText()
@@ -299,4 +304,24 @@ class HotelInfo implements \JsonSerializable
     {
         return get_object_vars($this);
     }
+
+    /**
+     * @return string
+     */
+    public function getFacilities()
+    {
+        return $this->facilities;
+    }
+
+    /**
+     * @param string $facilities
+     * @return HotelInfo
+     */
+    public function setFacilities($facilities)
+    {
+        $this->facilities = $facilities;
+        return $this;
+    }
+
+
 }
