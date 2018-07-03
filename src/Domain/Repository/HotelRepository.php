@@ -31,7 +31,8 @@ class HotelRepository extends EntityRepository
         $hotel = $this->getEntityManager()
             ->getRepository('Infotrip\Domain\Entity\Hotel')
             ->findOneBy(array(
-                'id' => $hotelId
+                'id' => $hotelId,
+                'visible' => '1',
             ));
 
         if (! $hotel instanceof Hotel) {
@@ -58,10 +59,11 @@ class HotelRepository extends EntityRepository
         // count how many related hotels there is
         $query = $this->getEntityManager()->createQuery(
             "SELECT COUNT(h) FROM Infotrip\Domain\Entity\Hotel h
-                  WHERE h.id != :hotelId AND h.cityUnique = :cityUnique"
+                  WHERE h.id != :hotelId AND h.cityUnique = :cityUnique AND h.visible = :visible"
         );
         $query->setParameter('hotelId', $hotelOrigin->getId());
         $query->setParameter('cityUnique', $hotelOrigin->getCityUnique());
+        $query->setParameter('visible', '1');
 
         $relatedHotelsCount = $query->getSingleScalarResult();
 
@@ -87,11 +89,17 @@ class HotelRepository extends EntityRepository
             ->andWhere(
                 'h.id != :hotelId'
             )
+            ->andWhere(
+                'h.visible = :visible'
+            )
             ->setParameter(
                 ':cityUnique', $hotelOrigin->getCityUnique()
             )
             ->setParameter(
                 ':hotelId', $hotelOrigin->getId()
+            )
+            ->setParameter(
+                ':visible', 1
             )
             ->setFirstResult($offset)
             ->setMaxResults($relatedHotelsNo);
@@ -119,6 +127,8 @@ class HotelRepository extends EntityRepository
     )
     {
         $where = [];
+        $where[] = 'h.visible = :visible';
+
         if (isset($areas['city']) && $areas['city']) {
             $where[] = 'h.cityUnique = :cityUnique';
         }
@@ -152,6 +162,8 @@ class HotelRepository extends EntityRepository
         $query = $this->getEntityManager()->createQuery(
             $sql
         );
+
+        $query->setParameter('visible', '1');
 
         if (isset($areas['city']) && $areas['city']) {
             $query->setParameter('cityUnique', $areas['city']);
@@ -189,6 +201,14 @@ class HotelRepository extends EntityRepository
         $qb = $this->getEntityManager()
             ->getRepository('Infotrip\Domain\Entity\Hotel')
             ->createQueryBuilder('h');
+
+        $qb
+            ->where(
+                'h.visible = :visible'
+            )
+            ->setParameter(
+                ':visible', '1'
+            );
 
         if (isset($areas['city']) && $areas['city']) {
             $qb

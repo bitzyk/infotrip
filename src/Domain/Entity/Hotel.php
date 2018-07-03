@@ -102,6 +102,9 @@ class Hotel extends Base implements \JsonSerializable
      */
     private $externalHotelInfo;
 
+    /** @Column(type="integer", name="`visible`") */
+    private $visible;
+
     /**
      * @var string
      */
@@ -714,6 +717,24 @@ class Hotel extends Base implements \JsonSerializable
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * @param mixed $visible
+     * @return Hotel
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+        return $this;
     }
 
 

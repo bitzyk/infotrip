@@ -90,9 +90,6 @@ $app->get('/hotel/check-availability/{hotelName}', function (Request $request, R
             ->write('Bad Request');
     }
 
-    // http://infotrip.org/hotel/Hotel+Asterisk+3+star+superior?hid=10003
-    // http://infotrip.org/hotel/hotelcarenuexista?hid=10003
-
 
     /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
     $hotelRepository = $this->get(\Infotrip\Domain\Repository\HotelRepository::class);
