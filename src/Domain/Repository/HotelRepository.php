@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 use Infotrip\Domain\Entity\Hotel;
+use Infotrip\Domain\Entity\HotelSearchResult;
 
 class HotelRepository extends EntityRepository
 {
@@ -235,7 +236,7 @@ class HotelRepository extends EntityRepository
                     'LOWER(h.name) LIKE :hotelNameLike'
                 )
                 ->setParameter(
-                    ':hotelNameLike', '%' . strtolower($areas['hotelName'] . '%')
+                    ':hotelNameLike', '%' . strtolower($areas['hotelNameLike'] . '%')
                 );
         }
 
@@ -249,7 +250,7 @@ class HotelRepository extends EntityRepository
 
     /**
      * @param $term
-     * @return Hotel[]
+     * @return HotelSearchResult
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -257,28 +258,45 @@ class HotelRepository extends EntityRepository
         $term
     )
     {
+        $hotelSearchResult = new HotelSearchResult();
+        $hotelSearchResult->setTerm($term);
+
         if ($this->isTermACountry($term) === true) {
+            $hotelSearchResult->setTermIsCountry(true);
             $cc1 = array_search(strtolower($term), array_map('strtolower', Hotel::$COUNTRY_CODE_LIST));
-            return $this->getHotelsInArea(
-                ['country' => $cc1],
-                20
+            $hotelSearchResult->setHotelsResult(
+                $this->getHotelsInArea(
+                    ['country' => $cc1],
+                    20
+                )
             );
         } elseif ($this->isTermACity($term) === true) {
-            return $this->getHotelsInArea(
-                ['city' => $term],
-                20
+            $hotelSearchResult->setTermIsCity(true);
+            $hotelSearchResult->setHotelsResult(
+                $this->getHotelsInArea(
+                    ['city' => $term],
+                    20
+                )
             );
         } elseif ($this->isTermAHotel($term) === true) {
-            return $this->getHotelsInArea(
-                ['hotelName' => $term],
-                20
+            $hotelSearchResult->setTermIsHotelName(true);
+            $hotelSearchResult->setHotelsResult(
+                $this->getHotelsInArea(
+                    ['hotelName' => $term],
+                    20
+                )
             );
         } else {
-            return $this->getHotelsInArea(
-                ['hotelNameLike' => $term],
-                20
+            $hotelSearchResult->setTermExistInHotelName(true);
+            $hotelSearchResult->setHotelsResult(
+                $this->getHotelsInArea(
+                    ['hotelNameLike' => $term],
+                    20
+                )
             );
         }
+
+        return $hotelSearchResult;
     }
 
     /**

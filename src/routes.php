@@ -222,17 +222,21 @@ $app->get('/hotels-search', function (Request $request, Response $response, arra
 
     $term = $request->getParam('term');
 
-    $hotelsInArea = $hotelRepository
-        ->getHotelsByTerm($term);
+    if (! $term) {
+        return $response
+            ->withStatus(400)
+            ->withHeader('Content-Type', 'text/html')
+            ->write('Bad Request');
+    }
 
-    print_r(count($hotelsInArea));
-    exit;
+    $hotelsSearchResult = $hotelRepository
+        ->getHotelsByTerm($term);
 
     $viewHelpers = $this->get('viewHelpers');
 
     $args['viewHelpers'] = $viewHelpers($request);
-    $args['hotels'] = $hotelsInArea;
-    $args['areaSearch'] = $areaSearch;
+    $args['hotels'] = $hotelsSearchResult->getHotelsResult();
+    $args['hotelsSearchResult'] = $hotelsSearchResult;
 
     // Render index view
     return $this->renderer->render($response, 'hotelsIn/index.phtml', $args);

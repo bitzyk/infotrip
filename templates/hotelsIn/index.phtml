@@ -12,17 +12,26 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
 <div class="container">
     <div class="gap gap-small"></div>
     <h3 class="mb20">
-        Hotels in
+
         <?php if (isset($areaSearch['city']) && $areaSearch['city']): ?>
-        <?= strtoupper($areaSearch['city']); ?>
+            Hotels in <?= strtoupper($areaSearch['city']); ?>
         <?php endif; ?>
 
         <?php if (isset($areaSearch['country']) && $areaSearch['country']): ?>
-            <?= strtoupper(\Infotrip\Domain\Entity\Hotel::$COUNTRY_CODE_LIST[strtoupper($areaSearch['country'])]); ?>
+            Hotels in <?= strtoupper(\Infotrip\Domain\Entity\Hotel::$COUNTRY_CODE_LIST[strtoupper($areaSearch['country'])]); ?>
         <?php endif; ?>
 
         <?php if (isset($areaSearch['continent']) && $areaSearch['continent']): ?>
-            <?= strtoupper($areaSearch['continent']); ?>
+            Hotels in <?= strtoupper($areaSearch['continent']); ?>
+        <?php endif; ?>
+
+        <?php if (isset($hotelsSearchResult) && $hotelsSearchResult instanceof \Infotrip\Domain\Entity\HotelSearchResult): ?>
+            <?php if ($hotelsSearchResult->isTermExistInHotelName() || $hotelsSearchResult->isTermIsHotelName()): ?>
+                The following hotels have been found for the searched term `<?= $hotelsSearchResult->getTerm(); ?>`:
+            <?php else: ?>
+                Hotels in <?= $hotelsSearchResult->getTerm(); ?>
+            <?php endif; ?>
+
         <?php endif; ?>
 
     </h3>
@@ -61,8 +70,6 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
     </div>
     <div class="gap gap-small"></div>
 </div>
-
-<?php require_once $this->getTemplatePath() . 'includes/hotel-search.phtml'; ?>
 
 
 <?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>

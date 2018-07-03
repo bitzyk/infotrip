@@ -368,6 +368,7 @@ class Hotel extends Base implements \JsonSerializable
         10 => 'North America',
     ];
 
+    const BOOKING_ID_PARAM = 'aid=1518628';
     /**
      * @return string
      */
@@ -586,7 +587,7 @@ class Hotel extends Base implements \JsonSerializable
      */
     public function getBookingHotelUrl()
     {
-        return $this->bookingHotelUrl;
+        return $this->bookingHotelUrl . '?' . self::BOOKING_ID_PARAM;
     }
 
     /**
