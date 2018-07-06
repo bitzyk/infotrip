@@ -68,6 +68,67 @@ $app->get('/hotel/{hotelName}', function (Request $request, Response $response, 
 
 })->setName('hotelRoute');
 
+$app->get('/hotel-redirect/{hotelName}/{hotelCity}', function (Request $request, Response $response, array $args) {
+
+    /** @var $this \Slim\Container */
+
+    $hotelName = $args['hotelName'];
+    $hotelCity = $args['hotelCity'];
+
+    // sanitize check
+    if (! $hotelName || ! $hotelCity) {
+        return $response
+            ->withStatus(400)
+            ->withHeader('Content-Type', 'text/html')
+            ->write('Bad Request');
+    }
+    /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
+    $hotelRepository = $this->get(\Infotrip\Domain\Repository\HotelRepository::class);
+
+    $routeHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
+    /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
+    $routerHelper = $routeHelper($request);
+
+
+    // get hotel for the given hotel url
+    try {
+        $hotels = $hotelRepository
+            ->getHotelsInArea(
+                [
+                    'city' => $hotelCity,
+                    'hotelName' => $hotelName,
+                ]
+            );
+
+       if (
+           count($hotels) &&
+           ($hotel = $hotels[0]) &&
+            $hotel instanceof \Infotrip\Domain\Entity\Hotel
+       ) {
+           return $response
+               ->withRedirect($routerHelper->getHotelUrl(
+                   $hotel->getName(),
+                   $hotel->getId()
+               ), 301);
+
+           exit;
+       }
+
+    } catch (\Exception $e) {
+        return $response
+            ->withStatus(400)
+            ->withHeader('Content-Type', 'text/html')
+            ->write($e->getMessage());
+    }
+
+    return $response
+        ->withStatus(400)
+        ->withHeader('Content-Type', 'text/html')
+        ->write('Bad Request');
+
+})->setName('hotelRedirect');
+
+
 // check availabily redirecter
 $app->get('/hotel/check-availability/{hotelName}', function (Request $request, Response $response, array $args) use ($app) {
     /** @var $this \Slim\Container */

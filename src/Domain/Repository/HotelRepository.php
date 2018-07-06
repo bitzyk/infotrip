@@ -155,7 +155,7 @@ class HotelRepository extends EntityRepository
 
         $sql = sprintf(
             'SELECT COUNT(h) FROM Infotrip\Domain\Entity\Hotel h WHERE %s',
-            implode('AND', $where)
+            implode(' AND ', $where)
         );
 
         // count how many related hotels there is
@@ -186,7 +186,6 @@ class HotelRepository extends EntityRepository
         }
 
         $relatedHotelsCount = $query->getSingleScalarResult();
-
         if ($relatedHotelsCount == 0) {
             return array();
         }
@@ -212,7 +211,7 @@ class HotelRepository extends EntityRepository
 
         if (isset($areas['city']) && $areas['city']) {
             $qb
-                ->where(
+                ->andWhere(
                     'h.cityUnique = :cityUnique'
                 )
                 ->setParameter(
@@ -222,7 +221,7 @@ class HotelRepository extends EntityRepository
 
         if (isset($areas['country']) && $areas['country']) {
             $qb
-                ->where(
+                ->andWhere(
                     'h.countryCode = :country'
                 )
                 ->setParameter(
@@ -232,7 +231,7 @@ class HotelRepository extends EntityRepository
 
         if (isset($continentId)) {
             $qb
-                ->where(
+                ->andWhere(
                     'h.continentId = :continentId'
                 )
                 ->setParameter(
@@ -242,7 +241,7 @@ class HotelRepository extends EntityRepository
 
         if (isset($areas['hotelName']) && $areas['hotelName']) {
             $qb
-                ->where(
+                ->andWhere(
                     'LOWER(h.name) = :hotelName'
                 )
                 ->setParameter(
@@ -252,7 +251,7 @@ class HotelRepository extends EntityRepository
 
         if (isset($areas['hotelNameLike']) && $areas['hotelNameLike']) {
             $qb
-                ->where(
+                ->andWhere(
                     'LOWER(h.name) LIKE :hotelNameLike'
                 )
                 ->setParameter(
