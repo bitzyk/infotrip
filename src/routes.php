@@ -309,3 +309,31 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 $app->get('/contact', function (Request $request, Response $response, array $args) {
 
 })->setName('contact');
+
+$app->get('/about-infotrip', function (Request $request, Response $response, array $args) {
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    // Render index view
+    return $this->renderer->render($response, 'about/index.phtml', $args);
+})->setName('about');
+
+$app->get('/terms-and-condition', function (Request $request, Response $response, array $args) {
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    // Render index view
+    return $this->renderer->render($response, 'terms/index.phtml', $args);
+})->setName('terms');
+
+
+$app->get('/cookies-and-privacy', function (Request $request, Response $response, array $args) {
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    // Render index view
+    return $this->renderer->render($response, 'privacy/index.phtml', $args);
+})->setName('privacy');

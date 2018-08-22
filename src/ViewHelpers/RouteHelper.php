@@ -102,6 +102,23 @@ class RouteHelper
             ->pathFor('contact');
     }
 
+    public function getAboutUrl()
+    {
+        return $this->router
+            ->pathFor('about');
+    }
+
+    public function getTermsUrl()
+    {
+        return $this->router
+            ->pathFor('terms');
+    }
+
+    public function getPrivacyUrl()
+    {
+        return $this->router
+            ->pathFor('privacy');
+    }
     /**
      * @return bool
      */
