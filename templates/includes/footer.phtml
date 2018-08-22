@@ -44,9 +44,9 @@ $randomUrlsHelper = $viewHelpers['randomUrlsHelper'];
             <div class="col-md-3">
                 <h5>Hotels in country</h5>
                 <ul class="list list-footer">
-                <?php foreach ($randomUrlsHelper->getRandomCountryUrls() as $countryData): ?>
-                    <li><a href="<?= $countryData['url']; ?>">
-                            <?= $countryData['countryName']; ?>
+                <?php foreach ($randomUrlsHelper->getRandomCountryUrls() as $data): ?>
+                    <li><a href="<?= $data['url']; ?>">
+                            <?= $data['label']; ?>
                         </a></li>
                 <?php endforeach; ?>
                 </ul>
@@ -55,9 +55,9 @@ $randomUrlsHelper = $viewHelpers['randomUrlsHelper'];
             <div class="col-md-3">
                 <h5>Hotels in city</h5>
                 <ul class="list list-footer">
-                    <?php foreach ($randomUrlsHelper->getRandomCountryUrls() as $countryData): ?>
-                        <li><a href="<?= $countryData['url']; ?>">
-                                <?= $countryData['countryName']; ?>
+                    <?php foreach ($randomUrlsHelper->getRandomCityUrls() as $data): ?>
+                        <li><a href="<?= $data['url']; ?>">
+                                <?= $data['label']; ?>
                             </a></li>
                     <?php endforeach; ?>
                 </ul>
