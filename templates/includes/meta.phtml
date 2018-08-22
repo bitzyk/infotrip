@@ -2,13 +2,25 @@
 
     /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
     $routeHelper = $viewHelpers['routeHelper'];
+
+    /** @var \Infotrip\Domain\Entity\Hotel $hotel */
 ?>
 
 <?php if ($routeHelper->isHotelPage()): ?>
-<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-<title><?= $hotel->getName(); ?> - <?= $hotel->getCityHotel(); ?> - Hotel details</title>
-<meta name="keywords" content="Template, html, premium, themeforest" />
-<meta name="description" content="Traveler - Premium template for travel companies">
-<meta name="author" content="Tsoy">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <title>
+        <?= $hotel->getName(); ?>, <?= $hotel->getCityHotel(); ?> - prices for <?php echo date('Y'); ?>
+    </title>
+    <meta name="keywords" content="Hotel, <?= $hotel->getName(); ?>, <?= $hotel->getCityHotel(); ?>, <?= $hotel->getCountryName(); ?>, booking, booking with discount, world wide hotels, travel, cheap hotels, discount rates, hotel deals, budget" />
+    <meta name="description" content="Cheap hotels, deals on rooms, and discount hotels. Book <?= $hotel->getName(); ?> in <?= $hotel->getCityHotel(); ?> at the best price now!">
+    <meta name="author" content="Infotrip">
+<?php else: ?>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <title>
+        Infotrip - hotel prices for <?php echo date('Y'); ?>
+    </title>
+    <meta name="keywords" content="booking, booking with discount, world wide hotels, travel, cheap hotels, discount rates, hotel deals, budget" />
+    <meta name="description" content="Cheap hotels, deals on rooms, and discount hotels. Book at the best price now!">
+    <meta name="author" content="Infotrip">
 <?php endif; ?>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
