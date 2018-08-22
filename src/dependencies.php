@@ -67,8 +67,11 @@ $container['viewHelpers'] = function (Container $container) {
         $routeHelper = $container->get(\Infotrip\ViewHelpers\RouteHelper::class);
         $routeHelper = $routeHelper($request);
 
+        $randomUrlsHelper = new \Infotrip\ViewHelpers\RandomUrlsHelper($routeHelper);
+
         return array(
-            'routeHelper' => $routeHelper
+            'routeHelper' => $routeHelper,
+            'randomUrlsHelper' => $randomUrlsHelper,
         );
     };
 };

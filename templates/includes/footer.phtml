@@ -1,3 +1,8 @@
+<?php
+/** @var $randomUrlsHelper \Infotrip\ViewHelpers\RandomUrlsHelper */
+$randomUrlsHelper = $viewHelpers['randomUrlsHelper'];
+?>
+
 <footer id="main-footer">
     <div class="container">
         <div class="row row-wrap">
@@ -26,6 +31,7 @@
             </div>
 
             <div class="col-md-3">
+                <h5>Resources</h5>
                 <ul class="list list-footer">
                     <li><a href="<?= $routeHelper->getAboutUrl(); ?>">About infotrip.org</a></li>
                     <li><a href="<?= $routeHelper->getTermsUrl(); ?>">Terms & Conditions</a></li>
@@ -36,11 +42,25 @@
             </div>
 
             <div class="col-md-3">
-a
+                <h5>Hotels in country</h5>
+                <ul class="list list-footer">
+                <?php foreach ($randomUrlsHelper->getRandomCountryUrls() as $countryData): ?>
+                    <li><a href="<?= $countryData['url']; ?>">
+                            <?= $countryData['countryName']; ?>
+                        </a></li>
+                <?php endforeach; ?>
+                </ul>
             </div>
 
             <div class="col-md-3">
-b
+                <h5>Hotels in city</h5>
+                <ul class="list list-footer">
+                    <?php foreach ($randomUrlsHelper->getRandomCountryUrls() as $countryData): ?>
+                        <li><a href="<?= $countryData['url']; ?>">
+                                <?= $countryData['countryName']; ?>
+                            </a></li>
+                    <?php endforeach; ?>
+                </ul>
             </div>
 
         </div>
