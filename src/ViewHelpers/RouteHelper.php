@@ -119,6 +119,13 @@ class RouteHelper
         return $this->router
             ->pathFor('privacy');
     }
+
+    public function getHotelOwnersUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwners');
+    }
+
     /**
      * @return bool
      */

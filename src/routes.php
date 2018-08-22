@@ -337,3 +337,12 @@ $app->get('/cookies-and-privacy', function (Request $request, Response $response
     // Render index view
     return $this->renderer->render($response, 'privacy/index.phtml', $args);
 })->setName('privacy');
+
+$app->get('/for-hotel-owners', function (Request $request, Response $response, array $args) {
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    // Render index view
+    return $this->renderer->render($response, 'hotelOwners/index.phtml', $args);
+})->setName('hotelOwners');
