@@ -307,6 +307,13 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 })->setName('homepage');
 
 $app->get('/contact', function (Request $request, Response $response, array $args) {
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    // Render index view
+    return $this->renderer->render($response, 'contact/index.phtml', $args);
+
 
 })->setName('contact');
 

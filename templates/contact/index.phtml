@@ -1,0 +1,32 @@
+<?php
+
+    /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+    $routeHelper = $viewHelpers['routeHelper'];
+
+    require_once $this->getTemplatePath() . 'includes/header.phtml';
+?>
+
+<div class="global-wrap">
+
+    <div class="container" style="z-index: 10; position: relative;">
+        <h1 class="page-title">Contact Us</h1>
+    </div>
+
+    <div class="container">
+        <div class="gap"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <div style="">
+                    <div style="width: 700px; margin: 0 auto; margin-top: -175px;">
+                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfBd29q3B_E5h4zTOHEVApiBo_s0NYVUbY2fQeU4I_PEFqqyw/viewform?embedded=true" width="700" height="1300" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gap"></div>
+    </div>
+
+<?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
+<?php require_once $this->getTemplatePath() . 'includes/footer.phtml'; ?>
+
+
