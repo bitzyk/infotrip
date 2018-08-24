@@ -27,6 +27,11 @@ class HotelInfo implements \JsonSerializable
     /**
      * @var int
      */
+    private $totalReviewsNoOriginal = 0;
+
+    /**
+     * @var int
+     */
     private $guestRecommendPercent = 0;
 
     /**
@@ -183,6 +188,8 @@ class HotelInfo implements \JsonSerializable
             } else {
                 $this->totalReviewsNo = ceil($totalReviewsNo + (($percentVariable / 100) * $totalReviewsNo));
             }
+
+            $this->totalReviewsNoOriginal = $totalReviewsNo;
         }
     }
 
@@ -284,10 +291,12 @@ class HotelInfo implements \JsonSerializable
      */
     public function compute()
     {
-        // compute gues recommend (first two ratings)
+        // compute guest recommend (first two ratings)
         if ( count($this->reviewScores) >= 2) {
+            $guestRecommendPercent = ceil((($this->reviewScores[0]->getScoreOriginal() + $this->reviewScores[1]->getScoreOriginal()) / $this->totalReviewsNoOriginal) * 100);
+
             $this->setGuestRecommendPercent(
-                ceil((($this->reviewScores[0]->getScore() + $this->reviewScores[1]->getScore()) / $this->totalReviewsNo) * 100)
+                $guestRecommendPercent
             );
         }
 

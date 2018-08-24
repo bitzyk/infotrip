@@ -25,6 +25,11 @@ class ReviewScore implements \JsonSerializable
     /**
      * @var float
      */
+    private $scoreOriginal;
+
+    /**
+     * @var float
+     */
     private $pointsBase10;
 
     /**
@@ -69,6 +74,15 @@ class ReviewScore implements \JsonSerializable
     }
 
     /**
+     * @return float
+     */
+    public function getScoreOriginal()
+    {
+        return $this->scoreOriginal;
+    }
+
+
+    /**
      * @param int $score
      * @return ReviewScore
      */
@@ -83,6 +97,8 @@ class ReviewScore implements \JsonSerializable
             } else {
                 $this->score = ceil($score + (($percentVariable / 100) * $score));
             }
+
+            $this->scoreOriginal = $score;
         }
 
         return $this;
