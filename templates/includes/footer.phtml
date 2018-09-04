@@ -69,6 +69,28 @@ $randomUrlsHelper = $viewHelpers['randomUrlsHelper'];
 
 
 </div>
+
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js"></script>
+<script>
+    window.addEventListener("load", function(){
+        window.cookieconsent.initialise({
+            "palette": {
+                "popup": {
+                    "background": "#237afc"
+                },
+                "button": {
+                    "background": "#fff",
+                    "text": "#237afc"
+                }
+            },
+            "content": {
+                "message": "Infotrip.org uses both its own and third-party cookies for technical, analytical, and marketing purposes.  If you continue to use this site we will assume that you are happy with it. Consult our cookie statement -&gt;",
+                "href": "http://infotrip.org/cookies-and-privacy"
+            }
+        })});
+</script>
+
 </body>
 
 </html>

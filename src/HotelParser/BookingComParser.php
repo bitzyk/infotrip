@@ -305,7 +305,20 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateReviewScores(HotelInfo $hotelInfo)
     {
-        $review_list_score_distribution = $this->dom->find('#review_list_score_distribution');
+        $matches = array();
+        $found = preg_match('/<ul id="review_list_score_distribution"[^>]*>((?!<\/ul>).)*<\/ul>/sm', $this->html, $matches);
+
+        if (
+            ! $found ||
+            ! isset($matches[0])
+        ) {
+            return;
+        }
+
+        $localDom = new Dom();
+        $localDom->load($matches[0]);
+        $review_list_score_distribution = $localDom->find('#review_list_score_distribution');
+
 
         if (
             count($review_list_score_distribution) == 1 &&
