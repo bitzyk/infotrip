@@ -140,13 +140,13 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                             <div class="col-md-6">
                                                 <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
                                                     <label>Check in</label>
-                                                    <input class="form-control" name="start" type="text" />
+                                                    <input class="form-control" name="start" type="text" id="checkInDateInput" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
                                                     <label>Check out</label>
-                                                    <input class="form-control" name="end" type="text" />
+                                                    <input class="form-control" name="end" type="text" id="checkOutDateInput" />
                                                 </div>
                                             </div>
                                         </div>
@@ -556,6 +556,19 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
 
         }
+    </script>
+
+    <script>
+        $('#checkInDateInput').datepicker()
+            .on('changeDate', function(e) {
+                $(this).datepicker('hide');
+                $('#checkOutDateInput').datepicker('show');
+            });
+
+        $('#checkOutDateInput').datepicker()
+            .on('changeDate', function(e) {
+                $(this).datepicker('hide');
+            });
     </script>
 
 
