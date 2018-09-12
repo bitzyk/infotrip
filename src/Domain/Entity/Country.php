@@ -2,6 +2,8 @@
 
 namespace Infotrip\Domain\Entity;
 
+use Doctrine\ORM\EntityManager;
+
 class Country
 {
     /**
@@ -311,6 +313,40 @@ class Country
     private function computeCountryNameFromId()
     {
         $this->name = self::$COUNTRY_CODE_LIST[$this->id];
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     * @param $countryCode
+     * @return Country[]
+     */
+    public function getCities(
+        EntityManager $entityManager,
+        $countryCode
+    )
+    {
+        // count how many related hotels there is
+        $query = $entityManager
+            ->createQuery(
+                "SELECT distinct(h.cityUnique) as cityName, count(h.id) as noHotels FROM Infotrip\Domain\Entity\Hotel h WHERE h.countryCode = :countryCode GROUP BY h.cityUnique ORDER BY noHotels DESC"
+            );
+
+        $query->setParameter('countryCode', $countryCode);
+
+        $rows = $query->getResult();
+
+
+        $cities = [];
+        if (count($rows)) {
+            foreach ($rows as $row) {
+                $city = new City(ucwords($row['cityName']));
+                $city
+                    ->setNoHotels($row['noHotels']);
+                $cities[] = $city;
+            }
+        }
+
+        return $cities;
     }
 
 }

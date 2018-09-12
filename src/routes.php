@@ -377,25 +377,33 @@ $app->get('/list-countries/{continentName}', function (Request $request, Respons
 
 $app->get('/list-cities/{countryName}/{countryId}', function (Request $request, Response $response, array $args) {
 
-    $countryName = urldecode($args['countryName']);
     $countryId = urldecode($args['countryId']);
 
-    var_dump($countryName, $countryId);
-    exit;
+    $continent = new \Infotrip\Domain\Entity\Country($countryId);
 
-//    $continent = new \Infotrip\Domain\Entity\Continent(null, $continentName);
-//
-//    /** @var \Doctrine\ORM\EntityManager $em */
-//    $em = $this->get(\Doctrine\ORM\EntityManager::class);
-//    $contries = $continent->getCountries($em);
-//
-//
-//    $viewHelpers = $this->get('viewHelpers');
-//
-//    $args['viewHelpers'] = $viewHelpers($request);
-//    $args['contries'] = $contries;
-//
-//    // Render index view
-//    return $this->renderer->render($response, 'listCountries/index.phtml', $args);
+    /** @var \Doctrine\ORM\EntityManager $em */
+    $em = $this->get(\Doctrine\ORM\EntityManager::class);
+    $cities = $continent->getCities($em, $countryId);
+
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+    $args['cities'] = $cities;
+
+    // Render index view
+    return $this->renderer->render($response, 'listCities/index.phtml', $args);
 
 })->setName('listCities');
+
+
+$app->get('/list-hotels/{city}', function (Request $request, Response $response, array $args) {
+
+    $cityUnique = urldecode($args['city']);
+
+    var_dump($cityUnique);
+    exit;
+
+    // Render index view
+    return $this->renderer->render($response, 'listCities/index.phtml', $args);
+
+})->setName('listHotels');

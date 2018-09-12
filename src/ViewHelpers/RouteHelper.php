@@ -142,4 +142,12 @@ class RouteHelper
                 'countryId' => urlencode($countryId),
             ]);
     }
+
+    public function getListHotelsUrl($city)
+    {
+        return $this->router
+            ->pathFor('listHotels', [
+                'city' => urlencode($city)
+            ]);
+    }
 }
