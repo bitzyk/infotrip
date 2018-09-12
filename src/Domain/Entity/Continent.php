@@ -58,12 +58,10 @@ class Continent
 
     /**
      * @param EntityManager $entityManager
-     * @param bool $cached
      * @return Country[]
      */
     public function getCountries(
-        EntityManager $entityManager,
-        $cached = true
+        EntityManager $entityManager
     )
     {
         // count how many related hotels there is
