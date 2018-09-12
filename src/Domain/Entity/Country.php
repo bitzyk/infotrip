@@ -317,12 +317,10 @@ class Country
 
     /**
      * @param EntityManager $entityManager
-     * @param $countryCode
      * @return Country[]
      */
     public function getCities(
-        EntityManager $entityManager,
-        $countryCode
+        EntityManager $entityManager
     )
     {
         // count how many related hotels there is
@@ -331,7 +329,7 @@ class Country
                 "SELECT distinct(h.cityUnique) as cityName, count(h.id) as noHotels FROM Infotrip\Domain\Entity\Hotel h WHERE h.countryCode = :countryCode GROUP BY h.cityUnique ORDER BY noHotels DESC"
             );
 
-        $query->setParameter('countryCode', $countryCode);
+        $query->setParameter('countryCode', $this->id);
 
         $rows = $query->getResult();
 

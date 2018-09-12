@@ -383,7 +383,7 @@ $app->get('/list-cities/{countryName}/{countryId}', function (Request $request, 
 
     /** @var \Doctrine\ORM\EntityManager $em */
     $em = $this->get(\Doctrine\ORM\EntityManager::class);
-    $cities = $continent->getCities($em, $countryId);
+    $cities = $continent->getCities($em);
 
     $viewHelpers = $this->get('viewHelpers');
 

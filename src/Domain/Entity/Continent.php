@@ -33,7 +33,6 @@ class Continent
         7 => 'Asia',
         8 => 'Asia',
         9 => 'Australia',
-        10 => 'North America',
     ];
 
     /**
@@ -67,9 +66,10 @@ class Continent
         // count how many related hotels there is
         $query = $entityManager
             ->createQuery(
-                "SELECT distinct(h.countryCode) as countryCode FROM Infotrip\Domain\Entity\Hotel h"
+                "SELECT distinct(h.countryCode) as countryCode FROM Infotrip\Domain\Entity\Hotel h WHERE h.continentId = :continentId"
             );
 
+        $query->setParameter('continentId', $this->id);
         $rows = $query->getResult();
 
         $countries = [];
