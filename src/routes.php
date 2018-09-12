@@ -353,3 +353,49 @@ $app->get('/for-hotel-owners', function (Request $request, Response $response, a
     // Render index view
     return $this->renderer->render($response, 'hotelOwners/index.phtml', $args);
 })->setName('hotelOwners');
+
+$app->get('/list-countries/{continentName}', function (Request $request, Response $response, array $args) {
+
+    $continentName = urldecode($args['continentName']);
+
+    $continent = new \Infotrip\Domain\Entity\Continent(null, $continentName);
+
+    /** @var \Doctrine\ORM\EntityManager $em */
+    $em = $this->get(\Doctrine\ORM\EntityManager::class);
+    $contries = $continent->getCountries($em);
+
+
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+    $args['contries'] = $contries;
+
+    // Render index view
+    return $this->renderer->render($response, 'listCountries/index.phtml', $args);
+
+})->setName('listContries');
+
+$app->get('/list-cities/{countryName}/{countryId}', function (Request $request, Response $response, array $args) {
+
+    $countryName = urldecode($args['countryName']);
+    $countryId = urldecode($args['countryId']);
+
+    var_dump($countryName, $countryId);
+    exit;
+
+//    $continent = new \Infotrip\Domain\Entity\Continent(null, $continentName);
+//
+//    /** @var \Doctrine\ORM\EntityManager $em */
+//    $em = $this->get(\Doctrine\ORM\EntityManager::class);
+//    $contries = $continent->getCountries($em);
+//
+//
+//    $viewHelpers = $this->get('viewHelpers');
+//
+//    $args['viewHelpers'] = $viewHelpers($request);
+//    $args['contries'] = $contries;
+//
+//    // Render index view
+//    return $this->renderer->render($response, 'listCountries/index.phtml', $args);
+
+})->setName('listCities');

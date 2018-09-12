@@ -470,7 +470,7 @@ class RandomUrlsHelper
         foreach ($slice as $countryCode) {
 
             $url = $this->routeHelper->getHotelsInUrl('', $countryCode);
-            $countryName = \Infotrip\Domain\Entity\Hotel::$COUNTRY_CODE_LIST[$countryCode];
+            $countryName = \Infotrip\Domain\Entity\Country::$COUNTRY_CODE_LIST[$countryCode];
 
             $urls[] = array(
                 'label' => $countryName,

@@ -282,7 +282,7 @@ class HotelRepository extends EntityRepository
 
         if ($this->isTermACountry($term) === true) {
             $hotelSearchResult->setTermIsCountry(true);
-            $cc1 = array_search(strtolower($term), array_map('strtolower', Hotel::$COUNTRY_CODE_LIST));
+            $cc1 = array_search(strtolower($term), array_map('strtolower', \Infotrip\Domain\Entity\Country::$COUNTRY_CODE_LIST));
             $hotelSearchResult->setHotelsResult(
                 $this->getHotelsInArea(
                     ['country' => $cc1],
@@ -327,7 +327,7 @@ class HotelRepository extends EntityRepository
         $continentName
     )
     {
-        $continentId = array_search($continentName, Hotel::$CONTINENT_ID);
+        $continentId = array_search($continentName, \Infotrip\Domain\Entity\Continent::$CONTINENT_ID);
 
         if ($continentId === false) {
             throw new \Exception('Invalid continent');
@@ -350,7 +350,7 @@ class HotelRepository extends EntityRepository
             )
             ->setMaxResults(1);
 
-        $cc1 = array_search(strtolower($term), array_map('strtolower', Hotel::$COUNTRY_CODE_LIST));
+        $cc1 = array_search(strtolower($term), array_map('strtolower', \Infotrip\Domain\Entity\Country::$COUNTRY_CODE_LIST));
         if (! $cc1) {
             return false;
         }

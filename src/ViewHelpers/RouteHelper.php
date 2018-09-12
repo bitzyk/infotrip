@@ -133,4 +133,13 @@ class RouteHelper
     {
         return $this->routeName === self::HOTEL_ROUTE_NAME;
     }
+
+    public function getListCitiesUrl($countryId, $countryName)
+    {
+        return $this->router
+            ->pathFor('listCities', [
+                'countryName' => urlencode($countryName),
+                'countryId' => urlencode($countryId),
+            ]);
+    }
 }

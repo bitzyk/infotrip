@@ -1,2 +1,11 @@
 /*YOUR CUSTOM STYLES*/
 
+.list-page .list-link:hover {
+    text-decoration: underline;
+
+}
+
+.list-page .list-link:hover h5 {
+    color: #ed8323 !important;
+}
+

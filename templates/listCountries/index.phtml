@@ -1,0 +1,39 @@
+<?php
+
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+$routeHelper = $viewHelpers['routeHelper'];
+
+/** @var \Infotrip\Domain\Entity\Country[] $contries */
+
+/** @var \Infotrip\Domain\Entity\Country[][] $countries4Chunk */
+$countries4Chunk = array_chunk($contries, 4);
+
+require_once $this->getTemplatePath() . 'includes/header.phtml';
+?>
+
+<div class="container list-page">
+    <div class="gap gap-small"></div>
+    <h3 class="mb20">Choose a country</h3>
+    <?php foreach ($countries4Chunk as $row): ?>
+        <div class="row row-wrap">
+        <?php foreach ($row as $country): ?>
+            <div class="col-md-3">
+                <div class="thumb">
+                    <a class="list-link"
+                            href="<?= $routeHelper->getListCitiesUrl($country->getId(), $country->getName()); ?>">
+                        <h5><?= $country->getName(); ?></h5>
+                    </a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+        </div>
+    <?php endforeach; ?>
+    <div class="gap gap-small"></div>
+</div>
+
+
+<?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
+<?php require_once $this->getTemplatePath() . 'includes/footer.phtml'; ?>
+
+
+
