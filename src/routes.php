@@ -400,6 +400,11 @@ $app->get('/list-hotels/{city}', function (Request $request, Response $response,
 
     $cityUnique = urldecode($args['city']);
 
+    /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
+    $hotelRepository = $this->get(\Infotrip\Domain\Repository\HotelRepository::class);
+    $hotelRepository
+        ->getHotelsByCity($cityUnique, 1);
+
     var_dump($cityUnique);
     exit;
 

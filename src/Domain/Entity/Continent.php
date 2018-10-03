@@ -26,11 +26,11 @@ class Continent
 
     public static $CONTINENT_ID = [
         1 => 'North America',
-        2 => 'South America',
+        2 => 'Central America',
         3 => 'South America',
         5 => 'Africa',
         6 => 'Europe',
-        7 => 'Asia',
+        7 => 'Asia', // Middle East
         8 => 'Asia',
         9 => 'Australia',
     ];

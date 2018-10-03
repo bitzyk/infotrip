@@ -361,7 +361,6 @@ class RandomUrlsHelper
         "malaga",
         "tel",
         "kandy",
-        "t",
         "podstrana",
         "south",
         "dayan",

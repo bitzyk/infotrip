@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
 use Infotrip\Domain\Entity\Hotel;
 use Infotrip\Domain\Entity\HotelSearchResult;
+use Infotrip\Utils\Pagination;
 
 class HotelRepository extends EntityRepository
 {
@@ -114,16 +115,14 @@ class HotelRepository extends EntityRepository
      * Get related hotels for the given hotel in the specified area
      *
      * @param array $areas
-     * @param int $relatedHotelsNo
-     *
+     * @param null|Pagination $pagination
      * @return Hotel[]
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Exception
      */
     public function getHotelsInArea(
         array $areas,
-        $relatedHotelsNo = 12
+        Pagination $pagination = null
     )
     {
         $where = [];
@@ -189,12 +188,24 @@ class HotelRepository extends EntityRepository
         if ($relatedHotelsCount == 0) {
             return array();
         }
+
         // compute offset
-        $offset = rand(
-            0,
-            (($relatedHotelsCount - $relatedHotelsNo) > 0) ?
-                ($relatedHotelsCount - $relatedHotelsNo) : 0
-        );
+        if (
+            ! $pagination instanceof Pagination
+        )
+        {
+            $relatedHotelsNo = 12;
+
+            $offset = rand(
+                0,
+                (($relatedHotelsCount - $relatedHotelsNo) > 0) ?
+                    ($relatedHotelsCount - $relatedHotelsNo) : 0
+            );
+        } else {
+            $pagination
+                ->setNoResults($relatedHotelsCount);
+            $offset = $pagination->getOffset();
+        }
 
         // get related hotels
         $qb = $this->getEntityManager()
@@ -285,32 +296,28 @@ class HotelRepository extends EntityRepository
             $cc1 = array_search(strtolower($term), array_map('strtolower', \Infotrip\Domain\Entity\Country::$COUNTRY_CODE_LIST));
             $hotelSearchResult->setHotelsResult(
                 $this->getHotelsInArea(
-                    ['country' => $cc1],
-                    20
+                    ['country' => $cc1]
                 )
             );
         } elseif ($this->isTermACity($term) === true) {
             $hotelSearchResult->setTermIsCity(true);
             $hotelSearchResult->setHotelsResult(
                 $this->getHotelsInArea(
-                    ['city' => $term],
-                    20
+                    ['city' => $term]
                 )
             );
         } elseif ($this->isTermAHotel($term) === true) {
             $hotelSearchResult->setTermIsHotelName(true);
             $hotelSearchResult->setHotelsResult(
                 $this->getHotelsInArea(
-                    ['hotelName' => $term],
-                    20
+                    ['hotelName' => $term]
                 )
             );
         } else {
             $hotelSearchResult->setTermExistInHotelName(true);
             $hotelSearchResult->setHotelsResult(
                 $this->getHotelsInArea(
-                    ['hotelNameLike' => $term],
-                    20
+                    ['hotelNameLike' => $term]
                 )
             );
         }
@@ -413,6 +420,30 @@ class HotelRepository extends EntityRepository
         }
 
         return false;
+    }
+
+    /**
+     * @param $cityUnique
+     * @param $noPag
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getHotelsByCity($cityUnique, $noPag)
+    {
+        $hotelSearchResult = new HotelSearchResult();
+        $hotelSearchResult->setTerm($cityUnique);
+        $hotelSearchResult->setTermIsCity(true);
+
+        $pagination = new Pagination();
+        $pagination
+            ->setNoPag($noPag);
+
+        $hotelSearchResult->setHotelsResult(
+            $this->getHotelsInArea(
+                ['city' => $cityUnique],
+                $pagination
+            )
+        );
     }
 
 }
