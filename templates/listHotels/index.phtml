@@ -22,8 +22,11 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
                 <div class="thumb">
                     <a class="hover-img"
                        target="_blank"
-                       href="<?= $hotel->getBookingHotelUrl(); ?>">
-                        <img src="<?= $hotel->getImages()[0]->getSrc(); ?>" alt="<?= $hotel->getBookingHotelUrl(); ?>"
+                       href="<?= $routeHelper->getHotelUrl(
+                           $hotel->getName(),
+                           $hotel->getId()
+                       ); ?>">
+                        <img src="<?= $hotel->getImages()[0]->getSrc(); ?>"
                              style="height: 200px;"
                              title="Image hotel" />
                         <div class="hover-inner hover-inner-block hover-inner-bottom hover-inner-bg-black hover-hold">

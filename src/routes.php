@@ -43,10 +43,12 @@ $app->get('/hotel/{hotelName}', function (Request $request, Response $response, 
 
         // redirect to the correct url
         return $response
-            ->withRedirect($routerHelper->getHotelUrl(
+            ->withRedirect(
+                $routerHelper->getHotelUrl(
                 $hotel->getName(),
                 $hotel->getId()
-            ), 301);
+            ), 301
+            );
 
     }
 
