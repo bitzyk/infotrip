@@ -1,0 +1,71 @@
+<?php
+
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+$routeHelper = $viewHelpers['routeHelper'];
+
+/** @var \Infotrip\Domain\Entity\HotelSearchResult $hotelSearchResult */
+
+//throw new Exception('test');
+require_once $this->getTemplatePath() . 'includes/header.phtml';
+?>
+
+<div class="container">
+    <div class="gap gap-small"></div>
+    <h3 class="mb20">
+
+        Hotels in <?= $hotelSearchResult->getTerm(); ?>
+
+    </h3>
+    <div class="row row-wrap">
+        <?php foreach ($hotelSearchResult->getHotelsResult() as $hotel): ?>
+            <div class="col-md-3" style="height: 200px;">
+                <div class="thumb">
+                    <a class="hover-img"
+                       target="_blank"
+                       href="<?= $hotel->getBookingHotelUrl(); ?>">
+                        <img src="<?= $hotel->getImages()[0]->getSrc(); ?>" alt="<?= $hotel->getBookingHotelUrl(); ?>"
+                             style="height: 200px;"
+                             title="Image hotel" />
+                        <div class="hover-inner hover-inner-block hover-inner-bottom hover-inner-bg-black hover-hold">
+                            <div class="text-small">
+                                <h5><?= $hotel->getName(); ?></h5>
+                                <p>
+                                    Country: <?= $hotel->getCountryName(); ?>
+                                </p>
+                                <p>
+                                    City: <?= $hotel->getCityHotel(); ?>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="row row-wrap">
+        <div class="col-md-12" style="text-align: center;">
+                <?php
+                if($pagination = $hotelSearchResult->getPagination()):
+                    $uiHelperInfo = $pagination->getUIHelperInfo();
+                    ?>
+                    <ul class="pagination" style="display: inline-block">
+                        <?php for($i = $uiHelperInfo['startIndex']; $i<= $uiHelperInfo['finalIndex']; $i++): ?>
+                            <li
+                                    class="<?php if($uiHelperInfo['currentIndex'] == $i) echo 'active'; ?>"
+                            ><a href="<?php echo $routeHelper->getListHotelsUrl($hotel->getCityUnique()); ?>?pag=<?= $i; ?>"><?= $i; ?></a></li>
+                        <?php endfor; ?>
+                    </ul>
+                <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="gap gap-small"></div>
+</div>
+
+
+<?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
+<?php require_once $this->getTemplatePath() . 'includes/footer.phtml'; ?>
+
+
+

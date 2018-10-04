@@ -399,16 +399,21 @@ $app->get('/list-cities/{countryName}/{countryId}', function (Request $request, 
 $app->get('/list-hotels/{city}', function (Request $request, Response $response, array $args) {
 
     $cityUnique = urldecode($args['city']);
+    $pag = $request->getParam('pag');
 
     /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
     $hotelRepository = $this->get(\Infotrip\Domain\Repository\HotelRepository::class);
-    $hotelRepository
-        ->getHotelsByCity($cityUnique, 1);
+    $hotelSearchResult = $hotelRepository
+        ->getHotelsByCity($cityUnique, $pag);
 
-    var_dump($cityUnique);
-    exit;
+
+    $viewHelpers = $this->get('viewHelpers');
+
+    $args['viewHelpers'] = $viewHelpers($request);
+    $args['hotelSearchResult'] = $hotelSearchResult;
+
 
     // Render index view
-    return $this->renderer->render($response, 'listCities/index.phtml', $args);
+    return $this->renderer->render($response, 'listHotels/index.phtml', $args);
 
 })->setName('listHotels');

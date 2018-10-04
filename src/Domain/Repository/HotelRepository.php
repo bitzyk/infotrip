@@ -204,7 +204,9 @@ class HotelRepository extends EntityRepository
         } else {
             $pagination
                 ->setNoResults($relatedHotelsCount);
+
             $offset = $pagination->getOffset();
+            $relatedHotelsNo = $pagination->getNoResultsPerPage();
         }
 
         // get related hotels
@@ -425,6 +427,7 @@ class HotelRepository extends EntityRepository
     /**
      * @param $cityUnique
      * @param $noPag
+     * @return HotelSearchResult
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -438,12 +441,17 @@ class HotelRepository extends EntityRepository
         $pagination
             ->setNoPag($noPag);
 
+        $hotelSearchResult
+            ->setPagination($pagination);
+
         $hotelSearchResult->setHotelsResult(
             $this->getHotelsInArea(
                 ['city' => $cityUnique],
                 $pagination
             )
         );
+
+        return $hotelSearchResult;
     }
 
 }

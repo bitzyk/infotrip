@@ -181,14 +181,14 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateRatingText(HotelInfo $hotelInfo)
     {
-        $item = $this->dom->find('#reviewFloater .review-score-widget__text');
+        $found = preg_match('/class="review-score-widget__text"[^>]*>(((?!<\/span>).)*)<\/span>/sm', $this->html, $matches);
 
         if (
-            count($item) >= 1 &&
-            $item[0] instanceof Dom\HtmlNode
+            $found &&
+            isset($matches[1])
         ) {
             $hotelInfo->setRatingText(
-                trim(strip_tags($item[0]->innerHtml()))
+                trim(strip_tags($matches[1]))
             );
         }
     }

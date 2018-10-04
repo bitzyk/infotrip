@@ -134,6 +134,15 @@ class RouteHelper
         return $this->routeName === self::HOTEL_ROUTE_NAME;
     }
 
+
+    public function getListCountriesUrl($continentName)
+    {
+        return $this->router
+            ->pathFor('listContries', [
+                'continentName' => $continentName,
+            ]);
+    }
+
     public function getListCitiesUrl($countryId, $countryName)
     {
         return $this->router

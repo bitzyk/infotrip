@@ -9,6 +9,8 @@
 namespace Infotrip\Domain\Entity;
 
 
+use Infotrip\Utils\Pagination;
+
 class HotelSearchResult
 {
     /**
@@ -40,6 +42,11 @@ class HotelSearchResult
      * @var Hotel[]
      */
     private $hotelsResult = array();
+
+    /**
+     * @var Pagination
+     */
+    private $pagination;
 
     /**
      * @return string
@@ -135,6 +142,22 @@ class HotelSearchResult
     public function setHotelsResult($hotelsResult)
     {
         $this->hotelsResult = $hotelsResult;
+    }
+
+    /**
+     * @return Pagination
+     */
+    public function getPagination()
+    {
+        return $this->pagination;
+    }
+
+    /**
+     * @param Pagination $pagination
+     */
+    public function setPagination($pagination)
+    {
+        $this->pagination = $pagination;
     }
 
 }
