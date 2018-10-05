@@ -219,7 +219,7 @@ $app->post('/cache-hotel', function (Request $request, Response $response, array
     /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
     $hotelRepository = $this->get(\Infotrip\Domain\Repository\HotelRepository::class);
 
-    // get hotel for the given hotell url
+    // get hotel for the given hotel url
     try {
         $hotel = $hotelRepository
             ->getHotel($hotelId);
