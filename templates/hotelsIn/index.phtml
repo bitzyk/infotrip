@@ -18,7 +18,7 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
         <?php endif; ?>
 
         <?php if (isset($areaSearch['country']) && $areaSearch['country']): ?>
-            Hotels in <?= strtoupper(\Infotrip\Domain\Entity\Hotel::$COUNTRY_CODE_LIST[strtoupper($areaSearch['country'])]); ?>
+            Hotels in <?= strtoupper(\Infotrip\Domain\Entity\Country::$COUNTRY_CODE_LIST[strtoupper($areaSearch['country'])]); ?>
         <?php endif; ?>
 
         <?php if (isset($areaSearch['continent']) && $areaSearch['continent']): ?>
