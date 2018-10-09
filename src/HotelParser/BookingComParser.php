@@ -198,14 +198,14 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateReviewsNumber(HotelInfo $hotelInfo)
     {
-        $item = $this->dom->find('.review-score-widget__subtext');
+        $found = preg_match('/class="review-score-widget__subtext"[^>]*>(((?!<\/span>).)*)<\/span>/sm', $this->html, $matches);
 
         if (
-            count($item) >= 1 &&
-            $item[0] instanceof Dom\HtmlNode
+            $found &&
+            isset($matches[1])
         ) {
             $hotelInfo->setTotalReviewsNo(
-                filter_var($item[0]->innerHtml(), FILTER_SANITIZE_NUMBER_INT)
+                filter_var(trim(strip_tags($matches[1])), FILTER_SANITIZE_NUMBER_INT)
             );
         }
     }
@@ -365,8 +365,24 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateReviewFuncionsScores(HotelInfo $hotelInfo)
     {
-        $review_score_name = $this->dom->find('#reviewFloater #review_list_score .review_score_name');
-        $review_score_value = $this->dom->find('#reviewFloater #review_list_score .review_score_value');
+        preg_match('/id="reviewFloater"[^>]*>(.*)hp_gallery_badges_container/sm', $this->html, $matches);
+
+        if (! isset($matches[0]))
+            return;
+
+        preg_match_all('/"review_score_name">([^<]*)/sm', $matches[0], $review_score_name);
+        preg_match_all('/"review_score_value">([^<]*)/sm', $matches[0], $review_score_value);
+
+
+        if (
+            ! isset($review_score_name[1]) ||
+            ! isset($review_score_value[1])
+        ) {
+            return;
+        }
+
+        $review_score_name = $review_score_name[1];
+        $review_score_value = $review_score_value[1];
 
         if (
             ($review_score_name_count = count($review_score_name)) &&
@@ -374,23 +390,17 @@ class BookingComParser extends AbstractHotelParser
             ($review_score_name_count == $review_score_value_count)
         ) {
             /** @var Dom\HtmlNode $item */
-            foreach ($review_score_name as $k => $item) {
-                if (
-                    $item instanceof Dom\HtmlNode &&
-                    isset($review_score_value[$k]) &&
-                    $review_score_value[$k] instanceof Dom\HtmlNode
-                ) {
-                    $reviewScore = new ReviewScore();
-                    $score = (float) strip_tags($review_score_value[$k]->innerHtml());
+            foreach ($review_score_name as $k => $reviewName) {
+                $reviewScore = new ReviewScore();
+                $score = (float) trim(strip_tags($review_score_value[$k]));
 
-                    $reviewScore
-                        ->setLabel(strip_tags($item->innerHtml()))
-                        ->setScore($score)
-                        ->setPointsBase10($score);
+                $reviewScore
+                    ->setLabel(trim(strip_tags($reviewName)))
+                    ->setScore($score)
+                    ->setPointsBase10($score);
 
-                    $hotelInfo
-                        ->addReviewFunctiosScore($reviewScore);
-                }
+                $hotelInfo
+                    ->addReviewFunctiosScore($reviewScore);
             }
         }
     }
