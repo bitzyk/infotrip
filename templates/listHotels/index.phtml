@@ -11,6 +11,21 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
 
 <div class="container">
     <div class="gap gap-small"></div>
+
+    <?php if($resourceContent instanceof \Infotrip\Domain\Entity\ResourceContent): ?>
+        <div class="row row-wrap">
+            <div class="col-md-12">
+
+                <h2>
+                    <?= strtoupper($resourceContent->getResourceName()); ?>
+                </h2>
+                <div>
+                    <?= $resourceContent->getContent(); ?>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <h3 class="mb20">
 
         Hotels in <?= $hotelSearchResult->getTerm(); ?>

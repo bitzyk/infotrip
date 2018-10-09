@@ -367,10 +367,17 @@ $app->get('/list-countries/{continentName}', function (Request $request, Respons
     $contries = $continent->getCountries($em);
 
 
+    /** @var $resourceContentRepository \Infotrip\Domain\Repository\ResourceContentRepository */
+    $resourceContentRepository = $this->get(\Infotrip\Domain\Repository\ResourceContentRepository::class);
+    $resourceContent = $resourceContentRepository
+        ->getResourceContent(strtolower($continentName));
+
+
     $viewHelpers = $this->get('viewHelpers');
 
     $args['viewHelpers'] = $viewHelpers($request);
     $args['contries'] = $contries;
+    $args['resourceContent'] = $resourceContent;
 
     // Render index view
     return $this->renderer->render($response, 'listCountries/index.phtml', $args);
@@ -381,16 +388,22 @@ $app->get('/list-cities/{countryName}/{countryId}', function (Request $request, 
 
     $countryId = urldecode($args['countryId']);
 
-    $continent = new \Infotrip\Domain\Entity\Country($countryId);
+    $country = new \Infotrip\Domain\Entity\Country($countryId);
 
     /** @var \Doctrine\ORM\EntityManager $em */
     $em = $this->get(\Doctrine\ORM\EntityManager::class);
-    $cities = $continent->getCities($em);
+    $cities = $country->getCities($em);
+
+    /** @var $resourceContentRepository \Infotrip\Domain\Repository\ResourceContentRepository */
+    $resourceContentRepository = $this->get(\Infotrip\Domain\Repository\ResourceContentRepository::class);
+    $resourceContent = $resourceContentRepository
+        ->getResourceContent(strtolower($country->getName()));
 
     $viewHelpers = $this->get('viewHelpers');
 
     $args['viewHelpers'] = $viewHelpers($request);
     $args['cities'] = $cities;
+    $args['resourceContent'] = $resourceContent;
 
     // Render index view
     return $this->renderer->render($response, 'listCities/index.phtml', $args);
@@ -408,12 +421,17 @@ $app->get('/list-hotels/{city}', function (Request $request, Response $response,
     $hotelSearchResult = $hotelRepository
         ->getHotelsByCity($cityUnique, $pag);
 
+    /** @var $resourceContentRepository \Infotrip\Domain\Repository\ResourceContentRepository */
+    $resourceContentRepository = $this->get(\Infotrip\Domain\Repository\ResourceContentRepository::class);
+    $resourceContent = $resourceContentRepository
+        ->getResourceContent(strtolower($cityUnique));
+
 
     $viewHelpers = $this->get('viewHelpers');
 
     $args['viewHelpers'] = $viewHelpers($request);
     $args['hotelSearchResult'] = $hotelSearchResult;
-
+    $args['resourceContent'] = $resourceContent;
 
     // Render index view
     return $this->renderer->render($response, 'listHotels/index.phtml', $args);
