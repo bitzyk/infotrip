@@ -44,11 +44,6 @@ class BookingComParser extends AbstractHotelParser
     private $html;
 
     /**
-     * @var Dom
-     */
-    private $dom;
-
-    /**
      * @param Hotel $hotel
      * @param bool $cached
      * @return HotelInfo
@@ -91,9 +86,6 @@ class BookingComParser extends AbstractHotelParser
         }
 
         $hotelInfo = new HotelInfo();
-
-        $this->dom = new Dom();
-        $this->dom->load($this->html);
 
         // hydrate rating text
         $this->hydrateRatingText($hotelInfo);
@@ -216,15 +208,14 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateFacilities(HotelInfo $hotelInfo)
     {
-        $element = $this->dom->find('#hp_facilities_box div.facilitiesChecklist');
+        $found = preg_match('/class="facilitiesChecklist"[^>]*>(.*)<div class="feedback-loop/sm', $this->html, $matches);
 
         if (
-            count($element) == 1 &&
-            $element[0] instanceof Dom\HtmlNode
+            isset($matches[1])
         ) {
 
             $hotelInfo->setFacilities(
-                str_replace('facilitiesChecklistSection', 'facilities-checklist',$element[0]->innerHtml())
+                str_replace('facilitiesChecklistSection', 'facilities-checklist', $matches[1])
             );
         }
     }
@@ -234,14 +225,13 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateReviewScoreOriginal(HotelInfo $hotelInfo)
     {
-        $item = $this->dom->find('#reviewFloater .review-score-badge');
+        preg_match('/id="reviewFloater".*review-score-badge[^>]*>([^<]*)/sm', $this->html, $matches);
 
         if (
-            count($item) >= 1 &&
-            $item[0] instanceof Dom\HtmlNode
+            isset($matches[1])
         ) {
             $hotelInfo->setReviewScoreOriginal(
-                (float) trim(strip_tags($item[0]->innerHtml()))
+                (float) trim(strip_tags($matches[1]))
             );
         }
     }
@@ -251,52 +241,50 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateImageUrls(HotelInfo $hotelInfo)
     {
-        $items = $this->dom->find('#photo_wrapper img');
+        preg_match('/id="photo_wrapper"(.*)id="reviewFloater/sm', $this->html, $matches);
 
-        if (
-            count($items) >= 1
-        ) {
-            foreach ($items as $item) {
-                if ($item instanceof Dom\HtmlNode) {
-                    $src = $item->getAttribute('data-lazy');
+        if (! isset($matches[1])) {
+            return;
+        }
 
-                    if(! $src) {
-                        $src = $item->getAttribute('src');
-                    }
+        preg_match_all('/data-lazy="([^"]*)/sm', $matches[1], $matches2);
 
-                    if (
-                        $src &&
-                        (
-                            strpos($src, 'images/hotel') !== false ||
-                            strpos($src, 'landmark') !== false
-                        )
-                    ) {
-                        $image = (new Image($this->hotel->getId(), $this->hotel->getCityUnique()))
-                            ->setSrc($src);
-                        $hotelInfo->addImage($image);
-                    }
+        if (! isset($matches2[1])) {
+            return;
+        }
 
-                }
-            }
-        } elseif (
-            ($items = $this->dom->find('.bh-photo-grid a')) &&
-            count($items) >= 1
-        ) {
-            foreach ($items as $item) {
-                if ($item instanceof Dom\HtmlNode) {
-                    $src = $item->getAttribute('href');
-                    if (
-                        $src &&
-                        strpos($src, 'bstatic') !== false
-                    ) {
-                        $image = (new Image($this->hotel->getId(), $this->hotel->getCityUnique()))
-                            ->setSrc($src);
-                        $hotelInfo->addImage($image);
-                    }
-
-                }
+        foreach ($matches2[1] as $src) {
+            if (
+                $src &&
+                (
+                    strpos($src, 'images/hotel') !== false ||
+                    strpos($src, 'landmark') !== false
+                )
+            ) {
+                $image = (new Image($this->hotel->getId(), $this->hotel->getCityUnique()))
+                    ->setSrc($src);
+                $hotelInfo->addImage($image);
             }
         }
+//        elseif (
+//            ($items = $this->dom->find('.bh-photo-grid a')) &&
+//            count($items) >= 1
+//        ) {
+//            foreach ($items as $item) {
+//                if ($item instanceof Dom\HtmlNode) {
+//                    $src = $item->getAttribute('href');
+//                    if (
+//                        $src &&
+//                        strpos($src, 'bstatic') !== false
+//                    ) {
+//                        $image = (new Image($this->hotel->getId(), $this->hotel->getCityUnique()))
+//                            ->setSrc($src);
+//                        $hotelInfo->addImage($image);
+//                    }
+//
+//                }
+//            }
+//        }
     }
 
     /**
@@ -411,49 +399,52 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateHotelComments(HotelInfo $hotelInfo)
     {
-        $review_content = $this->dom->find('.featured_reviewer .review_content');
-        $review_user = $this->dom->find('.featured_reviewer .fixed_review_user');
+        // @toto -> you have to review this when you want to use booking comments
 
-        if (
-            count($review_content) >= 0 &&
-            ($review_content_count = count($review_content)) &&
-            ($review_user_count = count($review_user)) &&
-            ($review_content_count == $review_user_count)
-        ) {
-            /** @var Dom\HtmlNode $item */
-            foreach ($review_content as $k => $item) {
-                if (
-                    $item instanceof Dom\HtmlNode
-                    && isset($review_user[$k]) &&
-                    $review_user[$k] instanceof Dom\HtmlNode
-                ) {
-                    $hotelComment = new HotelComment();
+//        $review_content = $this->dom->find('.featured_reviewer .review_content');
+//        $review_user = $this->dom->find('.featured_reviewer .fixed_review_user');
+//
+//        if (
+//            count($review_content) >= 0 &&
+//            ($review_content_count = count($review_content)) &&
+//            ($review_user_count = count($review_user)) &&
+//            ($review_content_count == $review_user_count)
+//        ) {
+//            /** @var Dom\HtmlNode $item */
+//            foreach ($review_content as $k => $item) {
+//                if (
+//                    $item instanceof Dom\HtmlNode
+//                    && isset($review_user[$k]) &&
+//                    $review_user[$k] instanceof Dom\HtmlNode
+//                ) {
+//                    $hotelComment = new HotelComment();
+//
+//                    $hotelComment
+//                        ->setReviewComment(
+//                            trim(str_replace(['<span','< />pan>'], '', $item->innerHtml()))
+//                        );
+//
+//
+//                    $reviewUser = trim(strip_tags($review_user[$k]->innerHtml()));
+//                    $explode = explode(',', $reviewUser);
+//
+//                    if (isset($explode[0])) {
+//                        $hotelComment->setReviewUser(
+//                            trim($explode[0])
+//                        );
+//                    }
+//                    if (isset($explode[1])) {
+//                        $hotelComment->setReviewUserLocation(
+//                            trim($explode[1])
+//                        );
+//                    }
+//
+//                    $hotelInfo
+//                        ->addHotelComment($hotelComment);
+//                }
+//            }
+//        }
 
-                    $hotelComment
-                        ->setReviewComment(
-                            trim(str_replace(['<span','< />pan>'], '', $item->innerHtml()))
-                        );
-
-
-                    $reviewUser = trim(strip_tags($review_user[$k]->innerHtml()));
-                    $explode = explode(',', $reviewUser);
-
-                    if (isset($explode[0])) {
-                        $hotelComment->setReviewUser(
-                            trim($explode[0])
-                        );
-                    }
-                    if (isset($explode[1])) {
-                        $hotelComment->setReviewUserLocation(
-                            trim($explode[1])
-                        );
-                    }
-
-                    $hotelInfo
-                        ->addHotelComment($hotelComment);
-                }
-            }
-        }
     }
 
     /**

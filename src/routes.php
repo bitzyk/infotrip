@@ -57,7 +57,7 @@ $app->get('/hotel/{hotelName}', function (Request $request, Response $response, 
 
     // request external hotel info (cached)
     $hotel
-        ->requestExternalHotelInfo($bookingParser, false);
+        ->requestExternalHotelInfo($bookingParser, true);
 
 
     $args['hotel'] = $hotel;
