@@ -14,6 +14,18 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
 <div class="container list-page">
     <div class="gap gap-small"></div>
 
+
+    <?php
+    if(count($countries4Chunk)):
+    $firstCountry = $countries4Chunk[0][0];
+    ?>
+    <ul class="breadcrumb">
+        <li><a href="<?= $routeHelper->getHomepageUrl(); ?>">Home</a>
+        </li>
+        <li class="active"><?php echo $firstCountry->getContinent()->getName(); ?></li>
+    </ul>
+    <?php endif; ?>
+
     <?php if($resourceContent instanceof \Infotrip\Domain\Entity\ResourceContent): ?>
         <div class="row row-wrap">
             <div class="col-md-12">

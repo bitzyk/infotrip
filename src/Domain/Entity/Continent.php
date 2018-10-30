@@ -30,9 +30,10 @@ class Continent
         3 => 'South America',
         5 => 'Africa',
         6 => 'Europe',
-        7 => 'Asia', // Middle East
+        7 => 'Middle East', // Middle East
         8 => 'Asia',
-        9 => 'Australia',
+        9 => 'Australia & Pacific',
+        10 => 'Caribbean',
     ];
 
     /**
@@ -77,6 +78,7 @@ class Continent
             foreach ($rows as $row) {
                 try {
                     $country = new Country($row['countryCode']);
+                    $country->setContinent($this);
                     $countries[] = $country;
 
                 } catch (\Exception $e) {}

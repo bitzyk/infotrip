@@ -16,6 +16,12 @@ class Country
      */
     private $name;
 
+
+    /**
+     * @var Continent
+     */
+    private $continent;
+
     public static $COUNTRY_CODE_LIST = array(
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
@@ -339,12 +345,33 @@ class Country
             foreach ($rows as $row) {
                 $city = new City(ucwords($row['cityName']));
                 $city
-                    ->setNoHotels($row['noHotels']);
+                    ->setNoHotels($row['noHotels'])
+                    ->setCountry($this);
                 $cities[] = $city;
             }
         }
 
         return $cities;
     }
+
+    /**
+     * @return Continent
+     */
+    public function getContinent()
+    {
+        return $this->continent;
+    }
+
+    /**
+     * @param Continent $continent
+     * @return Country
+     */
+    public function setContinent($continent)
+    {
+        $this->continent = $continent;
+        return $this;
+    }
+
+
 
 }

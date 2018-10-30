@@ -17,13 +17,13 @@ $hotelInfo = $hotel->getExternalHotelInfo();
         <ul class="breadcrumb">
             <li><a href="<?= $routeHelper->getHomepageUrl(); ?>">Home</a>
             </li>
-            <li><a href="<?= $routeHelper->getHotelsInUrl('', '', $hotel->getContinentName()); ?>"><?= $hotel->getContinentName(); ?></a>
+            <li><a href="<?= $routeHelper->getListCountriesUrl($hotel->getContinentName()); ?>"><?= $hotel->getContinentName(); ?></a>
             </li>
-            <li><a href="<?= $routeHelper->getHotelsInUrl('', $hotel->getCountryCode()); ?>">
+            <li><a href="<?= $routeHelper->getListCitiesUrl($hotel->getCountryCode(), $hotel->getCountryName()); ?>">
                     <?= $hotel->getCountryName(); ?>
                 </a>
             </li>
-            <li><a href="<?= $routeHelper->getHotelsInUrl($hotel->getCityUnique()); ?>"><?= $hotel->getCityHotel(); ?></a></li>
+            <li><a href="<?php echo $routeHelper->getListHotelsUrl($hotel->getCityUnique()); ?>"><?= $hotel->getCityHotel(); ?></a></li>
             <li class="active"><?php echo $hotel->getName(); ?></li>
         </ul>
         <div class="booking-item-details">

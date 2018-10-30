@@ -12,6 +12,24 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
 <div class="container">
     <div class="gap gap-small"></div>
 
+
+    <?php
+        if(count($hotelSearchResult->getHotelsResult())):
+        $firstHotel = $hotelSearchResult->getHotelsResult()[0];
+    ?>
+        <ul class="breadcrumb">
+            <li><a href="<?= $routeHelper->getHomepageUrl(); ?>">Home</a>
+            </li>
+            <li><a href="<?= $routeHelper->getListCountriesUrl($firstHotel->getContinentName()); ?>"><?= $firstHotel->getContinentName(); ?></a>
+            </li>
+            <li><a href="<?= $routeHelper->getListCitiesUrl($firstHotel->getCountryCode(), $firstHotel->getCountryName()); ?>">
+                    <?= $firstHotel->getCountryName(); ?>
+                </a>
+            </li>
+            <li class="active"><?= $firstHotel->getCityHotel(); ?></li>
+        </ul>
+    <?php endif; ?>
+
     <?php if($resourceContent instanceof \Infotrip\Domain\Entity\ResourceContent): ?>
         <div class="row row-wrap">
             <div class="col-md-12">

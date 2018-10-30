@@ -14,6 +14,11 @@ class City
      */
     private $noHotels;
 
+    /**
+     * @var Country
+     */
+    private $country;
+
     public function __construct($name)
     {
         $this->name = $name;
@@ -42,6 +47,24 @@ class City
     public function setNoHotels($noHotels)
     {
         $this->noHotels = $noHotels;
+        return $this;
+    }
+
+    /**
+     * @return Country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param Country $country
+     * @return City
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
         return $this;
     }
 
