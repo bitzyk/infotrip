@@ -129,7 +129,7 @@ class HotelRepository extends EntityRepository
         $where[] = 'h.visible = :visible';
 
         if (isset($areas['city']) && $areas['city']) {
-            $where[] = 'h.cityUnique = :cityUnique';
+            $where[] = '(h.cityUnique = :cityUnique OR h.cityUniqueOld = :cityUniqueOld)';
         }
 
         if (isset($areas['country']) && $areas['country']) {
@@ -166,6 +166,7 @@ class HotelRepository extends EntityRepository
 
         if (isset($areas['city']) && $areas['city']) {
             $query->setParameter('cityUnique', $areas['city']);
+            $query->setParameter('cityUniqueOld', $areas['city']);
         }
 
         if (isset($areas['country']) && $areas['country']) {
@@ -225,11 +226,15 @@ class HotelRepository extends EntityRepository
         if (isset($areas['city']) && $areas['city']) {
             $qb
                 ->andWhere(
-                    'h.cityUnique = :cityUnique'
+                    '(h.cityUnique = :cityUnique OR h.cityUniqueOld = :cityUniqueOld)'
                 )
                 ->setParameter(
                     ':cityUnique', $areas['city']
+                )
+                ->setParameter(
+                    ':cityUniqueOld', $areas['city']
                 );
+
         }
 
         if (isset($areas['country']) && $areas['country']) {

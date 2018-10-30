@@ -61,6 +61,9 @@ class Hotel extends Base implements \JsonSerializable
     /** @Column(type="string", name="`city_unique`") */
     private $cityUnique;
 
+    /** @Column(type="string", name="`city_unique_old`") */
+    private $cityUniqueOld;
+
     /** @Column(type="string", name="`continent_id`") */
     private $continentId;
 
@@ -193,6 +196,23 @@ class Hotel extends Base implements \JsonSerializable
         $this->cityUnique = $cityUnique;
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCityUniqueOld()
+    {
+        return $this->cityUniqueOld;
+    }
+
+    /**
+     * @param mixed $cityUniqueOld
+     */
+    public function setCityUniqueOld($cityUniqueOld)
+    {
+        $this->cityUniqueOld = $cityUniqueOld;
+    }
+
 
     /**
      * @return mixed

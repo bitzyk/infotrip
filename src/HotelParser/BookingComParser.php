@@ -208,7 +208,7 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateFacilities(HotelInfo $hotelInfo)
     {
-        $found = preg_match('/class="facilitiesChecklist"[^>]*>(.*)<div class="feedback-loop/sm', $this->html, $matches);
+        $found = preg_match('/class="facilitiesChecklist"[^>]*>(.*?)<div class="feedback-loop/sm', $this->html, $matches);
 
         if (
             isset($matches[1])
