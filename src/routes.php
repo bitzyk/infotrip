@@ -386,6 +386,7 @@ $app->get('/list-countries/{continentName}', function (Request $request, Respons
 
 $app->get('/list-cities/{countryName}/{countryId}', function (Request $request, Response $response, array $args) {
 
+    ini_set('memory_limit', '1G');
     $countryId = urldecode($args['countryId']);
 
     $country = new \Infotrip\Domain\Entity\Country($countryId);
@@ -432,6 +433,7 @@ $app->get('/list-hotels/{city}', function (Request $request, Response $response,
     $args['viewHelpers'] = $viewHelpers($request);
     $args['hotelSearchResult'] = $hotelSearchResult;
     $args['resourceContent'] = $resourceContent;
+    $args['cityUnique'] = $cityUnique;
 
     // Render index view
     return $this->renderer->render($response, 'listHotels/index.phtml', $args);

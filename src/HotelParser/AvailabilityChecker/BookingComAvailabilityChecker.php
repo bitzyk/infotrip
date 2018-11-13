@@ -99,7 +99,11 @@ class BookingComAvailabilityChecker implements AvailabilityChecker
             }
         }
 
-        $url = $hotel->getBookingHotelUrl() . '&' . $queryString;
+        $url = $hotel->getBookingHotelUrl();
+
+        if ($queryString) {
+            $url .= '&' . $queryString;
+        }
 
         return $url;
     }

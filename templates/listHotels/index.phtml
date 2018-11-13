@@ -89,7 +89,7 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
                         <?php for($i = $uiHelperInfo['startIndex']; $i<= $uiHelperInfo['finalIndex']; $i++): ?>
                             <li
                                     class="<?php if($uiHelperInfo['currentIndex'] == $i) echo 'active'; ?>"
-                            ><a href="<?php echo $routeHelper->getListHotelsUrl($hotel->getCityUnique()); ?>?pag=<?= $i; ?>"><?= $i; ?></a></li>
+                            ><a href="<?php echo $routeHelper->getListHotelsUrl($cityUnique); ?>?pag=<?= $i; ?>"><?= $i; ?></a></li>
                         <?php endfor; ?>
                     </ul>
                 <?php endif; ?>
