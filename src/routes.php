@@ -299,9 +299,14 @@ $app->get('/hotels-search', function (Request $request, Response $response, arra
 
 $app->get('/', function (Request $request, Response $response, array $args) {
 
-    $viewHelpers = $this->get('viewHelpers');
+    $viewHelpersClosure = $this->get('viewHelpers');
+    $homepageClosure = $this->get(\Infotrip\Utils\UI\Homepage::class);
 
-    $args['viewHelpers'] = $viewHelpers($request);
+    /** @var \Infotrip\Utils\UI\Homepage $homepage */
+    $homepage = $homepageClosure($request);
+
+    $args['viewHelpers'] = $viewHelpersClosure($request);
+    $args['topDestinations'] = $homepage->getTopDestinations();
 
     // Render index view
     return $this->renderer->render($response, 'homepage/index.phtml', $args);

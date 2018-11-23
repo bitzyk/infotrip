@@ -92,3 +92,19 @@ $container[\Infotrip\Domain\Repository\ResourceContentRepository::class] = funct
     return  $entityManager
         ->getRepository('Infotrip\Domain\Entity\ResourceContent');
 };
+
+$container[\Infotrip\Utils\UI\Homepage::class] = function (Container $container) {
+
+    return function($request) use ($container) {
+        $routeHelperClosure = $container->get(\Infotrip\ViewHelpers\RouteHelper::class);
+        /** @var \Infotrip\ViewHelpers\RouteHelper $routeHelper */
+        $routeHelper = $routeHelperClosure($request);
+
+        $homepage = new \Infotrip\Utils\UI\Homepage(
+            $routeHelper
+        );
+
+        return $homepage;
+    };
+
+};

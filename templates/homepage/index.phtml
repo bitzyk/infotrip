@@ -143,55 +143,21 @@
             <h2 class="text-center">Top Destinations</h2>
             <div class="gap">
                 <div class="row row-wrap">
+                    <?php foreach ($topDestinations as $topDestination): ?>
                     <div class="col-md-3">
                         <div class="thumb">
                             <header class="thumb-header">
                                 <a class="hover-img curved"
-                                   href="<?= $routeHelper->getListCitiesUrl('US', 'United States'); ?>">
-                                    <img src="img/us-pic-optimized.jpg" alt="Image Alternative text" title="Upper Lake in New York Central Park" /><i class="fa fa-plus box-icon-white box-icon-border hover-icon-top-right round"></i>
+                                   href="<?= $topDestination['cityUrl']; ?>">
+                                    <img src="<?= $topDestination['imagePathUI']; ?>"><i class="fa fa-plus box-icon-white box-icon-border hover-icon-top-right round"></i>
                                 </a>
                             </header>
                             <div class="thumb-caption">
-                                <h4 class="thumb-title">USA</h4>
+                                <h4 class="thumb-title"><?= $topDestination['countryName']; ?></h4>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="thumb">
-                            <header class="thumb-header">
-                                <a class="hover-img curved" href="<?= $routeHelper->getListCitiesUrl('GR', 'Greece'); ?>">
-                                    <img src="img/gr-pic-optimized.jpg" alt="Image Alternative text" title="lack of blue depresses me" /><i class="fa fa-plus box-icon-white box-icon-border hover-icon-top-right round"></i>
-                                </a>
-                            </header>
-                            <div class="thumb-caption">
-                                <h4 class="thumb-title">Greece</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="thumb">
-                            <header class="thumb-header">
-                                <a class="hover-img curved" href="<?= $routeHelper->getListCitiesUrl('AU', 'Australia'); ?>">
-                                    <img src="img/au-pic-optimized.jpg" alt="Image Alternative text" title="people on the beach" /><i class="fa fa-plus box-icon-white box-icon-border hover-icon-top-right round"></i>
-                                </a>
-                            </header>
-                            <div class="thumb-caption">
-                                <h4 class="thumb-title">Australia</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="thumb">
-                            <header class="thumb-header">
-                                <a class="hover-img curved" href="<?= $routeHelper->getListCitiesUrl('BR', 'Brasil'); ?>">
-                                    <img src="img/br-pic-optimized.jpg" alt="Image Alternative text" title="the journey home" /><i class="fa fa-plus box-icon-white box-icon-border hover-icon-top-right round"></i>
-                                </a>
-                            </header>
-                            <div class="thumb-caption">
-                                <h4 class="thumb-title">Brazil</h4>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
 

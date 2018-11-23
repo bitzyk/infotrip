@@ -35,8 +35,8 @@ class RouteHelper
         $this->router = $router;
         $this->request = $request;
 
-        if ($request->getAttribute('route')) {
-            $this->routeName = $request->getAttribute('route')->getName();
+        if ($this->request->getAttribute('route')) {
+            $this->routeName = $this->request->getAttribute('route')->getName();
         }
     }
 
