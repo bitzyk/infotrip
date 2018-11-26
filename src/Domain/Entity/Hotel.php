@@ -82,6 +82,9 @@ class Hotel extends Base implements \JsonSerializable
     /** @Column(type="string", name="`cc1`") */
     private $countryCode;
 
+    /** @Column(type="string", name="`class`") */
+    private $class;
+
     /** @Column(type="string", name="`hotel_url`") */
     private $bookingHotelUrl;
 
@@ -495,6 +498,232 @@ class Hotel extends Base implements \JsonSerializable
         $this->visible = $visible;
         return $this;
     }
+
+    /**
+     * @param mixed $id
+     * @return Hotel
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @param mixed $name
+     * @return Hotel
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @param mixed $address
+     * @return Hotel
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @param mixed $zip
+     * @return Hotel
+     */
+    public function setZip($zip)
+    {
+        $this->zip = $zip;
+        return $this;
+    }
+
+    /**
+     * @param mixed $cityHotel
+     * @return Hotel
+     */
+    public function setCityHotel($cityHotel)
+    {
+        $this->cityHotel = $cityHotel;
+        return $this;
+    }
+
+    /**
+     * @param mixed $latitude
+     * @return Hotel
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    /**
+     * @param mixed $longitude
+     * @return Hotel
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+        return $this;
+    }
+
+    /**
+     * @param mixed $photoUrl
+     * @return Hotel
+     */
+    public function setPhotoUrl($photoUrl)
+    {
+        $this->photoUrl = $photoUrl;
+        return $this;
+    }
+
+    /**
+     * @param mixed $descEn
+     * @return Hotel
+     */
+    public function setDescEn($descEn)
+    {
+        $this->descEn = $descEn;
+        return $this;
+    }
+
+    /**
+     * @param mixed $continentId
+     * @return Hotel
+     */
+    public function setContinentId($continentId)
+    {
+        $this->continentId = $continentId;
+        return $this;
+    }
+
+    /**
+     * @param mixed $videoId
+     * @return Hotel
+     */
+    public function setVideoId($videoId)
+    {
+        $this->videoId = $videoId;
+        return $this;
+    }
+
+    /**
+     * @param mixed $currencycode
+     * @return Hotel
+     */
+    public function setCurrencycode($currencycode)
+    {
+        $this->currencycode = $currencycode;
+        return $this;
+    }
+
+    /**
+     * @param mixed $minrate
+     * @return Hotel
+     */
+    public function setMinrate($minrate)
+    {
+        $this->minrate = $minrate;
+        return $this;
+    }
+
+    /**
+     * @param mixed $maxrate
+     * @return Hotel
+     */
+    public function setMaxrate($maxrate)
+    {
+        $this->maxrate = $maxrate;
+        return $this;
+    }
+
+    /**
+     * @param mixed $bookingHotelUrl
+     * @return Hotel
+     */
+    public function setBookingHotelUrl($bookingHotelUrl)
+    {
+        $this->bookingHotelUrl = $bookingHotelUrl;
+        return $this;
+    }
+
+    /**
+     * @param HotelRepository $repository
+     * @return Hotel
+     */
+    public function setRepository($repository)
+    {
+        $this->repository = $repository;
+        return $this;
+    }
+
+    /**
+     * @param Hotel[]|null $relatedHotels
+     * @return Hotel
+     */
+    public function setRelatedHotels($relatedHotels)
+    {
+        $this->relatedHotels = $relatedHotels;
+        return $this;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * @param mixed $class
+     * @return Hotel
+     */
+    public function setClass($class)
+    {
+        $this->class = $class;
+        return $this;
+    }
+
+
+
+    /**
+     * @param array $array
+     * @return $this
+     */
+    public function toObject(array $array)
+    {
+        $class = get_class($this);
+
+        $methods = get_class_methods($class);
+
+        foreach ($methods as $method) {
+            preg_match(' /^(set)(.*?)$/i', $method, $results);
+
+            if (count($results) < 2) {
+                continue;
+            }
+
+            $pre = $results[1];
+            $k = $results[2];
+
+            $k = strtolower(substr($k, 0, 1)) . substr($k, 1);
+
+            if (
+                $pre == 'set' &&
+                !empty($array[$k]) &&
+                (is_string($array[$k]) || is_numeric($array[$k]))
+            ) {
+                $this->$method($array[$k]);
+            }
+        }
+
+        return $this;
+    }
+
 
 
 }

@@ -2,6 +2,7 @@
 
 namespace Infotrip\Domain\Repository;
 
+use Desarrolla2\Cache\Adapter\File;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
@@ -11,6 +12,13 @@ use Infotrip\Utils\Pagination;
 
 class HotelRepository extends EntityRepository
 {
+
+    /**
+     * @var File
+     */
+    protected $fileCache;
+
+    const KEY_CACHE_RANDOM_HOTEL = 'RANDOM_HOTEL';
 
     public function __construct(EntityManager $em, Mapping\ClassMetadata $class)
     {
@@ -458,5 +466,53 @@ class HotelRepository extends EntityRepository
 
         return $hotelSearchResult;
     }
+
+    /**
+     * @param bool $cached
+     * @return Hotel
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getRandomHotel(
+        $cached = true
+    )
+    {
+        $sql = 'SELECT id from hotels order by rand() limit 1';
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+
+        $stmt->execute();
+        $row = $stmt->fetch();
+
+        /** @var Hotel $entity */
+        $entity = $this->find($row['id']);
+
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+
+        if (
+            $cached &&
+            $this->fileCache instanceof File &&
+            $entity instanceof Hotel
+        ) {
+
+            $this->fileCache->setOption('ttl', 3600 * 24);
+
+            $this->fileCache->set(
+                self::KEY_CACHE_RANDOM_HOTEL,
+                json_encode($entity)
+            );
+        }
+
+        return $entity;
+    }
+
+    /**
+     * @param File $fileCache
+     */
+    public function setFileCache($fileCache)
+    {
+        $this->fileCache = $fileCache;
+    }
+
 
 }

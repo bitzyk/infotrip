@@ -3,6 +3,9 @@
 namespace Infotrip\Utils\UI;
 
 
+use Desarrolla2\Cache\Adapter\File;
+use Infotrip\Domain\Entity\Hotel;
+use Infotrip\Domain\Repository\HotelRepository;
 use Infotrip\ViewHelpers\RouteHelper;
 
 class Homepage
@@ -15,11 +18,30 @@ class Homepage
 
     const TOP_DESTINATION_DIR = '/img/top-destinations';
 
+    /**
+     * @var HotelRepository
+     */
+    private $hotelRepository;
+
+    /**
+     * @var File
+     */
+    private $cache;
+
+    /**
+     * Homepage constructor.
+     * @param RouteHelper $routeHelper
+     * @param HotelRepository $hotelRepository
+     */
     public function __construct(
-        RouteHelper $routeHelper
+        RouteHelper $routeHelper,
+        HotelRepository $hotelRepository,
+        File $cache
     )
     {
         $this->routeHelper = $routeHelper;
+        $this->hotelRepository = $hotelRepository;
+        $this->cache = $cache;
     }
 
 
@@ -57,5 +79,25 @@ class Homepage
         $returnTopDestinations = array_slice($topDestinations, 0, $returnNo);
 
         return $returnTopDestinations;
+    }
+
+    /**
+     * @return Hotel|null
+     */
+    public function getTodayDeal()
+    {
+        $hotelEnity = null;
+
+        if (
+            $this->cache &&
+            $this->cache->has(HotelRepository::KEY_CACHE_RANDOM_HOTEL)
+        ) {
+            $hotelEnity = (new Hotel())->toObject(
+                (array) json_decode($this->cache->get(HotelRepository::KEY_CACHE_RANDOM_HOTEL))
+            );
+        }
+
+        return $hotelEnity;
+
     }
 }

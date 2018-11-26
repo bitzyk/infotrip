@@ -4,6 +4,7 @@
     $routeHelper = $viewHelpers['routeHelper'];
 
     /** @var \Infotrip\Domain\Entity\Hotel[] $hotels */
+    /** @var \Infotrip\Domain\Entity\Hotel $todayDeal */
 
     require_once $this->getTemplatePath() . 'includes/header.phtml';
 
@@ -117,25 +118,25 @@
             <div class="bg-mask"></div>
             <div class="bg-parallax" style="background-image:url(img/ancient-architecture-bridge-753337.jpg);"></div>
             <div class="bg-content">
+                <?php if($todayDeal instanceof \Infotrip\Domain\Entity\Hotel): ?>
                 <div class="container">
                     <div class="gap gap-big text-center text-white">
                         <h2 class="text-uc mb20">Today Deal</h2>
+                        <?php if(in_array((integer) $todayDeal->getClass(), [1, 2, 3, 4, 5])): ?>
                         <ul class="icon-list list-inline-block mb0 last-minute-rating">
+                            <?php for ($i=1; $i<= $todayDeal->getClass(); $i++): ?>
                             <li><i class="fa fa-star"></i>
                             </li>
-                            <li><i class="fa fa-star"></i>
-                            </li>
-                            <li><i class="fa fa-star"></i>
-                            </li>
-                            <li><i class="fa fa-star"></i>
-                            </li>
-                            <li><i class="fa fa-star"></i>
-                            </li>
+                            <?php endfor; ?>
                         </ul>
-                        <h5 class="last-minute-title">The Peninsula - New York</h5>
-                        <a class="btn btn-lg btn-white btn-ghost" href="#">Book Now <i class="fa fa-angle-right"></i></a>
+                        <?php endif ?>
+                        <h5 class="last-minute-title"><?= $todayDeal->getName(); ?></h5>
+                        <a class="btn btn-lg btn-white btn-ghost"
+                           href="<?= $routeHelper->getHotelUrl($todayDeal->getName(), $todayDeal->getId()); ?>">
+                            Book Now <i class="fa fa-angle-right"></i></a>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="container">

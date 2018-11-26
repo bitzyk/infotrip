@@ -307,6 +307,8 @@ $app->get('/', function (Request $request, Response $response, array $args) {
 
     $args['viewHelpers'] = $viewHelpersClosure($request);
     $args['topDestinations'] = $homepage->getTopDestinations();
+    $args['todayDeal'] = $homepage->getTodayDeal();
+
 
     // Render index view
     return $this->renderer->render($response, 'homepage/index.phtml', $args);
@@ -444,3 +446,17 @@ $app->get('/list-hotels/{city}', function (Request $request, Response $response,
     return $this->renderer->render($response, 'listHotels/index.phtml', $args);
 
 })->setName('listHotels');
+
+$app->get('/process-refresh-top-deal', function (Request $request, Response $response, array $args) {
+
+    /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
+    $hotelRepository = $this->get(\Infotrip\Domain\Repository\HotelRepository::class);
+
+    $hotelRepository
+        ->getRandomHotel();
+
+    echo json_encode(array(
+        'success' => true,
+    ));
+
+})->setName('processRefrehTopDeal');

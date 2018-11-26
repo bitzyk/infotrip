@@ -36,6 +36,11 @@ $container['cachebookingHotel'] = function (Container $container) {
     return $cache;
 };
 
+$container['cacheGeneric'] = function (Container $container) {
+    $cache = new \Desarrolla2\Cache\Adapter\File($container->get('settings')['cache']['genericCacheDir']);
+    return $cache;
+};
+
 $container[\Infotrip\HotelParser\AvailabilityChecker\BookingComAvailabilityChecker::class] = function (Container $container) {
     $service = new \Infotrip\HotelParser\AvailabilityChecker\BookingComAvailabilityChecker();
     return $service;
@@ -79,11 +84,17 @@ $container['viewHelpers'] = function (Container $container) {
 // doctrine
 require_once APP_ROOT . '/dependencies-doctrine.php';
 
-$container[HotelRepository::class] = function ($container) {
+$container[HotelRepository::class] = function (Container $container) {
     /** @var EntityManager $entityManager */
     $entityManager = $container[EntityManager::class];
-    return  $entityManager
-        ->getRepository('Infotrip\Domain\Entity\Hotel');
+
+    /** @var HotelRepository $repository */
+    $repository = $entityManager->getRepository('Infotrip\Domain\Entity\Hotel');
+
+    $repository
+        ->setFileCache($container->get('cacheGeneric'));
+
+    return $repository;
 };
 
 $container[\Infotrip\Domain\Repository\ResourceContentRepository::class] = function ($container) {
@@ -101,7 +112,9 @@ $container[\Infotrip\Utils\UI\Homepage::class] = function (Container $container)
         $routeHelper = $routeHelperClosure($request);
 
         $homepage = new \Infotrip\Utils\UI\Homepage(
-            $routeHelper
+            $routeHelper,
+            $container->get(HotelRepository::class),
+            $container->get('cacheGeneric')
         );
 
         return $homepage;

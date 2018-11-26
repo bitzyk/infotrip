@@ -52,6 +52,7 @@ return [
             'bookingHotelCacheTTL' => 3600 * 24 * 30, // 30 days
             'bookingImagesCacheDir' => RESOURCES_ROOT . \Infotrip\Domain\Entity\Hotel::CACHE_DIR,
             'bookingImagesCacheTTL' => 3600 * 24 * 365, // 1 year
+            'genericCacheDir' => APP_ROOT . '/../public_html/var/cache/generic',
         ],
 
     ],
