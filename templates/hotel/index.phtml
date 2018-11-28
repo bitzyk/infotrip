@@ -399,22 +399,23 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                 }
                             }
                         }
-                    }
 
-                    <?php if (
+                        <?php if (
                         (count($hotel->getImages()) <= 1)
-                    ): ?>
-                    if(key === 'images') {
-                        if (data["externalHotelInfo"][key].length) {
-                            // get the API fotorama object.
-                            var fotorama = $('#hotelImageGallery').data('fotorama');
-                            for (var i=0; i<data["externalHotelInfo"][key].length; i++) {
-                                var src = data["externalHotelInfo"][key][i]["src"];
-                                fotorama.push({img: src, thumb: src});
+                        ): ?>
+                        if(key === 'images') {
+                            if (data["externalHotelInfo"][key].length) {
+                                // get the API fotorama object.
+                                var fotorama = $('#hotelImageGallery').data('fotorama');
+                                for (var i=0; i<data["externalHotelInfo"][key].length; i++) {
+                                    var src = data["externalHotelInfo"][key][i]["src"];
+                                    fotorama.push({img: src, thumb: src});
+                                }
                             }
                         }
+                        <?php endif; ?>
                     }
-                    <?php endif; ?>
+
 
                 }
             },
