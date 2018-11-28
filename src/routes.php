@@ -354,14 +354,6 @@ $app->get('/cookies-and-privacy', function (Request $request, Response $response
     return $this->renderer->render($response, 'privacy/index.phtml', $args);
 })->setName('privacy');
 
-$app->get('/for-hotel-owners', function (Request $request, Response $response, array $args) {
-    $viewHelpers = $this->get('viewHelpers');
-
-    $args['viewHelpers'] = $viewHelpers($request);
-
-    // Render index view
-    return $this->renderer->render($response, 'hotelOwners/index.phtml', $args);
-})->setName('hotelOwners');
 
 $app->get('/list-countries/{continentName}', function (Request $request, Response $response, array $args) {
 
@@ -447,6 +439,17 @@ $app->get('/list-hotels/{city}', function (Request $request, Response $response,
 
 })->setName('listHotels');
 
+$app->get('/hotel-owner-login-register', function (Request $request, Response $response, array $args) {
+
+    $viewHelpers = $this->get('viewHelpers');
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    return $this->renderer->render($response, 'hotelOwners/login-register.phtml', $args);
+
+})->setName('hotelOwnerLoginRegister');
+
+// start processes
+
 $app->get('/process-refresh-top-deal', function (Request $request, Response $response, array $args) {
 
     /** @var $hotelRepository \Infotrip\Domain\Repository\HotelRepository */
@@ -460,3 +463,8 @@ $app->get('/process-refresh-top-deal', function (Request $request, Response $res
     ));
 
 })->setName('processRefrehTopDeal');
+
+
+
+
+// start admin

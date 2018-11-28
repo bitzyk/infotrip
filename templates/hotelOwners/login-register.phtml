@@ -1,0 +1,66 @@
+<?php
+
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+$routeHelper = $viewHelpers['routeHelper'];
+
+require_once $this->getTemplatePath() . 'includes/header.phtml';
+?>
+
+<div class="global-wrap">
+
+    <div class="container">
+        <h1 class="page-title">Login/Register as Hotel Owner</h1>
+    </div>
+
+    <div class="gap"></div>
+
+
+    <div class="container">
+        <div class="row" data-gutter="60">
+            <div class="col-md-4">
+                <h3>Welcome to Infotrip</h3>
+                <p>Register your email and you can add new high quality photos, edit description, check amenities listed — just enter your email</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Login</h3>
+                <form>
+                    <div class="form-group form-group-icon-left"><i class="fa fa-user input-icon input-icon-show"></i>
+                        <label>Email</label>
+                        <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text" />
+                    </div>
+                    <div class="form-group form-group-icon-left"><i class="fa fa-lock input-icon input-icon-show"></i>
+                        <label>Password</label>
+                        <input class="form-control" type="password" placeholder="my secret password" />
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Sign in" />
+                </form>
+            </div>
+            <div class="col-md-4">
+                <h3>New To Infotrip?</h3>
+                <form>
+                    <div class="form-group form-group-icon-left"><i class="fa fa-envelope input-icon input-icon-show"></i>
+                        <label>Emai</label>
+                        <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text" />
+                    </div>
+                    <div class="form-group form-group-icon-left"><i class="fa fa-lock input-icon input-icon-show"></i>
+                        <label>Password</label>
+                        <input class="form-control" type="password" placeholder="my secret password" />
+                    </div>
+                    <div class="form-group form-group-icon-left"><i class="fa fa-envelope input-icon input-icon-show"></i>
+                        <label>Hotel name</label>
+                        <input class="form-control" placeholder="e.g. Hilton" type="text" />
+                    </div>
+                    <div class="form-group form-group-icon-left"><i class="fa fa-envelope input-icon input-icon-show"></i>
+                        <label>Hotel city</label>
+                        <input class="form-control" placeholder="e.g. New York" type="text" />
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="Sign up as hotel owner" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
+    <?php require_once $this->getTemplatePath() . 'includes/footer.phtml'; ?>
+
+

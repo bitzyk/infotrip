@@ -120,10 +120,10 @@ class RouteHelper
             ->pathFor('privacy');
     }
 
-    public function getHotelOwnersUrl()
+    public function getHotelOwnerLoginRegisterUrl()
     {
         return $this->router
-            ->pathFor('hotelOwners');
+            ->pathFor('hotelOwnerLoginRegister');
     }
 
     /**
