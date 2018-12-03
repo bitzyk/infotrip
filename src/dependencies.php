@@ -104,6 +104,35 @@ $container[\Infotrip\Domain\Repository\ResourceContentRepository::class] = funct
         ->getRepository('Infotrip\Domain\Entity\ResourceContent');
 };
 
+$container[\Infotrip\Utils\Google\Recaptcha\V2::class] = function (Container $container) {
+    return new \Infotrip\Utils\Google\Recaptcha\V2();
+};
+
+$container[\PHPAuth\Config::class] = function (Container $container) {
+
+    /** @var \Doctrine\ORM\EntityManager $em */
+    $em = $container->get(\Doctrine\ORM\EntityManager::class);
+
+    /** @var \PDO $emWrappedConnection */
+    $emWrappedConnection = $em->getConnection()->getWrappedConnection();
+
+    return new \PHPAuth\Config($emWrappedConnection);
+};
+
+$container[\PHPAuth\Auth::class] = function (Container $container) {
+
+    /** @var \Doctrine\ORM\EntityManager $em */
+    $em = $container->get(\Doctrine\ORM\EntityManager::class);
+
+    /** @var \PDO $emWrappedConnection */
+    $emWrappedConnection = $em->getConnection()->getWrappedConnection();
+
+    $config = $container->get(\PHPAuth\Config::class);
+
+    return new \PHPAuth\Auth($emWrappedConnection, $config);
+};
+
+
 $container[\Infotrip\Utils\UI\Homepage::class] = function (Container $container) {
 
     return function($request) use ($container) {

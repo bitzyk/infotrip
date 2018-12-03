@@ -6,6 +6,31 @@ $routeHelper = $viewHelpers['routeHelper'];
 require_once $this->getTemplatePath() . 'includes/header.phtml';
 ?>
 
+
+<script>
+    (function() {
+        var ZXCVBN_SRC = '/js/zxcvbn/zxcvbn.js';
+
+        var async_load = function() {
+            var first, s;
+            s = document.createElement('script');
+            s.src = ZXCVBN_SRC;
+            s.type = 'text/javascript';
+            s.async = true;
+            first = document.getElementsByTagName('script')[0];
+            return first.parentNode.insertBefore(s, first);
+        };
+
+        if (window.attachEvent != null) {
+            window.attachEvent('onload', async_load);
+        } else {
+            window.addEventListener('load', async_load, false);
+        }
+
+    }).call(this);
+</script>
+
+
 <div class="global-wrap">
 
     <div class="container">
@@ -37,30 +62,117 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
             </div>
             <div class="col-md-4">
                 <h3>New To Infotrip?</h3>
-                <form>
+                <form method="post" action="<?= $routeHelper->getHotelOwnerRegisterUrl(); ?>" id="registerForm">
+
+                    <?php if (isset($registerError) && $registerError): ?>
+                    <div class="form-group form-group-icon-left" style="color:red;">
+                        <?= $registerError; ?>
+                    </div>
+                    <?php endif; ?>
+                    <?php if (isset($registerSuccess) && $registerSuccess): ?>
+                        <div class="form-group form-group-icon-left" style="color:green;">
+                            <?= $registerSuccess; ?>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="form-group form-group-icon-left"><i class="fa fa-envelope input-icon input-icon-show"></i>
-                        <label>Emai</label>
-                        <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text" />
+                        <label for="registerEmailInput">Emai *</label>
+                        <input class="form-control"
+                               name="register[email]" placeholder="e.g. johndoe@gmail.com" type="text" required id="registerEmailInput" />
                     </div>
                     <div class="form-group form-group-icon-left"><i class="fa fa-lock input-icon input-icon-show"></i>
-                        <label>Password</label>
-                        <input class="form-control" type="password" placeholder="my secret password" />
+                        <label for="registerPasswordInput">Password *</label>
+                        <input class="form-control"
+                               name="register[password]" type="password" id="registerPasswordInput" placeholder="my secret password" required />
+                        <span style="font-size: 0.9em;">strength: <span style="font-weight: bold;" id="passwordStrengthMessage"></span></span>
                     </div>
-                    <div class="form-group form-group-icon-left"><i class="fa fa-envelope input-icon input-icon-show"></i>
-                        <label>Hotel name</label>
-                        <input class="form-control" placeholder="e.g. Hilton" type="text" />
+                    <div class="form-group form-group-icon-left"><i class="fa fa-lock input-icon input-icon-show"></i>
+                        <label for="registerRetypePasswordInput">Retype password *</label>
+                        <input class="form-control" type="password" placeholder="my secret password" required id="registerRetypePasswordInput"/>
+                        <span id="registerRetypePasswordInputErrorPlaceholder" style="color: red; font-size: 0.9em;"></span>
                     </div>
-                    <div class="form-group form-group-icon-left"><i class="fa fa-envelope input-icon input-icon-show"></i>
-                        <label>Hotel city</label>
-                        <input class="form-control" placeholder="e.g. New York" type="text" />
+                    <div class="form-group form-group-icon-left">
+                        <label for="registerHotelName">Hotel name *</label>
+                        <input class="form-control"
+                               name="register[hotelName]" placeholder="e.g. Hilton" type="text" required id="registerHotelName" />
                     </div>
-                    <input class="btn btn-primary" type="submit" value="Sign up as hotel owner" />
+                    <div class="form-group form-group-icon-left">
+                        <label for="registerHotelCity">Hotel city *</label>
+                        <input class="form-control"
+                               name="register[hotelCity]" placeholder="e.g. New York" type="text" required id="registerHotelCity" />
+                    </div>
+
+                    <div class="g-recaptcha"
+                         style="margin-bottom: 10px;"
+                         data-sitekey="6Lcij34UAAAAAKOoHuR7hyqNBMiFiDpbx_PTgFaR"></div>
+
+                    <input class="btn btn-primary" type="submit" value="Sign up as hotel owner" id="submitRegister"/>
                 </form>
             </div>
         </div>
+        <div class="gap"></div>
     </div>
 
+
+
     <?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <script>
+
+        var validation = {
+            'passwordStrength' : false,
+            'passwordMatch' : false
+        };
+
+        var strengthMessages = {
+            0: "Worst ☹ (registration will fail)",
+            1: "Bad ☹ (registration will fail)",
+            2: "Weak ☹ (registration will fail)",
+            3: "Good ☺",
+            4: "Strong ☻"
+        };
+
+        var $registerPasswordInput = $('#registerPasswordInput');
+        var $registerRetypePasswordInput = $('#registerRetypePasswordInput');
+
+        $registerPasswordInput.on('keyup', function () {
+            var passwordStrengthResponse = zxcvbn(this.value, user_inputs=[]);
+            $passwordStrengthMessage = $('#passwordStrengthMessage')
+            $passwordStrengthMessage.html(strengthMessages[passwordStrengthResponse.score]);
+            if(passwordStrengthResponse.score >= 3) {
+                $passwordStrengthMessage.css('color', 'green');
+                validation['passwordStrength'] = true;
+            } else {
+                $passwordStrengthMessage.css('color', 'red');
+                validation['passwordStrength'] = false;
+            }
+        });
+
+        $registerRetypePasswordInput.on('keyup', function () {
+            $errorPlaceholder = $('#registerRetypePasswordInputErrorPlaceholder');
+            if (
+                $registerPasswordInput.val() !== $registerRetypePasswordInput.val()
+            ) {
+                $errorPlaceholder.html('Password does not match.');
+                validation['passwordMatch'] = false;
+            } else {
+                $errorPlaceholder.html('');
+                validation['passwordMatch'] = true;
+            }
+        });
+
+        $('#registerForm').on('submit', function (e) {
+            if (
+                validation['passwordStrength'] === false ||
+                validation['passwordMatch'] === false
+            ) {
+                e.preventDefault();
+            }
+        });
+
+    </script>
+
     <?php require_once $this->getTemplatePath() . 'includes/footer.phtml'; ?>
 
 

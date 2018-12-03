@@ -439,15 +439,6 @@ $app->get('/list-hotels/{city}', function (Request $request, Response $response,
 
 })->setName('listHotels');
 
-$app->get('/hotel-owner-login-register', function (Request $request, Response $response, array $args) {
-
-    $viewHelpers = $this->get('viewHelpers');
-    $args['viewHelpers'] = $viewHelpers($request);
-
-    return $this->renderer->render($response, 'hotelOwners/login-register.phtml', $args);
-
-})->setName('hotelOwnerLoginRegister');
-
 // start processes
 
 $app->get('/process-refresh-top-deal', function (Request $request, Response $response, array $args) {
@@ -468,3 +459,87 @@ $app->get('/process-refresh-top-deal', function (Request $request, Response $res
 
 
 // start admin
+
+$app->get('/hotel-owner-login-register', function (Request $request, Response $response, array $args) {
+
+    $viewHelpers = $this->get('viewHelpers');
+    $args['viewHelpers'] = $viewHelpers($request);
+    $args['registerError'] = $request->getParam('registerError');
+    $args['registerSuccess'] = $request->getParam('registerSuccess');
+
+    return $this->renderer->render($response, 'hotelOwners/login-register.phtml', $args);
+
+})->setName('hotelOwnerLoginRegister');
+
+$app->post('/hotel-owner-register', function (Request $request, Response $response, array $args) {
+
+    /** @var \Infotrip\Utils\Google\Recaptcha\V2  $googleCaptchaV2 */
+    $googleCaptchaV2 = $this->get(\Infotrip\Utils\Google\Recaptcha\V2::class);
+
+    $routeHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
+    /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
+    $routerHelper = $routeHelper($request);
+
+    /** @var \PHPAuth\Auth $authService */
+    $authService = $this->get(\PHPAuth\Auth::class);
+
+    if (
+        ! $googleCaptchaV2->captchaIsValid($request->getParam('g-recaptcha-response'))
+    ) {
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?registerError=Invalid captcha',
+                301
+            );
+    }
+
+    $registerData = $request->getParam('register');
+
+    if (
+        ! is_array($registerData) ||
+        ! isset($registerData['email']) ||
+        ! isset($registerData['password'])
+    ) {
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?registerError=Invalid data',
+                301
+            );
+    }
+
+    $authResponse = $authService->register(
+        $registerData['email'],
+        $registerData['password'],
+        $registerData['password'],
+        [],
+        null,
+        true
+    );
+
+
+    if (
+        isset($authResponse['error']) &&
+        $authResponse['error']
+    ) {
+        $errorMessage = isset($authResponse['message']) ? $authResponse['message'] : '';
+
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?registerError=' . $errorMessage,
+                301
+            );
+    }
+
+
+    return $response
+        ->withRedirect(
+            $routerHelper->getHotelOwnerLoginRegisterUrl() . '?registerSuccess=' . $authResponse['message'],
+            301
+        );
+
+
+
+})->setName('hotelOwnerRegister');

@@ -120,12 +120,6 @@ class RouteHelper
             ->pathFor('privacy');
     }
 
-    public function getHotelOwnerLoginRegisterUrl()
-    {
-        return $this->router
-            ->pathFor('hotelOwnerLoginRegister');
-    }
-
     /**
      * @return bool
      */
@@ -159,4 +153,18 @@ class RouteHelper
                 'city' => urlencode($city)
             ]);
     }
+
+    public function getHotelOwnerRegisterUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerRegister');
+    }
+
+    public function getHotelOwnerLoginRegisterUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerLoginRegister');
+    }
+
+
 }
