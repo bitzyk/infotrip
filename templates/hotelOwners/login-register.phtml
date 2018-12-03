@@ -48,21 +48,45 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
             </div>
             <div class="col-md-4">
                 <h3>Login</h3>
-                <form>
+                <form method="post"
+                      action="<?= $routeHelper->getHotelOwnerLoginUrl(); ?>" id="loginForm">
+
+
+                    <?php if (isset($loginError) && $loginError): ?>
+                        <div class="form-group form-group-icon-left" style="color:red;">
+                            <?= $loginError; ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (isset($loginSuccess) && $loginSuccess): ?>
+                        <div class="form-group form-group-icon-left" style="color:green;">
+                            <?= $loginSuccess; ?>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="form-group form-group-icon-left"><i class="fa fa-user input-icon input-icon-show"></i>
-                        <label>Email</label>
-                        <input class="form-control" placeholder="e.g. johndoe@gmail.com" type="text" />
+                        <label for="loginEmailInput">Email</label>
+                        <input name="login[email]"
+                               id="loginEmailInput"
+                                class="form-control" placeholder="e.g. johndoe@gmail.com" type="text" />
                     </div>
                     <div class="form-group form-group-icon-left"><i class="fa fa-lock input-icon input-icon-show"></i>
-                        <label>Password</label>
-                        <input class="form-control" type="password" placeholder="my secret password" />
+                        <label for="loginPasswordInput">Password</label>
+                        <input name="login[password]"
+                               id="loginPasswordInput"
+                                class="form-control" type="password" placeholder="my secret password" />
                     </div>
+
+                    <div class="g-recaptcha"
+                         style="margin-bottom: 10px;"
+                         data-sitekey="6Lcij34UAAAAAKOoHuR7hyqNBMiFiDpbx_PTgFaR"></div>
+
                     <input class="btn btn-primary" type="submit" value="Sign in" />
                 </form>
             </div>
             <div class="col-md-4">
                 <h3>New To Infotrip?</h3>
-                <form method="post" action="<?= $routeHelper->getHotelOwnerRegisterUrl(); ?>" id="registerForm">
+                <form method="post"
+                      action="<?= $routeHelper->getHotelOwnerRegisterUrl(); ?>" id="registerForm">
 
                     <?php if (isset($registerError) && $registerError): ?>
                     <div class="form-group form-group-icon-left" style="color:red;">

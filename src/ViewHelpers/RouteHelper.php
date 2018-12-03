@@ -154,16 +154,23 @@ class RouteHelper
             ]);
     }
 
+
+    public function getHotelOwnerLoginRegisterUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerLoginRegister');
+    }
+
     public function getHotelOwnerRegisterUrl()
     {
         return $this->router
             ->pathFor('hotelOwnerRegister');
     }
 
-    public function getHotelOwnerLoginRegisterUrl()
+    public function getHotelOwnerLoginUrl()
     {
         return $this->router
-            ->pathFor('hotelOwnerLoginRegister');
+            ->pathFor('hotelOwnerLogin');
     }
 
 

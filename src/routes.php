@@ -466,6 +466,8 @@ $app->get('/hotel-owner-login-register', function (Request $request, Response $r
     $args['viewHelpers'] = $viewHelpers($request);
     $args['registerError'] = $request->getParam('registerError');
     $args['registerSuccess'] = $request->getParam('registerSuccess');
+    $args['loginError'] = $request->getParam('loginError');
+    $args['loginSuccess'] = $request->getParam('loginSuccess');
 
     return $this->renderer->render($response, 'hotelOwners/login-register.phtml', $args);
 
@@ -543,3 +545,78 @@ $app->post('/hotel-owner-register', function (Request $request, Response $respon
 
 
 })->setName('hotelOwnerRegister');
+
+
+$app->post('/hotel-owner-login', function (Request $request, Response $response, array $args) {
+
+    /** @var \Infotrip\Utils\Google\Recaptcha\V2  $googleCaptchaV2 */
+    $googleCaptchaV2 = $this->get(\Infotrip\Utils\Google\Recaptcha\V2::class);
+
+    $routeHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
+    /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
+    $routerHelper = $routeHelper($request);
+
+    /** @var \PHPAuth\Auth $authService */
+    $authService = $this->get(\PHPAuth\Auth::class);
+
+    if (
+    ! $googleCaptchaV2->captchaIsValid($request->getParam('g-recaptcha-response'))
+    ) {
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Invalid captcha',
+                301
+            );
+    }
+
+    $loginData = $request->getParam('login');
+
+    if (
+        ! is_array($loginData) ||
+        ! isset($loginData['email']) || ! $loginData['email'] ||
+        ! isset($loginData['password']) || ! $loginData['password']
+    ) {
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Invalid login data',
+                301
+            );
+    }
+
+    $authResponse = $authService->login(
+        $loginData['email'],
+        $loginData['password']
+    );
+
+
+    if (
+        isset($authResponse['error']) &&
+        $authResponse['error']
+    ) {
+        $errorMessage = isset($authResponse['message']) ? $authResponse['message'] : '';
+
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=' . $errorMessage,
+                301
+            );
+    }
+
+    print_r(
+        $authResponse
+    );
+    exit;
+
+
+    return $response
+        ->withRedirect(
+            $routerHelper->getHotelOwnerLoginRegisterUrl() . '?registerSuccess=' . $authResponse['message'],
+            301
+        );
+
+
+
+})->setName('hotelOwnerLogin');
