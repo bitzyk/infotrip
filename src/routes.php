@@ -605,9 +605,7 @@ $app->post('/hotel-owner-login', function (Request $request, Response $response,
             );
     }
 
-    print_r(
-        $authResponse
-    );
+    echo 'trebuie sa il redirectezi in admin account';
     exit;
 
 
@@ -620,3 +618,77 @@ $app->post('/hotel-owner-login', function (Request $request, Response $response,
 
 
 })->setName('hotelOwnerLogin');
+
+$app->get('/hotel-owner-activate-landing', function (Request $request, Response $response, array $args) {
+
+    $viewHelpers = $this->get('viewHelpers');
+    $args['viewHelpers'] = $viewHelpers($request);
+    $args['activateError'] = $request->getParam('activateError');
+    $args['activateSuccess'] = $request->getParam('activateSuccess');
+
+    return $this->renderer->render($response, 'hotelOwners/activate.phtml', $args);
+
+})->setName('hotelOwnerActivateLanding');
+
+
+$app->post('/hotel-owner-activate', function (Request $request, Response $response, array $args) {
+
+    /** @var \Infotrip\Utils\Google\Recaptcha\V2  $googleCaptchaV2 */
+    $googleCaptchaV2 = $this->get(\Infotrip\Utils\Google\Recaptcha\V2::class);
+
+    $routeHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
+    /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
+    $routerHelper = $routeHelper($request);
+
+    /** @var \PHPAuth\Auth $authService */
+    $authService = $this->get(\PHPAuth\Auth::class);
+
+    if (
+    ! $googleCaptchaV2->captchaIsValid($request->getParam('g-recaptcha-response'))
+    ) {
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerActivateLandingUrl() . '?activateError=Invalid captcha',
+                301
+            );
+    }
+
+
+    $key = $request->getParam('key');
+
+    if (
+        ! isset($key) || ! $key
+    ) {
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerActivateLandingUrl() . '?activateError=Invalid activation key',
+                301
+            );
+    }
+
+     $authResponse = $authService->activate($key);
+
+    if (
+        isset($authResponse['error']) &&
+        $authResponse['error']
+    ) {
+        $errorMessage = isset($authResponse['message']) ? $authResponse['message'] : '';
+
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerActivateLandingUrl() . '?activateError=' . $errorMessage,
+                301
+            );
+    }
+
+
+    return $response
+        ->withRedirect(
+            $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginSuccess=' . $authResponse['message'],
+            301
+        );
+
+})->setName('hotelOwnerActivate');

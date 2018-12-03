@@ -1,0 +1,67 @@
+<?php
+
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+$routeHelper = $viewHelpers['routeHelper'];
+
+require_once $this->getTemplatePath() . 'includes/header.phtml';
+?>
+
+
+
+<div class="global-wrap">
+
+    <div class="container">
+        <h1 class="page-title">Activate your account</h1>
+    </div>
+
+    <div class="gap"></div>
+
+
+    <div class="container">
+        <div class="row" data-gutter="60">
+            <div class="col-md-4">
+                <h3>Welcome to Infotrip</h3>
+                <p>Register your email and you can add new high quality photos, edit description, check amenities listed — just enter your email</p>
+            </div>
+            <div class="col-md-4">
+                <h3>Activate</h3>
+                <form method="post"
+                      action="<?= $routeHelper->getHotelOwnerActivateUrl(); ?>" id="activateForm">
+
+                    <?php if (isset($activateError) && $activateError): ?>
+                        <div class="form-group form-group-icon-left" style="color:red;">
+                            <?= $activateError; ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (isset($activateSuccess) && $activateSuccess): ?>
+                        <div class="form-group form-group-icon-left" style="color:green;">
+                            <?= $activateSuccess; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="form-group form-group-icon-left"><i class="fa fa-user input-icon input-icon-show"></i>
+                        <label for="activationKey">Activation key</label>
+                        <input name="key"
+                               id="activationKey"
+                                class="form-control" placeholder="e.g. j7e048D5FuAL4b32LB2eB" type="text" />
+                    </div>
+
+                    <div class="g-recaptcha"
+                         style="margin-bottom: 10px;"
+                         data-sitekey="6Lcij34UAAAAAKOoHuR7hyqNBMiFiDpbx_PTgFaR"></div>
+
+                    <input class="btn btn-primary" type="submit" value="Activate your account" />
+                </form>
+            </div>
+        </div>
+        <div class="gap"></div>
+    </div>
+
+
+
+    <?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <?php require_once $this->getTemplatePath() . 'includes/footer.phtml'; ?>
+
+

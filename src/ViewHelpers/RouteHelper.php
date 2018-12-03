@@ -173,5 +173,16 @@ class RouteHelper
             ->pathFor('hotelOwnerLogin');
     }
 
+    public function getHotelOwnerActivateLandingUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerActivateLanding');
+    }
+
+    public function getHotelOwnerActivateUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerActivate');
+    }
 
 }
