@@ -695,6 +695,37 @@ $app->get('/hotel-owner-admin-dashbord', function (Request $request, Response $r
     $viewHelpers = $this->get('viewHelpers');
     $args['viewHelpers'] = $viewHelpers($request);
 
+    $routeHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
+    /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
+    $routerHelper = $routeHelper($request);
+
+    /** @var \PHPAuth\Auth $authService */
+    $authService = $this->get(\PHPAuth\Auth::class);
+    /** @var \Infotrip\Domain\Repository\UserHotelRepository $userHotelRepository */
+    $userHotelRepository = $this->get(\Infotrip\Domain\Repository\UserHotelRepository::class);
+
+    if (! $authService->isLogged()) {
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Login session has expired.',
+                301
+            );
+    }
+
+    $currentUser = $authService->getCurrentUser();
+
+    $hotelOwnerUser = new \Infotrip\Domain\Entity\HotelOwnerUser();
+
+    $hotelOwnerUser
+        ->setUserId($currentUser['uid'])
+        ->setEmail($currentUser['email']);
+
+
+    $userHotelRepository
+        ->setUserAssociatedHotels($hotelOwnerUser);
+
+    $args['hotelOwnerUser'] = $hotelOwnerUser;
+
     return $this->renderer->render($response, 'hotelOwners/admin/dashbord.phtml', $args);
 
 })->setName('hotelOwnerAdminDashbord');

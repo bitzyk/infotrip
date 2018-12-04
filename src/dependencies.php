@@ -97,6 +97,16 @@ $container[HotelRepository::class] = function (Container $container) {
     return $repository;
 };
 
+$container[\Infotrip\Domain\Repository\UserHotelRepository::class] = function (Container $container) {
+    /** @var EntityManager $entityManager */
+    $entityManager = $container[EntityManager::class];
+
+    /** @var HotelRepository $repository */
+    $repository = $entityManager->getRepository('Infotrip\Domain\Entity\UserHotel');
+
+    return $repository;
+};
+
 $container[\Infotrip\Domain\Repository\ResourceContentRepository::class] = function ($container) {
     /** @var EntityManager $entityManager */
     $entityManager = $container[EntityManager::class];

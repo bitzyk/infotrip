@@ -476,10 +476,6 @@ class Hotel extends Base implements \JsonSerializable
         return '';
     }
 
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
-    }
 
     /**
      * @return mixed
