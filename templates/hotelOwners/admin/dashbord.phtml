@@ -1,6 +1,7 @@
 <?php
 
 /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+/** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
 $routeHelper = $viewHelpers['routeHelper'];
 
 require_once $this->getTemplatePath() . 'includes/header.phtml';
@@ -19,8 +20,27 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
         <div class="row">
             <div class="col-md-12">
 
+                <?php if($hotelOwnerUser->getAssociatedHotels()): ?>
 
-
+                <div style="color:green;">
+                    You have a number of
+                    <?= count($hotelOwnerUser->getAssociatedHotels()); ?>
+                    to manage. Please choose the hotel you want to manage:
+                    <ul>
+                    <?php foreach ($hotelOwnerUser->getAssociatedHotels() as $hotel): ?>
+                        <li>
+                            <a href="#">
+                                <?= $hotel->getName(); ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                    </ul>
+                </div>
+                <?php else: ?>
+                <div style="color:red;">
+                    You don't yet have any associated hotel.
+                </div>
+                <?php endif; ?>
             </div>
         </div>
         <div class="gap"></div>
