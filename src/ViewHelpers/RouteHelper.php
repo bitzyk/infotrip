@@ -185,4 +185,9 @@ class RouteHelper
             ->pathFor('hotelOwnerActivate');
     }
 
+    public function getHotelOwnerAdminDashbordUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminDashbord');
+    }
 }

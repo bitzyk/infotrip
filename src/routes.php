@@ -559,16 +559,16 @@ $app->post('/hotel-owner-login', function (Request $request, Response $response,
     /** @var \PHPAuth\Auth $authService */
     $authService = $this->get(\PHPAuth\Auth::class);
 
-    if (
-    ! $googleCaptchaV2->captchaIsValid($request->getParam('g-recaptcha-response'))
-    ) {
-        // redirect in case of error
-        return $response
-            ->withRedirect(
-                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Invalid captcha',
-                301
-            );
-    }
+//    if (
+//    ! $googleCaptchaV2->captchaIsValid($request->getParam('g-recaptcha-response'))
+//    ) {
+//        // redirect in case of error
+//        return $response
+//            ->withRedirect(
+//                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Invalid captcha',
+//                301
+//            );
+//    }
 
     $loginData = $request->getParam('login');
 
@@ -605,13 +605,9 @@ $app->post('/hotel-owner-login', function (Request $request, Response $response,
             );
     }
 
-    echo 'trebuie sa il redirectezi in admin account';
-    exit;
-
-
     return $response
         ->withRedirect(
-            $routerHelper->getHotelOwnerLoginRegisterUrl() . '?registerSuccess=' . $authResponse['message'],
+            $routerHelper->getHotelOwnerAdminDashbordUrl(),
             301
         );
 
@@ -692,3 +688,13 @@ $app->post('/hotel-owner-activate', function (Request $request, Response $respon
         );
 
 })->setName('hotelOwnerActivate');
+
+
+$app->get('/hotel-owner-admin-dashbord', function (Request $request, Response $response, array $args) {
+
+    $viewHelpers = $this->get('viewHelpers');
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    return $this->renderer->render($response, 'hotelOwners/admin/dashbord.phtml', $args);
+
+})->setName('hotelOwnerAdminDashbord');
