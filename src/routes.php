@@ -559,16 +559,16 @@ $app->post('/hotel-owner-login', function (Request $request, Response $response,
     /** @var \PHPAuth\Auth $authService */
     $authService = $this->get(\PHPAuth\Auth::class);
 
-//    if (
-//    ! $googleCaptchaV2->captchaIsValid($request->getParam('g-recaptcha-response'))
-//    ) {
-//        // redirect in case of error
-//        return $response
-//            ->withRedirect(
-//                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Invalid captcha',
-//                301
-//            );
-//    }
+    if (
+    ! $googleCaptchaV2->captchaIsValid($request->getParam('g-recaptcha-response'))
+    ) {
+        // redirect in case of error
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Invalid captcha',
+                301
+            );
+    }
 
     $loginData = $request->getParam('login');
 
