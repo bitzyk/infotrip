@@ -160,3 +160,30 @@ $container[\Infotrip\Utils\UI\Homepage::class] = function (Container $container)
     };
 
 };
+
+$container[\Infotrip\Utils\UI\Admin\AdminMenu::class] = function (Container $container) {
+
+    return function($request) use ($container) {
+
+        $routeHelperClosure = $container->get(\Infotrip\ViewHelpers\RouteHelper::class);
+        /** @var \Infotrip\ViewHelpers\RouteHelper $routeHelper */
+        $routeHelper = $routeHelperClosure($request);
+
+        $service = new \Infotrip\Utils\UI\Admin\AdminMenu(
+            $routeHelper
+        );
+        return $service;
+    };
+};
+$container[\Infotrip\Utils\UI\Admin\Admin::class] = function (Container $container) {
+    return function($request) use ($container) {
+
+        $adminMenuClosure = $container->get(\Infotrip\Utils\UI\Admin\AdminMenu::class);
+
+        /** @var \Infotrip\Utils\UI\Admin\AdminMenu $adminMenu */
+        $adminMenu = $adminMenuClosure($request);
+
+        $service = new \Infotrip\Utils\UI\Admin\Admin($adminMenu);
+        return $service;
+    };
+};

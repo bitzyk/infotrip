@@ -208,4 +208,19 @@ class RouteHelper
         return $this->router
             ->pathFor('hotelOwnerAdminAddNewHotel');
     }
+
+    public function buildUrlForRoute($routeName)
+    {
+        return $this->router
+            ->pathFor($routeName);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRouteName()
+    {
+        return $this->routeName;
+    }
+
 }

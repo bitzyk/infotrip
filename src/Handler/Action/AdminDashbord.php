@@ -18,6 +18,7 @@ class AdminDashbord extends AbstractAdminPageAction
             $args = $parentResponse;
         }
 
+
         return $this->renderer->render($response, 'hotelOwners/admin/dashbord.phtml', $args);
     }
 

@@ -1,6 +1,7 @@
 <?php
 /** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
 /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+/** @var $adminUiService \Infotrip\Utils\UI\Admin\Admin */
 ?>
 <div class="sb2-1">
     <!--== USER INFO ==-->
@@ -21,24 +22,29 @@
     </div>
     <!--== LEFT MENU ==-->
     <div class="sb2-13">
+
+
         <ul class="collapsible" data-collapsible="accordion">
-            <li><a href="javascript:void(0)" class="collapsible-header active"><i class="fa fa-h-square" aria-hidden="true"></i> Hotels</a>
+            <?php foreach ($adminUiService->getAdminMenu()->getMenu() as $adminMenu): ?>
+            <li>
+                <?php if ($adminMenu->isHasSubmenu()): ?>
+                <a href="javascript:void(0)" class="collapsible-header <?php if($adminMenu->isActive()) :?>active<?php endif; ?>"><i class="fa <?= $adminMenu->getCssClass(); ?>" aria-hidden="true"></i> <?= $adminMenu->getLabel(); ?></a>
                 <div class="collapsible-body left-sub-menu">
                     <ul>
-                        <li><a href="hotel-all.html" class="menu-active">All Hotels</a>
-                        </li>
-                        <li><a href="<?= $routeHelper->getHotelOwnerAdminAddNewHotelUrl(); ?>">Add New Hotel</a>
-                        </li>
+                    <?php foreach ($adminMenu->getSubmenu() as $submenu): ?>
+                            <li>
+                                <a class="<?php if($submenu->isActive()) :?>menu-active<?php endif; ?>"
+                                    href="<?= $submenu->getLink(); ?>"> <?= $submenu->getLabel(); ?></a>
+                            </li>
+                    <?php endforeach; ?>
                     </ul>
                 </div>
+                <?php else: ?>
+                        <a  class="<?php if($adminMenu->isActive()) :?>menu-active<?php endif; ?>"
+                            href="<?= $adminMenu->getLink(); ?>"><i class="fa <?= $adminMenu->getCssClass(); ?>" aria-hidden="true"></i> <?= $adminMenu->getLabel(); ?></a>
+                <?php endif; ?>
             </li>
-
-            <li>
-                <a href="<?= $routeHelper->getHotelOwnerAdminSocialMediaUrl(); ?>"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Social Media</a>
-            </li>
-            <li>
-                <a href="<?= $routeHelper->getHotelOwnerAdminLogoutUrl(); ?>"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout</a>
-            </li>
+            <?php endforeach; ?>
         </ul>
     </div>
 </div>
