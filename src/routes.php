@@ -729,3 +729,35 @@ $app->get('/hotel-owner-admin-dashbord', function (Request $request, Response $r
     return $this->renderer->render($response, 'hotelOwners/admin/dashbord.phtml', $args);
 
 })->setName('hotelOwnerAdminDashbord');
+
+
+$app->get('/hotel-owner-admin-logout', function (Request $request, Response $response, array $args) {
+
+    $viewHelpers = $this->get('viewHelpers');
+    $args['viewHelpers'] = $viewHelpers($request);
+
+    $routeHelper = $this->get(\Infotrip\ViewHelpers\RouteHelper::class);
+    /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
+    $routerHelper = $routeHelper($request);
+
+    /** @var \PHPAuth\Auth $authService */
+    $authService = $this->get(\PHPAuth\Auth::class);
+
+    if (! $authService->isLogged()) {
+        return $response
+            ->withRedirect(
+                $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Login session has expired.',
+                301
+            );
+    }
+
+    $authService
+        ->logout($authService->getCurrentSessionHash());
+
+    return $response
+        ->withRedirect(
+            $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginSuccess=You have successfully logout.',
+            301
+        );
+
+})->setName('hotelOwnerAdminLogout');

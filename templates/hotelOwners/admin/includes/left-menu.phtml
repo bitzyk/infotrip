@@ -1,5 +1,6 @@
 <?php
 /** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
 ?>
 <div class="sb2-1">
     <!--== USER INFO ==-->
@@ -34,7 +35,8 @@
 
             <li><a href="social-media.html"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Social Media</a>
             </li>
-            <li><a href="login.html" target="_blank"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+            <li>
+                <a href="<?= $routeHelper->getHotelOwnerAdminLogoutUrl(); ?>"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout</a>
             </li>
         </ul>
     </div>

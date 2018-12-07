@@ -190,4 +190,10 @@ class RouteHelper
         return $this->router
             ->pathFor('hotelOwnerAdminDashbord');
     }
+
+    public function getHotelOwnerAdminLogoutUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminLogout');
+    }
 }

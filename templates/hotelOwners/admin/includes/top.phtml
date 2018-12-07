@@ -1,3 +1,7 @@
+<?php
+/** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+?>
 <!--== MAIN CONTRAINER ==-->
 <div class="container-fluid sb1">
     <div class="row">
@@ -44,7 +48,9 @@
                 <li><a href="listing-all.html" class="waves-effect"><i class="fa fa-list-ul" aria-hidden="true"></i> Listing hotels</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="#" class="ho-dr-con-last waves-effect"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout</a>
+                <li>
+                    <a href="<?= $routeHelper->getHotelOwnerAdminLogoutUrl(); ?>"
+                       class="ho-dr-con-last waves-effect"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout</a>
                 </li>
             </ul>
         </div>
