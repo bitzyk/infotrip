@@ -10,11 +10,18 @@ class Admin
      */
     private $adminMenu;
 
+    /**
+     * @var AdminBreadcrumb
+     */
+    private $adminBreadcrumb;
+
     public function __construct(
-        AdminMenu $adminMenu
+        AdminMenu $adminMenu,
+        AdminBreadcrumb $adminBreadcrumb
     )
     {
         $this->adminMenu = $adminMenu;
+        $this->adminBreadcrumb = $adminBreadcrumb;
     }
 
     /**
@@ -23,6 +30,14 @@ class Admin
     public function getAdminMenu()
     {
         return $this->adminMenu;
+    }
+
+    /**
+     * @return AdminBreadcrumb
+     */
+    public function getAdminBreadcrumb()
+    {
+        return $this->adminBreadcrumb;
     }
 
 

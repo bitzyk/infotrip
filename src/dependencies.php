@@ -175,6 +175,20 @@ $container[\Infotrip\Utils\UI\Admin\AdminMenu::class] = function (Container $con
         return $service;
     };
 };
+
+$container[\Infotrip\Utils\UI\Admin\AdminBreadcrumb::class] = function (Container $container) {
+    return function($request) use ($container) {
+
+        $adminMenuClosure = $container->get(\Infotrip\Utils\UI\Admin\AdminMenu::class);
+
+        /** @var \Infotrip\Utils\UI\Admin\AdminMenu $adminMenu */
+        $adminMenu = $adminMenuClosure($request);
+
+        $service = new \Infotrip\Utils\UI\Admin\AdminBreadcrumb($adminMenu);
+        return $service;
+    };
+};
+
 $container[\Infotrip\Utils\UI\Admin\Admin::class] = function (Container $container) {
     return function($request) use ($container) {
 
@@ -183,7 +197,12 @@ $container[\Infotrip\Utils\UI\Admin\Admin::class] = function (Container $contain
         /** @var \Infotrip\Utils\UI\Admin\AdminMenu $adminMenu */
         $adminMenu = $adminMenuClosure($request);
 
-        $service = new \Infotrip\Utils\UI\Admin\Admin($adminMenu);
+        $adminBreadcrumbClosure = $container->get(\Infotrip\Utils\UI\Admin\AdminBreadcrumb::class);
+
+        /** @var \Infotrip\Utils\UI\Admin\AdminBreadcrumb $adminBreadcrumb */
+        $adminBreadcrumb = $adminBreadcrumbClosure($request);
+
+        $service = new \Infotrip\Utils\UI\Admin\Admin($adminMenu, $adminBreadcrumb);
         return $service;
     };
 };

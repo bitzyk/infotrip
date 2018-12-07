@@ -44,6 +44,9 @@ abstract class AbstractAdminPageAction extends Action
         $adminUiService = $adminUiClosure($request);
         $this->adminUiService = $adminUiService;
 
+        var_dump($this->adminUiService->getAdminBreadcrumb()->buildBreadcrumb());
+        exit;
+
         $viewHelpers = $this->container->get('viewHelpers');
         $args['viewHelpers'] = $viewHelpers($request);
         $args['adminUiService'] = $this->adminUiService;

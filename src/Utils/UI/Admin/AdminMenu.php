@@ -25,9 +25,6 @@ class AdminMenu
     public function getMenu()
     {
 
-//        var_dump(
-//            $this->routeHelper->getRouteName()
-//        ); exit;
         $menu = [
             (new MenuItem())
             ->setLabel('Hotels')
