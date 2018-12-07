@@ -196,4 +196,10 @@ class RouteHelper
         return $this->router
             ->pathFor('hotelOwnerAdminLogout');
     }
+
+    public function getHotelOwnerAdminSocialMediaUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminSocialMedia');
+    }
 }
