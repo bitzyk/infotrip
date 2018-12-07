@@ -209,6 +209,13 @@ class RouteHelper
             ->pathFor('hotelOwnerAdminAddNewHotel');
     }
 
+    public function getHotelOwnerAdminAccountSettingsUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminAccountSettings');
+    }
+
+
     public function buildUrlForRoute($routeName)
     {
         return $this->router

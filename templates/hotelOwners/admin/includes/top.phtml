@@ -1,6 +1,7 @@
 <?php
 /** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
 /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+/** @var $adminUiService \Infotrip\Utils\UI\Admin\Admin */
 ?>
 <!--== MAIN CONTRAINER ==-->
 <div class="container-fluid sb1">
@@ -43,9 +44,9 @@
 
             <!-- Dropdown Structure -->
             <ul id='top-menu' class='dropdown-content top-menu-sty'>
-                <li><a href="setting.html" class="waves-effect"><i class="fa fa-cogs" aria-hidden="true"></i>Admin Setting</a>
+                <li><a href="<?= $routeHelper->getHotelOwnerAdminAccountSettingsUrl(); ?>" class="waves-effect"><i class="fa fa-cogs" aria-hidden="true"></i>Admin Setting</a>
                 </li>
-                <li><a href="listing-all.html" class="waves-effect"><i class="fa fa-list-ul" aria-hidden="true"></i> Listing hotels</a>
+                <li><a href="<?= $routeHelper->getHotelOwnerAdminDashbordUrl(); ?>" class="waves-effect"><i class="fa fa-list-ul" aria-hidden="true"></i> Listing hotels</a>
                 </li>
                 <li class="divider"></li>
                 <li>
