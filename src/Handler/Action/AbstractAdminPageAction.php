@@ -38,27 +38,11 @@ abstract class AbstractAdminPageAction extends Action
      */
     public function __invoke(Request $request, Response $response, $args = [])
     {
-        // set dependency
-        $adminUiClosure = $this->container->get(\Infotrip\Utils\UI\Admin\Admin::class);
-        /** @var Admin $adminUiService */
-        $adminUiService = $adminUiClosure($request);
-        $this->adminUiService = $adminUiService;
-
-        var_dump($this->adminUiService->getAdminBreadcrumb()->buildBreadcrumb());
-        exit;
-
-        $viewHelpers = $this->container->get('viewHelpers');
-        $args['viewHelpers'] = $viewHelpers($request);
-        $args['adminUiService'] = $this->adminUiService;
-
         $routeHelper = $this->container->get(\Infotrip\ViewHelpers\RouteHelper::class);
         /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
         $routerHelper = $routeHelper($request);
 
-
-        /** @var \Infotrip\Domain\Repository\UserHotelRepository $userHotelRepository */
-        $userHotelRepository = $this->container->get(\Infotrip\Domain\Repository\UserHotelRepository::class);
-
+        // do not allow access if is not logged
         if (!$this->authService->isLogged()) {
             return $response
                 ->withRedirect(
@@ -66,6 +50,19 @@ abstract class AbstractAdminPageAction extends Action
                     301
                 );
         }
+
+        // set dependency
+        $adminUiClosure = $this->container->get(\Infotrip\Utils\UI\Admin\Admin::class);
+        /** @var Admin $adminUiService */
+        $adminUiService = $adminUiClosure($request);
+        $this->adminUiService = $adminUiService;
+
+        $viewHelpers = $this->container->get('viewHelpers');
+        $args['viewHelpers'] = $viewHelpers($request);
+        $args['adminUiService'] = $this->adminUiService;
+
+        /** @var \Infotrip\Domain\Repository\UserHotelRepository $userHotelRepository */
+        $userHotelRepository = $this->container->get(\Infotrip\Domain\Repository\UserHotelRepository::class);
 
         $currentUser = $this->authService->getCurrentUser();
 
@@ -79,6 +76,7 @@ abstract class AbstractAdminPageAction extends Action
             ->setUserAssociatedHotels($hotelOwnerUser);
 
         $args['hotelOwnerUser'] = $hotelOwnerUser;
+        $args['breadcrumb'] = $this->adminUiService->getAdminBreadcrumb()->buildBreadcrumb();
 
         return $args;
     }
