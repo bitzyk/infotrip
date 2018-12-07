@@ -724,3 +724,4 @@ $app->get('/hotel-owner-admin-logout', function (Request $request, Response $res
 // admin pages
 $app->get('/hotel-owner-admin-dashbord', \Infotrip\Handler\Action\AdminDashbord::class)->setName('hotelOwnerAdminDashbord');
 $app->get('/hotel-owner-admin-social-media', \Infotrip\Handler\Action\AdminSocialMedia::class)->setName('hotelOwnerAdminSocialMedia');
+$app->get('/hotel-owner-admin-add-new-hotel', \Infotrip\Handler\Action\AdminAddNewHotel::class)->setName('hotelOwnerAdminAddNewHotel');

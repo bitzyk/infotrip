@@ -202,4 +202,10 @@ class RouteHelper
         return $this->router
             ->pathFor('hotelOwnerAdminSocialMedia');
     }
+
+    public function getHotelOwnerAdminAddNewHotelUrl()
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminAddNewHotel');
+    }
 }
