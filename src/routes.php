@@ -727,3 +727,4 @@ $app->get('/hotel-owner-admin-social-media', \Infotrip\Handler\Action\AdminSocia
 $app->get('/hotel-owner-admin-add-new-hotel', \Infotrip\Handler\Action\AdminAddNewHotel::class)->setName('hotelOwnerAdminAddNewHotel');
 $app->get('/hotel-owner-admin-account-settings', \Infotrip\Handler\Action\AdminAcountSettings::class)->setName('hotelOwnerAdminAccountSettings');
 $app->get('/hotel-owner-admin/hotel-edit/{hotelId}', \Infotrip\Handler\Action\AdminEditHotel::class)->setName('hotelOwnerAdminEditHotel');
+$app->get('/hotel-owner-admin/hotel-delete/{hotelId}', \Infotrip\Handler\Action\AdminDeleteHotel::class)->setName('hotelOwnerAdminDeleteHotel');

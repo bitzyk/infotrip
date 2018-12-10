@@ -225,6 +225,16 @@ class RouteHelper
             ]);
     }
 
+    public function getHotelOwnerAdminDeleteHotelUrl(
+        $hotelId
+    )
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminDeleteHotel', [
+                'hotelId' => (int) $hotelId
+            ]);
+    }
+
     public function buildUrlForRoute($routeName)
     {
         return $this->router

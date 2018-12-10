@@ -54,7 +54,7 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                                 <a href="<?= $routeHelper->getHotelOwnerAdminEditHotelUrl($associatedHotel->getId()); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             </td>
                             <td>
-                                <a href="#" target="_blank" onclick="return confirm('Are you sure you want to delete the hotel. The hotel will not be visible anymore on infotirp.org')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                <a href="<?= $routeHelper->getHotelOwnerAdminDeleteHotelUrl($associatedHotel->getId()); ?>" target="_blank" onclick="return confirm('Are you sure you want to delete the hotel. The hotel will not be visible anymore on infotirp.org')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                         <?php $i++; endforeach; ?>
@@ -62,7 +62,14 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                     </table>
                 </div>
                 <?php else: ?>
-                    aici
+                <div style="color: red;">
+                    <p>
+                        You don't yet have any associated hotel.
+                    </p>
+                    <p>
+                        Your account is verified. You will receive a notification when your account will be configured.
+                    </p>
+                </div>
                 <?php endif; ?>
 
             </div>
