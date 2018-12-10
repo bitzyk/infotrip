@@ -235,6 +235,16 @@ class RouteHelper
             ]);
     }
 
+    public function getHotelOwnerAdminEditHotelProcessUrl(
+        $hotelId
+    )
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminEditHotelProcess', [
+                'hotelId' => (int) $hotelId
+            ]);
+    }
+
     public function buildUrlForRoute($routeName)
     {
         return $this->router

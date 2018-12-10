@@ -2,12 +2,13 @@
 
 namespace Infotrip\Handler\Action;
 
+use Infotrip\Domain\Entity\Hotel;
 use Infotrip\Domain\Repository\HotelRepository;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class AdminEditHotel extends AbstractAdminPageAction
+class AdminEditHotelProcess extends AbstractAdminPageAction
 {
 
     /**
@@ -45,11 +46,41 @@ class AdminEditHotel extends AbstractAdminPageAction
             throw new \Exception('Invalid request');
         }
 
-        $hotelToEdit = $this->hotelRepository->getHotel($args['hotelId']);
+        // hydrate hotel
+        $hotelToEdit = $this->hydrateUpdatedHotel(
+            $this->hotelRepository->getHotel($args['hotelId']),
+            $request->getParsedBody()
+        );
 
-        $args['hotel'] = $hotelToEdit;
+        // update hotel
+        $this->hotelRepository
+            ->updateHotel($hotelToEdit);
 
-        return $this->renderer->render($response, 'hotelOwners/admin/edit-hotel.phtml', $args);
+        // redirect
+        return $response
+            ->withRedirect(
+                $this->routerHelper->getHotelOwnerAdminDashbordUrl() . '?successMessage=The hotel have been updated.',
+                301
+            );
     }
 
+    /**
+     * @param Hotel $fromHotel
+     * @param array $updatedInfo
+     * @return Hotel
+     */
+    private function hydrateUpdatedHotel(
+        Hotel $fromHotel,
+        array $updatedInfo
+    )
+    {
+        $fromHotel
+            ->setName($updatedInfo['hotelName'])
+            ->setDescEn($updatedInfo['hotelDescription'])
+            ->setAddress($updatedInfo['hotelAddress'])
+            ->setZip($updatedInfo['hotelZipCode'])
+            ->setMinrate($updatedInfo['hotelPriceMin']);
+
+        return $fromHotel;
+    }
 }

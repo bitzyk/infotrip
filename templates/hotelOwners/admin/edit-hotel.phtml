@@ -2,6 +2,7 @@
 /** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
 /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
 /** @var $adminUiService \Infotrip\Utils\UI\Admin\Admin */
+/** @var $hotel \Infotrip\Domain\Entity\Hotel */
 require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.phtml';
 ?>
 
@@ -9,8 +10,8 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
         <div class="col-md-12">
             <div class="box-inn-sp">
                 <div class="sb2-2-add-blog sb2-2-1">
-                    <h2>Edit Hotel Details</h2>
-                    <p>The .table class adds basic styling (light padding and only horizontal dividers) to a table:</p>
+                    <h2>Edit Hotel</h2>
+                    <p></p>
 
                     <ul class="nav nav-tabs tab-list">
                         <li class="active"><a data-toggle="tab" href="#home"><i class="fa fa-info" aria-hidden="true"></i> <span>Detail</span></a>
@@ -30,68 +31,49 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                             <div class="box-inn-sp">
                                 <div class="inn-title">
                                     <h4>Listing Information</h4>
-                                    <p>Airtport Hotels The Right Way To Start A Short Break Holiday</p>
                                 </div>
                                 <div class="bor">
-                                    <form>
+                                    <form method="post"
+                                    action="<?= $routeHelper->getHotelOwnerAdminEditHotelProcessUrl($hotel->getId()); ?>">
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input id="list-title" type="text" class="validate">
-                                                <label for="list-title">Listing Name</label>
-                                            </div>
-                                            <div class="input-field col s12">
-                                                <input id="list-name" type="text" class="validate">
-                                                <label for="list-name">Contact Person</label>
+                                                <input id="hotelName" name="hotelName"
+                                                       required
+                                                       type="text" class="validate" value="<?= $hotel->getName(); ?>">
+                                                <label for="hotelName">Hotel name</label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <div class="chips chips-placeholder"></div>
+                                                <textarea required id="hotelDescription" name="hotelDescription"
+                                                          class="materialize-textarea"><?= $hotel->getDescEn(); ?></textarea>
+                                                <label for="hotelDescription">Hotel Description</label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                                <label for="textarea1">Listing Descriptions:</label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="input-field col s6">
-                                                <select multiple>
-                                                    <option value="" disabled selected>Choose Category</option>
-                                                    <option value="1">Hotels</option>
-                                                    <option value="2">Educations</option>
-                                                    <option value="3">Medical</option>
-                                                    <option value="3">Health</option>
-                                                    <option value="3">Fitness</option>
-                                                    <option value="3">Tution</option>
-                                                    <option value="3">Software</option>
-                                                    <option value="3">Wedding</option>
-                                                    <option value="3">Party</option>
-                                                    <option value="3">Spa/Club</option>
-                                                </select>
-                                                <label>Select Category</label>
-                                            </div>
-                                            <div class="input-field col s6">
-                                                <select multiple>
-                                                    <option value="" disabled selected>Choose Category</option>
-                                                    <option value="1">Hotels</option>
-                                                    <option value="2">Educations</option>
-                                                    <option value="3">Medical</option>
-                                                    <option value="3">Health</option>
-                                                    <option value="3">Fitness</option>
-                                                    <option value="3">Tution</option>
-                                                    <option value="3">Software</option>
-                                                    <option value="3">Wedding</option>
-                                                    <option value="3">Party</option>
-                                                    <option value="3">Spa/Club</option>
-                                                </select>
-                                                <label>Select Sub Category</label>
+                                                <input required id="hotelAddress" name="hotelAddress"
+                                                       type="text" class="validate" value="<?= $hotel->getAddress(); ?>">
+                                                <label for="hotelAddress">Hotel address</label>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="input-field col s12">
-                                                <input type="submit" class="waves-effect waves-light btn-large" value="Submit">
+                                                <input required id="hotelZipCode" name="hotelZipCode"
+                                                       type="text" class="validate" value="<?= $hotel->getZip(); ?>">
+                                                <label for="hotelZipCode">Hotel zip code</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input required id="hotelPriceMin" name="hotelPriceMin"
+                                                       type="text" class="validate" value="<?= $hotel->getMinrate(); ?>">
+                                                <label for="hotelPriceMin">Hotel zip code</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="input-field col s12">
+                                                <input type="submit" class="waves-effect waves-light btn-large" value="Save">
                                             </div>
                                         </div>
                                     </form>

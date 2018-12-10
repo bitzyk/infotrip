@@ -534,5 +534,16 @@ class HotelRepository extends EntityRepository
         $this->getEntityManager()->flush($hotel);
     }
 
+    /**
+     * @param Hotel $hotel
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function updateHotel(
+        Hotel $hotel
+    )
+    {
+        $this->getEntityManager()->merge($hotel);
+        $this->getEntityManager()->flush($hotel);
+    }
 
 }
