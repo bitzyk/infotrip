@@ -215,6 +215,15 @@ class RouteHelper
             ->pathFor('hotelOwnerAdminAccountSettings');
     }
 
+    public function getHotelOwnerAdminEditHotelUrl(
+        $hotelId
+    )
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminEditHotel', [
+                'hotelId' => (int) $hotelId
+            ]);
+    }
 
     public function buildUrlForRoute($routeName)
     {
