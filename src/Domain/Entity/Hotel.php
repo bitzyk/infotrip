@@ -340,11 +340,13 @@ class Hotel extends Base implements \JsonSerializable
     }
 
     /**
-     * @param mixed $countryCode
+     * @param $countryCode
+     * @return $this
      */
     public function setCountryCode($countryCode)
     {
         $this->countryCode = $countryCode;
+        return $this;
     }
 
     /**

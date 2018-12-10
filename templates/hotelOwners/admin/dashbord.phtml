@@ -1,4 +1,7 @@
 <?php
+/** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+/** @var $adminUiService \Infotrip\Utils\UI\Admin\Admin */
 require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.phtml';
 ?>
 
@@ -6,64 +9,61 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
     <div class="col-md-12">
         <div class="box-inn-sp">
             <div class="inn-title">
-                <h4>All Hotel</h4>
-                <p>Airtport Hotels The Right Way To Start A Short Break Holiday</p>
+                <h4>All Hotels</h4>
                 <a class="dropdown-button drop-down-meta" href="#" data-activates="dr-users"><i class="material-icons">more_vert</i></a>
                 <ul id="dr-users" class="dropdown-content">
-                    <li><a href="#!">Add New</a>
-                    </li>
-                    <li><a href="#!">Edit</a>
-                    </li>
-                    <li><a href="#!">Update</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="#!"><i class="material-icons">delete</i>Delete</a>
-                    </li>
-                    <li><a href="#!"><i class="material-icons">subject</i>View All</a>
-                    </li>
+                    <li><a href="<?= $routeHelper->getHotelOwnerAdminAddNewHotelUrl(); ?>">Add New</a></li>
                 </ul>
 
                 <!-- Dropdown Structure -->
 
             </div>
             <div class="tab-inn">
+
+                <?php if ($hotelOwnerUser->hasAssociatedHotels()): ?>
                 <div class="table-responsive table-desi">
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>User</th>
-                            <th>Hotel</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Country</th>
+                            <th>#</th>
+                            <th>Hotel name</th>
+                            <th>Address/zip</th>
                             <th>View</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                         </thead>
                         <tbody>
+                        <?php $i=1; foreach ($hotelOwnerUser->getAssociatedHotels() as $associatedHotel): ?>
                         <tr>
-                            <td><span class="list-img"><img src="admin/images/listing/1.jpeg" alt=""></span>
-                            </td>
-                            <td><a href="#"><span class="list-enq-name">Domestic Help Services</span><span class="list-enq-city">Illunois, United States</span></a>
-                            </td>
-                            <td>+01 3214 6522</td>
-                            <td>chadengle@dummy.com</td>
-                            <td>Australia</td>
                             <td>
-                                <a href="hotel-edit.html"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                <?= $i; ?>
+                            </td>
+                            <td>
+                                <span class="list-enq-name"><?= $associatedHotel->getName(); ?></span>
+                                <span class="list-enq-city"><?= $associatedHotel->getCityHotel(); ?>, <?= $associatedHotel->getCountryName(); ?></span>
+                            </td>
+                            <td>
+                                <?= $associatedHotel->getAddress(); ?>, <?= $associatedHotel->getZip(); ?>
+                            </td>
+                            <td>
+                                <a href="<?= $routeHelper->getHotelUrl($associatedHotel->getName(), $associatedHotel->getId()); ?>" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>
                             </td>
                             <td>
                                 <a href="hotel-edit.html"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             </td>
                             <td>
-                                <a href="#"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                <a href="#" target="_blank" onclick="return confirm('Are you sure you want to delete the hotel. The hotel will not be visible anymore on infotirp.org')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                             </td>
                         </tr>
-
+                        <?php $i++; endforeach; ?>
                         </tbody>
                     </table>
                 </div>
+                <?php else: ?>
+                    aici
+                <?php endif; ?>
+
             </div>
         </div>
     </div>

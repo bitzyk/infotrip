@@ -78,5 +78,13 @@ class HotelOwnerUser
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function hasAssociatedHotels()
+    {
+        return ! empty($this->associatedHotels);
+    }
+
 
 }

@@ -22,7 +22,8 @@ class UserHotelRepository extends EntityRepository
         // count how many related hotels there is
         $query = $this->getEntityManager()
             ->createQuery(
-                "SELECT uh.hotel_id, h.name FROM Infotrip\Domain\Entity\UserHotel uh
+                "SELECT uh.hotel_id, h.name, h.countryCode, h.cityHotel, h.address, h.zip " .
+                  "FROM Infotrip\Domain\Entity\UserHotel uh
                   JOIN Infotrip\Domain\Entity\Hotel h WITH uh.hotel_id = h.id
                   WHERE uh.user_id = :userId"
             );
@@ -36,7 +37,12 @@ class UserHotelRepository extends EntityRepository
                 $hotel = new Hotel();
                 $hotel
                     ->setId($row['hotel_id'])
-                    ->setName($row['name']);
+                    ->setName($row['name'])
+                    ->setCountryCode($row['countryCode'])
+                    ->setCityHotel($row['cityHotel'])
+                    ->setAddress($row['address'])
+                    ->setZip($row['zip'])
+                ;
 
                 $hotelOwnerUser
                     ->addAssociatedHotels($hotel);
