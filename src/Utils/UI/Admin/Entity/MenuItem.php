@@ -47,6 +47,11 @@ class MenuItem
     private $routeName;
 
     /**
+     * @var bool
+     */
+    private $visible = true;
+
+    /**
      * @return string
      */
     public function getLabel()
@@ -171,6 +176,24 @@ class MenuItem
     public function setRouteName($routeName)
     {
         $this->routeName = $routeName;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVisible()
+    {
+        return $this->visible;
+    }
+
+    /**
+     * @param bool $visible
+     * @return MenuItem
+     */
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
         return $this;
     }
 

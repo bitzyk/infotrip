@@ -40,10 +40,16 @@ class AdminMenu
                     ->setCurrentRouteName($this->routeHelper->getRouteName())
                     ,
                     (new MenuItem())
-                        ->setLabel('Add new Hotel')
-                        ->setRouteName('hotelOwnerAdminAddNewHotel')
-                        ->setLink($this->routeHelper->buildUrlForRoute('hotelOwnerAdminAddNewHotel'))
+                    ->setLabel('Add new Hotel')
+                    ->setRouteName('hotelOwnerAdminAddNewHotel')
+                    ->setLink($this->routeHelper->buildUrlForRoute('hotelOwnerAdminAddNewHotel'))
+                    ->setCurrentRouteName($this->routeHelper->getRouteName())
+                    ,
+                    (new MenuItem())
+                        ->setLabel('Edit Hotel')
+                        ->setRouteName('hotelOwnerAdminEditHotel')
                         ->setCurrentRouteName($this->routeHelper->getRouteName())
+                        ->setVisible(false)
                     ,
                 ]
             ),
@@ -62,6 +68,8 @@ class AdminMenu
                 ->setCurrentRouteName($this->routeHelper->getRouteName())
             ,
         ];
+
+        //print_r($menu); exit;
 
         return $menu;
     }

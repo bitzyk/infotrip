@@ -26,16 +26,19 @@
 
         <ul class="collapsible" data-collapsible="accordion">
             <?php foreach ($adminUiService->getAdminMenu()->getMenu() as $adminMenu): ?>
+            <?php if ($adminMenu->isVisible()): ?>
             <li>
                 <?php if ($adminMenu->isHasSubmenu()): ?>
                 <a href="javascript:void(0)" class="collapsible-header <?php if($adminMenu->isActive()) :?>active<?php endif; ?>"><i class="fa <?= $adminMenu->getCssClass(); ?>" aria-hidden="true"></i> <?= $adminMenu->getLabel(); ?></a>
                 <div class="collapsible-body left-sub-menu">
                     <ul>
                     <?php foreach ($adminMenu->getSubmenu() as $submenu): ?>
+                        <?php if ($submenu->isVisible()): ?>
                             <li>
                                 <a class="<?php if($submenu->isActive()) :?>menu-active<?php endif; ?>"
                                     href="<?= $submenu->getLink(); ?>"> <?= $submenu->getLabel(); ?></a>
                             </li>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                     </ul>
                 </div>
@@ -44,6 +47,7 @@
                             href="<?= $adminMenu->getLink(); ?>"><i class="fa <?= $adminMenu->getCssClass(); ?>" aria-hidden="true"></i> <?= $adminMenu->getLabel(); ?></a>
                 <?php endif; ?>
             </li>
+            <?php endif; ?>
             <?php endforeach; ?>
         </ul>
     </div>
