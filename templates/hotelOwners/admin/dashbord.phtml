@@ -57,7 +57,8 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                             </td>
                             <td>
 
-                                <a href="<?= $routeHelper->getHotelOwnerAdminEditHotelUrl($associatedHotel->getId()); ?>"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                <a href="<?= $routeHelper->getHotelOwnerAdminEditHotelUrl($associatedHotel->getId()); ?>"
+                                target="_blank"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                             </td>
                             <td>
                                 <a href="<?= $routeHelper->getHotelOwnerAdminDeleteHotelUrl($associatedHotel->getId()); ?>" onclick="return confirm('Are you sure you want to delete the hotel. The hotel will not be visible anymore on infotirp.org')"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
