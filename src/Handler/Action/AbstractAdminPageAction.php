@@ -19,6 +19,17 @@ abstract class AbstractAdminPageAction extends Action
      */
     protected $adminUiService;
 
+    /**
+     * @var \Infotrip\ViewHelpers\RouteHelper
+     */
+    protected $routerHelper;
+
+    /**
+     * @var \Infotrip\Domain\Entity\HotelOwnerUser
+     */
+    protected $hotelOwnerUser;
+
+
     public function __construct(
         ContainerInterface $container
     )
@@ -38,15 +49,14 @@ abstract class AbstractAdminPageAction extends Action
      */
     public function __invoke(Request $request, Response $response, $args = [])
     {
-        $routeHelper = $this->container->get(\Infotrip\ViewHelpers\RouteHelper::class);
-        /** @var \Infotrip\ViewHelpers\RouteHelper $routerHelper */
-        $routerHelper = $routeHelper($request);
+        $routeHelperNamespace = $this->container->get(\Infotrip\ViewHelpers\RouteHelper::class);
+        $this->routerHelper = $routeHelperNamespace($request);
 
         // do not allow access if is not logged
         if (!$this->authService->isLogged()) {
             return $response
                 ->withRedirect(
-                    $routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Login session has expired.',
+                    $this->routerHelper->getHotelOwnerLoginRegisterUrl() . '?loginError=Login session has expired.',
                     301
                 );
         }
@@ -66,17 +76,18 @@ abstract class AbstractAdminPageAction extends Action
 
         $currentUser = $this->authService->getCurrentUser();
 
-        $hotelOwnerUser = new \Infotrip\Domain\Entity\HotelOwnerUser();
+        $this->hotelOwnerUser = new \Infotrip\Domain\Entity\HotelOwnerUser();
 
-        $hotelOwnerUser
+        $this->hotelOwnerUser
             ->setUserId($currentUser['uid'])
             ->setEmail($currentUser['email']);
 
         $userHotelRepository
-            ->setUserAssociatedHotels($hotelOwnerUser);
+            ->setUserAssociatedHotels($this->hotelOwnerUser);
 
-        $args['hotelOwnerUser'] = $hotelOwnerUser;
+        $args['hotelOwnerUser'] = $this->hotelOwnerUser;
         $args['breadcrumb'] = $this->adminUiService->getAdminBreadcrumb()->buildBreadcrumb();
+        $args['successMessage'] = $request->getParam('successMessage');
 
         return $args;
     }

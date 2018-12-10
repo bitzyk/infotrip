@@ -25,7 +25,7 @@ class UserHotelRepository extends EntityRepository
                 "SELECT uh.hotel_id, h.name, h.countryCode, h.cityHotel, h.address, h.zip " .
                   "FROM Infotrip\Domain\Entity\UserHotel uh
                   JOIN Infotrip\Domain\Entity\Hotel h WITH uh.hotel_id = h.id
-                  WHERE uh.user_id = :userId"
+                  WHERE uh.user_id = :userId AND h.visible = 1"
             );
 
         $query->setParameter('userId', $hotelOwnerUser->getUserId());

@@ -514,5 +514,25 @@ class HotelRepository extends EntityRepository
         $this->fileCache = $fileCache;
     }
 
+    /**
+     * @param $hotelId
+     * @throws \Exception
+     */
+    public function deleteHotel(
+        $hotelId
+    )
+    {
+        $hotel = $this->find((int) $hotelId);
+
+        if (! $hotel instanceof Hotel)
+            throw new \Exception('Invalid input');
+
+        $hotel
+            ->setVisible(0);
+
+        $this->getEntityManager()->merge($hotel);
+        $this->getEntityManager()->flush($hotel);
+    }
+
 
 }
