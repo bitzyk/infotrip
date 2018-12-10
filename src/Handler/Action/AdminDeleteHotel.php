@@ -40,20 +40,13 @@ class AdminDeleteHotel extends AbstractAdminPageAction
             $args = $parentResponse;
         }
 
-        $hotelToDelete = null;
-        foreach ($this->hotelOwnerUser->getAssociatedHotels() as $associatedHotel) {
-            if ($associatedHotel->getId() == $args['hotelId']) {
-                $hotelToDelete = (int) $associatedHotel->getId();
-                break;
-            }
-        }
-
-        if (! is_int($hotelToDelete)) {
+        if (! $this->hotelOwnerUser
+            ->hotelIdIsOneOfAssociatedHotels($args['hotelId'])) {
             throw new \Exception('Invalid request');
         }
 
         $this->hotelRepository
-            ->deleteHotel($hotelToDelete);
+            ->deleteHotel($args['hotelId']);
 
         return $response
             ->withRedirect(

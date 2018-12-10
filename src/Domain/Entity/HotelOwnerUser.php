@@ -86,5 +86,22 @@ class HotelOwnerUser
         return ! empty($this->associatedHotels);
     }
 
+    /**
+     * @param $hotelId
+     * @return bool
+     */
+    public function hotelIdIsOneOfAssociatedHotels(
+        $hotelId
+    )
+    {
+        foreach ($this->getAssociatedHotels() as $associatedHotel) {
+            if ($associatedHotel->getId() == $hotelId) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 }

@@ -8,6 +8,13 @@ use Slim\Http\Response;
 class AdminEditHotel extends AbstractAdminPageAction
 {
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param array $args
+     * @return array|\Psr\Http\Message\ResponseInterface|Response
+     * @throws \Exception
+     */
     public function __invoke(Request $request, Response $response, $args = [])
     {
         $parentResponse = parent::__invoke($request, $response, $args);
@@ -17,6 +24,13 @@ class AdminEditHotel extends AbstractAdminPageAction
         } else if(is_array($parentResponse)) {
             $args = $parentResponse;
         }
+
+        if (! $this->hotelOwnerUser
+            ->hotelIdIsOneOfAssociatedHotels($args['hotelId'])) {
+            throw new \Exception('Invalid request');
+        }
+
+
         return $this->renderer->render($response, 'hotelOwners/admin/edit-hotel.phtml', $args);
     }
 
