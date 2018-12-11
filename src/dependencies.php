@@ -114,6 +114,14 @@ $container[\Infotrip\Domain\Repository\ResourceContentRepository::class] = funct
         ->getRepository('Infotrip\Domain\Entity\ResourceContent');
 };
 
+$container[\Infotrip\Domain\Repository\AuthUserRepository::class] = function ($container) {
+    /** @var EntityManager $entityManager */
+    $entityManager = $container[EntityManager::class];
+    return  $entityManager
+        ->getRepository('Infotrip\Domain\Entity\AuthUser');
+};
+
+
 $container[\Infotrip\Utils\Google\Recaptcha\V2::class] = function (Container $container) {
     return new \Infotrip\Utils\Google\Recaptcha\V2();
 };

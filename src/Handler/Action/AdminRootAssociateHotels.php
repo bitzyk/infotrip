@@ -2,11 +2,26 @@
 
 namespace Infotrip\Handler\Action;
 
+use Infotrip\Domain\Repository\AuthUserRepository;
+use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class AdminRootAssociateHotels extends AbstractAdminPageAction
+class AdminRootAssociateHotels extends AbstractRootAdminPageAction
 {
+    /**
+     * @var AuthUserRepository
+     */
+    private $authUserRepository;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+
+        $this->authUserRepository = $this->container->get(\Infotrip\Domain\Repository\AuthUserRepository::class);
+
+    }
+
 
     /**
      * @param Request $request
@@ -25,9 +40,10 @@ class AdminRootAssociateHotels extends AbstractAdminPageAction
             $args = $parentResponse;
         }
 
-        if (! $this->hotelOwnerUser->isRootUser()) {
-            throw new \Exception('Invalid request');
-        }
+        $users = $this->authUserRepository
+            ->getAll();
+
+        $args['users'] = $users;
 
         return $this->renderer->render($response, 'hotelOwners/admin/root/associate-hotels.phtml', $args);
     }
