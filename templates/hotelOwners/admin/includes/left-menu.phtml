@@ -2,6 +2,7 @@
 /** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
 /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
 /** @var $adminUiService \Infotrip\Utils\UI\Admin\Admin */
+/** @var $menu \Infotrip\Utils\UI\Admin\Entity\MenuItem[] */
 ?>
 <div class="sb2-1">
     <!--== USER INFO ==-->
@@ -25,7 +26,8 @@
 
 
         <ul class="collapsible" data-collapsible="accordion">
-            <?php foreach ($adminUiService->getAdminMenu()->getMenu() as $adminMenu): ?>
+            <?php
+            foreach ($menu as $adminMenu): ?>
             <?php if ($adminMenu->isVisible()): ?>
             <li>
                 <?php if ($adminMenu->isHasSubmenu()): ?>

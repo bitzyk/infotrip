@@ -86,7 +86,8 @@ abstract class AbstractAdminPageAction extends Action
             ->setUserAssociatedHotels($this->hotelOwnerUser);
 
         $args['hotelOwnerUser'] = $this->hotelOwnerUser;
-        $args['breadcrumb'] = $this->adminUiService->getAdminBreadcrumb()->buildBreadcrumb();
+        $args['menu'] = $this->adminUiService->getAdminMenu()->getMenu($this->hotelOwnerUser);
+        $args['breadcrumb'] = $this->adminUiService->getAdminBreadcrumb()->buildBreadcrumb($this->hotelOwnerUser);
         $args['successMessage'] = $request->getParam('successMessage');
         $args['errorMessage'] = $request->getParam('errorMessage');
 

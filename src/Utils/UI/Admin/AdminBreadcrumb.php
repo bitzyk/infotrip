@@ -3,6 +3,7 @@
 namespace Infotrip\Utils\UI\Admin;
 
 
+use Infotrip\Domain\Entity\HotelOwnerUser;
 use Infotrip\Utils\UI\Admin\Entity\BreadcrumbItem;
 use Infotrip\Utils\UI\Admin\Entity\MenuItem;
 
@@ -20,10 +21,12 @@ class AdminBreadcrumb
         $this->adminMenu = $adminMenu;
     }
 
-    public function buildBreadcrumb()
+    public function buildBreadcrumb(
+        HotelOwnerUser $hotelOwnerUser
+    )
     {
         $menu = $this->adminMenu
-            ->getMenu();
+            ->getMenu($hotelOwnerUser);
 
         // set parent breadcrumb
         $breadcrumb = new BreadcrumbItem();

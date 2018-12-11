@@ -9,6 +9,11 @@ class HotelOwnerUser
 
     private $email;
 
+    private static $rootUsers = [
+        'bogdan.criveanu@gmail.com',
+        'cristi.bitoi@gmail.com',
+    ];
+
     /**
      * @var Hotel[]
      */
@@ -103,5 +108,12 @@ class HotelOwnerUser
         return false;
     }
 
+    /**
+     * @return bool
+     */
+    public function isRootUser()
+    {
+        return (boolean) in_array($this->email, self::$rootUsers);
+    }
 
 }

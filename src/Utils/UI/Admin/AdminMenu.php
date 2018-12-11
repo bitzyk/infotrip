@@ -2,6 +2,7 @@
 
 namespace Infotrip\Utils\UI\Admin;
 
+use Infotrip\Domain\Entity\HotelOwnerUser;
 use Infotrip\Utils\UI\Admin\Entity\MenuItem;
 
 class AdminMenu
@@ -22,9 +23,10 @@ class AdminMenu
     /**
      * @return MenuItem[]
      */
-    public function getMenu()
+    public function getMenu(
+        HotelOwnerUser $hotelOwnerUser
+    )
     {
-
         $menu = [
             (new MenuItem())
             ->setLabel('Hotels')
@@ -67,16 +69,34 @@ class AdminMenu
                 ->setCssClass('fa-cogs')
                 ->setCurrentRouteName($this->routeHelper->getRouteName())
             ,
-            (new MenuItem())
-                ->setLabel('Logout')
-                ->setRouteName('hotelOwnerAdminLogout')
-                ->setLink($this->routeHelper->buildUrlForRoute('hotelOwnerAdminLogout'))
-                ->setCssClass('fa-sign-in')
-                ->setCurrentRouteName($this->routeHelper->getRouteName())
-            ,
         ];
 
-        //print_r($menu); exit;
+        if ($hotelOwnerUser->isRootUser()) {
+            $menu[] = (new MenuItem())
+                ->setLabel('Root user')
+                ->setHasSubmenu(true)
+                ->setCssClass('fa-cogs')
+                ->setCurrentRouteName($this->routeHelper->getRouteName())
+                ->setSubmenu(
+                    [
+                        (new MenuItem())
+                            ->setLabel('Associate hotels to user')
+                            ->setRouteName('adminRootAssociateHotels')
+                            ->setLink($this->routeHelper->buildUrlForRoute('adminRootAssociateHotels'))
+                            ->setCurrentRouteName($this->routeHelper->getRouteName())
+                        ,
+
+                    ]
+                );
+        }
+
+        $menu[] = (new MenuItem())
+            ->setLabel('Logout')
+            ->setRouteName('hotelOwnerAdminLogout')
+            ->setLink($this->routeHelper->buildUrlForRoute('hotelOwnerAdminLogout'))
+            ->setCssClass('fa-sign-in')
+            ->setCurrentRouteName($this->routeHelper->getRouteName());
+
 
         return $menu;
     }
