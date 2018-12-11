@@ -88,6 +88,7 @@ abstract class AbstractAdminPageAction extends Action
         $args['hotelOwnerUser'] = $this->hotelOwnerUser;
         $args['breadcrumb'] = $this->adminUiService->getAdminBreadcrumb()->buildBreadcrumb();
         $args['successMessage'] = $request->getParam('successMessage');
+        $args['errorMessage'] = $request->getParam('errorMessage');
 
         return $args;
     }

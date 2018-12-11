@@ -34,11 +34,48 @@ class AdminAcountSettingsProcess extends AbstractAdminPageAction
             $args = $parentResponse;
         }
 
+
+        $data = $request->getParsedBody();
+
+        // change password
+        if (
+            isset($data['password']) && isset($data['password1'])  && isset($data['currPassword']) &&
+            (strlen($data['password']) > 0) &&
+            ($data['password'] === $data['password1'])
+        ) {
+            $authResponse = $this->authService
+                ->changePassword(
+                    $this->authService->getCurrentUID(),
+                    $data['currPassword'],
+                    $data['password'],
+                    $data['password']
+                );
+
+            if (
+                isset($authResponse['error']) &&
+                $authResponse['error']
+            ) {
+                $errorMessage = isset($authResponse['message']) ? $authResponse['message'] : '';
+
+                // redirect in case of error
+                return $response
+                    ->withRedirect(
+                        $this->routerHelper->getHotelOwnerAdminAccountSettingsUrl() . '?errorMessage=' . $errorMessage,
+                        301
+                    );
+            } else {
+                return $response
+                    ->withRedirect(
+                        $this->routerHelper->getHotelOwnerAdminAccountSettingsUrl() . '?successMessage=Password have been successfully changed.',
+                        301
+                    );
+            }
+        }
+
+        print_r($data);
         echo 'aici';
-        print_r(
-            $request->getParsedBody()
-        );
         exit;
+
 
         // hydrate hotel
         $hotelToEdit = $this->hydrateUpdatedHotel(
@@ -58,23 +95,4 @@ class AdminAcountSettingsProcess extends AbstractAdminPageAction
             );
     }
 
-    /**
-     * @param Hotel $fromHotel
-     * @param array $updatedInfo
-     * @return Hotel
-     */
-    private function hydrateUpdatedHotel(
-        Hotel $fromHotel,
-        array $updatedInfo
-    )
-    {
-        $fromHotel
-            ->setName($updatedInfo['hotelName'])
-            ->setDescEn($updatedInfo['hotelDescription'])
-            ->setAddress($updatedInfo['hotelAddress'])
-            ->setZip($updatedInfo['hotelZipCode'])
-            ->setMinrate($updatedInfo['hotelPriceMin']);
-
-        return $fromHotel;
-    }
 }
