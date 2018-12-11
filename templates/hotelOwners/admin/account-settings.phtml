@@ -1,4 +1,7 @@
 <?php
+/** @var $hotelOwnerUser \Infotrip\Domain\Entity\HotelOwnerUser */
+/** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
+/** @var $adminUiService \Infotrip\Utils\UI\Admin\Admin */
 require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.phtml';
 ?>
 
@@ -6,7 +9,35 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
     <div class="col-md-12">
         <div class="box-inn-sp">
             <div class="inn-title">
-                <h4>Coming soon</h4>
+                <h4>Account Settings</h4>
+            </div>
+            <div class="tab-inn">
+                <form method="post" action="<?= $routeHelper->getHotelOwnerAdminAccountSettingsProcessUrl(); ?>">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="email" required
+                                   name="email" type="email" value="<?= $hotelOwnerUser->getEmail(); ?>" class="validate">
+                            <label for="email">Email</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input id="password" name="password" required
+                                   type="password" value="" class="validate">
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="password1" name="password1" required
+                                   type="password" value="" class="validate">
+                            <label for="password1">Confirm Password</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="submit" class="waves-effect waves-light btn-large" value="Save">
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

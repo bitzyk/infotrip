@@ -61,6 +61,13 @@ class AdminMenu
                 ->setCurrentRouteName($this->routeHelper->getRouteName())
             ,
             (new MenuItem())
+                ->setLabel('Admin Setting')
+                ->setRouteName('hotelOwnerAdminAccountSettings')
+                ->setLink($this->routeHelper->buildUrlForRoute('hotelOwnerAdminAccountSettings'))
+                ->setCssClass('fa-cogs')
+                ->setCurrentRouteName($this->routeHelper->getRouteName())
+            ,
+            (new MenuItem())
                 ->setLabel('Logout')
                 ->setRouteName('hotelOwnerAdminLogout')
                 ->setLink($this->routeHelper->buildUrlForRoute('hotelOwnerAdminLogout'))
