@@ -72,25 +72,43 @@ class AdminAcountSettingsProcess extends AbstractAdminPageAction
             }
         }
 
-        print_r($data);
-        echo 'aici';
-        exit;
+        // change email
 
+        if (
+            isset($data['email']) && isset($data['currPassword']) &&
+            $data['email'] != $this->hotelOwnerUser->getEmail()
+        ) {
+            $authResponse = $this->authService
+                ->changeEmail(
+                    $this->authService->getCurrentUID(),
+                    $data['email'],
+                    $data['currPassword']
+                );
 
-        // hydrate hotel
-        $hotelToEdit = $this->hydrateUpdatedHotel(
-            $this->hotelRepository->getHotel($args['hotelId']),
-            $request->getParsedBody()
-        );
+            if (
+                isset($authResponse['error']) &&
+                $authResponse['error']
+            ) {
+                $errorMessage = isset($authResponse['message']) ? $authResponse['message'] : '';
 
-        // update hotel
-        $this->hotelRepository
-            ->updateHotel($hotelToEdit);
+                // redirect in case of error
+                return $response
+                    ->withRedirect(
+                        $this->routerHelper->getHotelOwnerAdminAccountSettingsUrl() . '?errorMessage=' . $errorMessage,
+                        301
+                    );
+            } else {
+                return $response
+                    ->withRedirect(
+                        $this->routerHelper->getHotelOwnerAdminAccountSettingsUrl() . '?successMessage=Email have been successfully changed.',
+                        301
+                    );
+            }
+        }
 
-        // redirect
         return $response
             ->withRedirect(
-                $this->routerHelper->getHotelOwnerAdminDashbordUrl() . '?successMessage=The hotel have been updated.',
+                $this->routerHelper->getHotelOwnerAdminAccountSettingsUrl() . '?successMessage=Invalid request.',
                 301
             );
     }
