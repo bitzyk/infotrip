@@ -251,6 +251,19 @@ class RouteHelper
             ]);
     }
 
+    public function getAdminRootAssociateHotelsUrl()
+    {
+        return $this->router
+            ->pathFor('adminRootAssociateHotels');
+    }
+
+    public function getAdminRootAssociateHotelsProcessUrl()
+    {
+        return $this->router
+            ->pathFor('adminRootAssociateHotelsProcess');
+    }
+
+
     public function buildUrlForRoute($routeName)
     {
         return $this->router

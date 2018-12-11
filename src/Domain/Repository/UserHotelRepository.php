@@ -5,8 +5,10 @@ namespace Infotrip\Domain\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping;
+use Doctrine\ORM\OptimisticLockException;
 use Infotrip\Domain\Entity\Hotel;
 use Infotrip\Domain\Entity\HotelOwnerUser;
+use Infotrip\Domain\Entity\UserHotel;
 
 class UserHotelRepository extends EntityRepository
 {
@@ -52,4 +54,42 @@ class UserHotelRepository extends EntityRepository
 
         return $this;
     }
+
+    /**
+     * @param $userId
+     * @param $hotelIds
+     * @return int
+     * @throws \Exception
+     */
+    public function associateHotelsToUser(
+        $userId,
+        $hotelIds
+    )
+    {
+        $hotelIdsArr = explode(',', $hotelIds);
+
+        $assocHotels = 0;
+
+        foreach ($hotelIdsArr as $hotelId) {
+            $hotelId = (int)trim($hotelId);
+
+            $userHotel = new UserHotel();
+            $userHotel
+                ->setHotelId($hotelId)
+                ->setUserId($userId);
+
+            print_r($userHotel);
+            try {
+                $this->getEntityManager()->persist($userHotel);
+                $this->getEntityManager()->flush($userHotel);
+                $assocHotels++;
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+
+        return $assocHotels;
+    }
+
+
 }

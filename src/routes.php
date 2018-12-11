@@ -733,3 +733,4 @@ $app->get('/hotel-owner-admin/hotel-delete/{hotelId}', \Infotrip\Handler\Action\
 
 // admin root pages
 $app->get('/admin-root/associate-hotels', \Infotrip\Handler\Action\AdminRootAssociateHotels::class)->setName('adminRootAssociateHotels');
+$app->post('/admin-root/associate-hotels-process', \Infotrip\Handler\Action\AdminRootAssociateHotelsProcess::class)->setName('adminRootAssociateHotelsProcess');
