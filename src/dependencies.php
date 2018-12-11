@@ -101,10 +101,16 @@ $container[\Infotrip\Domain\Repository\UserHotelRepository::class] = function (C
     /** @var EntityManager $entityManager */
     $entityManager = $container[EntityManager::class];
 
-    /** @var HotelRepository $repository */
-    $repository = $entityManager->getRepository('Infotrip\Domain\Entity\UserHotel');
+    /** @var \Infotrip\Domain\Repository\UserHotelRepository $userHotelRepository */
+    $userHotelRepository = $entityManager->getRepository('Infotrip\Domain\Entity\UserHotel');
 
-    return $repository;
+    /** @var HotelRepository $hotelRepository */
+    $hotelRepository = $container->get(HotelRepository::class);
+
+    $userHotelRepository
+        ->setHotelRepository($hotelRepository);
+
+    return $userHotelRepository;
 };
 
 $container[\Infotrip\Domain\Repository\ResourceContentRepository::class] = function ($container) {

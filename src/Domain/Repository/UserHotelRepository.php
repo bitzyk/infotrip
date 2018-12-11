@@ -9,10 +9,15 @@ use Doctrine\ORM\OptimisticLockException;
 use Infotrip\Domain\Entity\Hotel;
 use Infotrip\Domain\Entity\HotelOwnerUser;
 use Infotrip\Domain\Entity\UserHotel;
+use Infotrip\HotelParser\ImageCatcher\ImageCatcher;
 
 class UserHotelRepository extends EntityRepository
 {
 
+    /**
+     * @var HotelRepository
+     */
+    private $hotelRepository;
     /**
      * @param HotelOwnerUser $hotelOwnerUser
      * @return $this
@@ -73,16 +78,21 @@ class UserHotelRepository extends EntityRepository
         foreach ($hotelIdsArr as $hotelId) {
             $hotelId = (int)trim($hotelId);
 
+            $hotelToAssociate = $this->hotelRepository
+                ->getHotel($hotelId);
+
             $userHotel = new UserHotel();
             $userHotel
-                ->setHotelId($hotelId)
+                ->setHotelId($hotelToAssociate->getId())
                 ->setUserId($userId);
 
-            print_r($userHotel);
             try {
                 $this->getEntityManager()->persist($userHotel);
                 $this->getEntityManager()->flush($userHotel);
                 $assocHotels++;
+
+                $this->moveHotelImagesToAdministrableDirectory($hotelToAssociate);
+
             } catch (\Exception $e) {
                 continue;
             }
@@ -90,6 +100,41 @@ class UserHotelRepository extends EntityRepository
 
         return $assocHotels;
     }
+
+    /**
+     * @param Hotel $hotel
+     */
+    public function moveHotelImagesToAdministrableDirectory(
+        Hotel $hotel
+    )
+    {
+        $administrableImagePath = $hotel->getAdministrableImagePath();
+
+        if (! file_exists($administrableImagePath)) {
+            mkdir($administrableImagePath, 0755);
+        }
+        foreach ($hotel->getImages() as $image) {
+            if (
+                file_exists($image->getServerLocationSrc())
+            ) {
+                $baseName = basename($image->getSrc());
+
+                $newImagePath = $administrableImagePath . '/' . $baseName;
+
+                file_put_contents($newImagePath, file_get_contents($image->getServerLocationSrc()));
+                unlink($image->getServerLocationSrc());
+            }
+        }
+    }
+
+    /**
+     * @param HotelRepository $hotelRepository
+     */
+    public function setHotelRepository($hotelRepository)
+    {
+        $this->hotelRepository = $hotelRepository;
+    }
+
 
 
 }

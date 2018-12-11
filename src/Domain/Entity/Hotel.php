@@ -246,7 +246,6 @@ class Hotel extends Base implements \JsonSerializable
             $this->cityUnique,
             $this->id
         );
-
         if (file_exists($directory)) {
             if ($handle = opendir($directory)) {
                 while (false !== ($entry = readdir($handle))) {
@@ -725,6 +724,11 @@ class Hotel extends Base implements \JsonSerializable
     public function jsonSerialize()
     {
         return get_object_vars($this);
+    }
+
+    public function getAdministrableImagePath()
+    {
+        return ADMINISTRABLE_IMAGE_PATH . '/hotel-' . $this->getId();
     }
 
 }

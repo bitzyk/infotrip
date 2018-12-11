@@ -48,6 +48,11 @@ class Image implements \JsonSerializable
         return $this->src;
     }
 
+    public function getServerLocationSrc()
+    {
+        return RESOURCES_ROOT . $this->getSrc();
+    }
+
     /**
      * @param string $src
      * @return Image

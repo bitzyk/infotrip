@@ -2,6 +2,7 @@
 
 define('APP_ROOT', __DIR__);
 define('RESOURCES_ROOT', realpath(__DIR__ .'/../public_html'));
+define('ADMINISTRABLE_IMAGE_PATH', RESOURCES_ROOT .'/hotel-images/administrable');
 
 $env = (isset($_SERVER['HTTP_HOST']) && (strpos($_SERVER['HTTP_HOST'], 'infotrip') !== false))
     ? 'PROD' : 'DEV';
