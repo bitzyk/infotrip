@@ -535,13 +535,28 @@ $app->post('/hotel-owner-register', function (Request $request, Response $respon
             );
     }
 
+    // inregistrare cu success
+    $mail = new \PHPMailer\PHPMailer\PHPMailer();
+    $mail->setFrom('infotrip@no-reply.org', 'infotrip.org');
+    $mail->addAddress('bitzyk@yahoo.com');
+    $mail->isHTML(true);
+
+    $mail->Subject  = 'Infotrip: New hotel owner account have been created';
+    $mail->Body     = sprintf(
+        'Email : %s<br>Hotel name: %s<br>Hotel city: %s',
+        $registerData['email'],
+        $registerData['hotelName'],
+        $registerData['hotelCity']
+    );
+    $mail->AltBody  = $mail->Body;
+
+    $mail->send();
 
     return $response
         ->withRedirect(
             $routerHelper->getHotelOwnerLoginRegisterUrl() . '?registerSuccess=' . $authResponse['message'],
             301
         );
-
 
 
 })->setName('hotelOwnerRegister');
