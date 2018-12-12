@@ -83,9 +83,16 @@ $container['viewHelpers'] = function (Container $container) {
 
 $container[\Infotrip\Utils\JQueryFileUpload\UploadHandler::class] = function (Container $container) {
 
-    return function($uploadDir, $uploadUrl) use ($container) {
+    return function($request, $uploadDir, $uploadUrl, $hotelId) use ($container) {
+
+        $routeHelperClosure = $container->get(\Infotrip\ViewHelpers\RouteHelper::class);
+
+        /** @var \Infotrip\ViewHelpers\RouteHelper $routeHelper */
+        $routeHelper = $routeHelperClosure($request);
+
         return new \Infotrip\Utils\JQueryFileUpload\UploadHandler(
             [
+                'script_url' => $routeHelper->gethotelOwnerAdminEditHotelImageHandlerProcessUrl($hotelId),
                 'upload_dir' => $uploadDir,
                 'upload_url' => $uploadUrl,
             ]

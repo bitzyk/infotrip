@@ -53,8 +53,10 @@ class AdminEditHotelImageHandlerProcess extends AbstractAdminPageAction
 
         error_reporting(E_ALL | E_STRICT);
         $uploadHandlerClosure(
+            $request,
             $hotel->getAdministrableImagePath() .'/',
-            $hotel->getAdministrableImageUrl() . '/'
+            $hotel->getAdministrableImageUrl() . '/',
+            $hotel->getId()
         );
     }
 
