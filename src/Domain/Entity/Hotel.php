@@ -241,11 +241,18 @@ class Hotel extends Base implements \JsonSerializable
             $this->repository = $eventArgs->getEntityManager()->getRepository(get_class($this));
         }
 
-        $directory = ImageCatcher::getImageDirectory(
-            RESOURCES_ROOT . Hotel::CACHE_DIR,
-            $this->cityUnique,
-            $this->id
-        );
+        if (file_exists($this->getAdministrableImagePath())) {
+            $directory = $this->getAdministrableImagePath();
+        } else {
+            $directory = ImageCatcher::getImageDirectory(
+                RESOURCES_ROOT . Hotel::CACHE_DIR,
+                $this->cityUnique,
+                $this->id
+            );
+        }
+
+        $webDirectory = str_replace(RESOURCES_ROOT, '', $directory);
+
         if (file_exists($directory)) {
             if ($handle = opendir($directory)) {
                 while (false !== ($entry = readdir($handle))) {
@@ -253,11 +260,7 @@ class Hotel extends Base implements \JsonSerializable
                     if (isset($pathInfo['extension']) && $pathInfo['extension'] == 'jpg') {
                         $image = (new Image($this->id, $this->cityUnique))
                             ->setSrc(
-                                ImageCatcher::getImageDirectory(
-                                    self::CACHE_DIR,
-                                    $this->cityUnique,
-                                    $this->id
-                                ) . '/' . $pathInfo['basename'])
+                                $webDirectory . '/' . $pathInfo['basename'])
                             ->setIsCached(true);
 
                         $this->addImage($image);
