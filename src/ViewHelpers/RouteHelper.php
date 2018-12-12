@@ -231,6 +231,16 @@ class RouteHelper
             ]);
     }
 
+    public function gethotelOwnerAdminEditHotelImageHandlerProcessUrl(
+        $hotelId
+    )
+    {
+        return $this->router
+            ->pathFor('hotelOwnerAdminEditHotelImageHandlerProcess', [
+                'hotelId' => (int) $hotelId
+            ]);
+    }
+
     public function getHotelOwnerAdminDeleteHotelUrl(
         $hotelId
     )

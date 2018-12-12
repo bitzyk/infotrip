@@ -729,9 +729,20 @@ class Hotel extends Base implements \JsonSerializable
         return get_object_vars($this);
     }
 
+    /**
+     * @return string
+     */
     public function getAdministrableImagePath()
     {
         return ADMINISTRABLE_IMAGE_PATH . '/hotel-' . $this->getId();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAdministrableImageUrl()
+    {
+        return str_replace(RESOURCES_ROOT, '', $this->getAdministrableImagePath());
     }
 
 }

@@ -729,6 +729,7 @@ $app->get('/hotel-owner-admin-account-settings', \Infotrip\Handler\Action\AdminA
 $app->post('/hotel-owner-admin-account-settings-process', \Infotrip\Handler\Action\AdminAcountSettingsProcess::class)->setName('hotelOwnerAdminAccountSettingsProcess');
 $app->get('/hotel-owner-admin/hotel-edit/{hotelId}', \Infotrip\Handler\Action\AdminEditHotel::class)->setName('hotelOwnerAdminEditHotel');
 $app->post('/hotel-owner-admin/hotel-edit-process/{hotelId}', \Infotrip\Handler\Action\AdminEditHotelProcess::class)->setName('hotelOwnerAdminEditHotelProcess');
+$app->post('/hotel-owner-admin/hotel-edit-image-handler-process/{hotelId}', \Infotrip\Handler\Action\AdminEditHotelImageHandlerProcess::class)->setName('hotelOwnerAdminEditHotelImageHandlerProcess');
 $app->get('/hotel-owner-admin/hotel-delete/{hotelId}', \Infotrip\Handler\Action\AdminDeleteHotel::class)->setName('hotelOwnerAdminDeleteHotel');
 
 // admin root pages

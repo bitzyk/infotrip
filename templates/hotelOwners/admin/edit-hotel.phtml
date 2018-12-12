@@ -354,7 +354,7 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
         $('#fileupload').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
-            url: '/admin/jquery-file-upload/server/php/index.php',
+            url: '<?= $routeHelper->gethotelOwnerAdminEditHotelImageHandlerProcessUrl($hotel->getId()); ?>',
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
         });
 
@@ -370,7 +370,7 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                 "type":"image/jpeg",
                 "url":"<?= $image->getSrc(); ?>",
                 "thumbnailUrl":"<?= $image->getSrc(); ?>",
-                "deleteUrl":"http://mydomain.com/files/fileName.jpg",
+                "deleteUrl":"<?= $routeHelper->gethotelOwnerAdminEditHotelImageHandlerProcessUrl($hotel->getId()); ?>",
                 "deleteType":"DELETE"
             });
             <?php $i++; endforeach; ?>

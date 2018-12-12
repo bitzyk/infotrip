@@ -2,12 +2,14 @@
 
 namespace Infotrip\Handler\Action;
 
+use Infotrip\Domain\Entity\Hotel;
 use Infotrip\Domain\Repository\HotelRepository;
+use Infotrip\Utils\JQueryFileUpload\UploadHandler;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class AdminEditHotel extends AbstractAdminPageAction
+class AdminEditHotelImageHandlerProcess extends AbstractAdminPageAction
 {
 
     /**
@@ -45,10 +47,15 @@ class AdminEditHotel extends AbstractAdminPageAction
             throw new \Exception('Invalid request');
         }
 
-        $hotelToEdit = $this->hotelRepository->getHotel($args['hotelId']);
-        $args['hotel'] = $hotelToEdit;
+        $hotel = $this->hotelRepository->getHotel($args['hotelId']);
 
-        return $this->renderer->render($response, 'hotelOwners/admin/edit-hotel.phtml', $args);
+        $uploadHandlerClosure = $this->container->get(\Infotrip\Utils\JQueryFileUpload\UploadHandler::class);
+
+        error_reporting(E_ALL | E_STRICT);
+        $uploadHandlerClosure(
+            $hotel->getAdministrableImagePath() .'/',
+            $hotel->getAdministrableImageUrl() . '/'
+        );
     }
 
 }

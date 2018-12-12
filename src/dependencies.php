@@ -81,6 +81,19 @@ $container['viewHelpers'] = function (Container $container) {
     };
 };
 
+$container[\Infotrip\Utils\JQueryFileUpload\UploadHandler::class] = function (Container $container) {
+
+    return function($uploadDir, $uploadUrl) use ($container) {
+        return new \Infotrip\Utils\JQueryFileUpload\UploadHandler(
+            [
+                'upload_dir' => $uploadDir,
+                'upload_url' => $uploadUrl,
+            ]
+        );
+    };
+};
+
+
 // doctrine
 require_once APP_ROOT . '/dependencies-doctrine.php';
 

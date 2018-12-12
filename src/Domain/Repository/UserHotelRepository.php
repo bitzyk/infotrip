@@ -113,6 +113,8 @@ class UserHotelRepository extends EntityRepository
         if (! file_exists($administrableImagePath)) {
             mkdir($administrableImagePath, 0755);
         }
+
+
         foreach ($hotel->getImages() as $image) {
             if (
                 file_exists($image->getServerLocationSrc())
