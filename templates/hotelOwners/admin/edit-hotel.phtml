@@ -6,6 +6,8 @@
 require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.phtml';
 ?>
 
+<style type="text/css"> @import url("/uploadify/uploadify.css"); </style>
+
     <div class="row">
         <div class="col-md-12">
             <div class="box-inn-sp">
@@ -83,6 +85,12 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                                 <h4>Photo Gallery</h4>
                             </div>
                             <div class="bor">
+
+                                <?php foreach ($hotel->getImages() as $image): ?>
+
+                                <img src="<?= $image->getSrc(); ?>">
+                                <?php endforeach; ?>
+
                                 <form action="#">
                                     <div class="file-field input-field">
                                         <div class="btn">
