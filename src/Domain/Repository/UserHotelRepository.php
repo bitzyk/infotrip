@@ -112,8 +112,11 @@ class UserHotelRepository extends EntityRepository
 
         if (! file_exists($administrableImagePath)) {
             mkdir($administrableImagePath, 0755);
+            copy(
+                ADMINISTRABLE_IMAGE_PATH .'/.htaccess',
+                $administrableImagePath . '/.htaccess'
+            );
         }
-
 
         foreach ($hotel->getImages() as $image) {
             if (
