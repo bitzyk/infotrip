@@ -386,7 +386,8 @@ class Hotel extends Base implements \JsonSerializable
                 ];
             }
         } else if (
-            count($this->images) == 1
+            count($this->images) == 1 &&
+            (! $this->images[0]->isAdministrableImage())
         ) {
             if(
                 $this->externalHotelInfo instanceof HotelInfo &&
