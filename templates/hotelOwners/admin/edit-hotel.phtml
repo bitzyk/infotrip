@@ -364,15 +364,16 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
         ?>
             var files = [];
             <?php $i=1; foreach ($hotel->getImages() as $image): ?>
-
+            <?php if($image->isAdministrableImage()): ?>
             files.push({
                 "name":"<?= $hotel->getName(); ?> - image <?= $i; ?> (view)",
                 "type":"image/jpeg",
                 "url":"<?= $image->getSrc(); ?>",
                 "thumbnailUrl":"<?= $image->getSrc(); ?>",
-                "deleteUrl":"<?= $routeHelper->gethotelOwnerAdminEditHotelImageHandlerProcessUrl($hotel->getId()); ?>",
+                "deleteUrl":"<?= $routeHelper->gethotelOwnerAdminEditHotelImageHandlerProcessUrl($hotel->getId()); ?>?<?= http_build_query(['files' => [$image->getImageName()]]); ?>",
                 "deleteType":"DELETE"
             });
+            <?php endif; ?>
             <?php $i++; endforeach; ?>
 
             $('#fileupload').fileupload('option', 'done').call($('#fileupload'), $.Event('done'), {result: {files: files}});

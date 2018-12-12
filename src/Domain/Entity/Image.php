@@ -33,6 +33,10 @@ class Image implements \JsonSerializable
      */
     private $cityUnique;
 
+    /**
+     * @var bool
+     */
+    private $administrableImage = false;
 
     public function __construct($hotelId, $cityUnique)
     {
@@ -103,5 +107,27 @@ class Image implements \JsonSerializable
         return get_object_vars($this);
     }
 
+    /**
+     * @return bool
+     */
+    public function isAdministrableImage()
+    {
+        return $this->administrableImage;
+    }
+
+    /**
+     * @param bool $administrableImage
+     * @return Image
+     */
+    public function setAdministrableImage($administrableImage)
+    {
+        $this->administrableImage = $administrableImage;
+        return $this;
+    }
+
+    public function getImageName()
+    {
+        return basename($this->src);
+    }
 
 }
