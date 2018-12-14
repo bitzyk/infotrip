@@ -141,5 +141,26 @@ class UserHotelRepository extends EntityRepository
     }
 
 
+    /**
+     * @param $hotelId
+     * @param $userId
+     * @throws OptimisticLockException
+     */
+    public function deleteHotelAssociation(
+        $hotelId,
+        $userId
+    )
+    {
+        $hotelToUserAssociations = $this->findBy([
+            'hotel_id' => $hotelId,
+            'user_id' => $userId,
+        ]);
+
+        foreach ($hotelToUserAssociations as $hotelToUserAssociation) {
+            $this->getEntityManager()->remove($hotelToUserAssociation);
+            $this->getEntityManager()->flush($hotelToUserAssociation);
+        }
+    }
+
 
 }

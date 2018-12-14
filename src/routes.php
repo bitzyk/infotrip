@@ -538,7 +538,7 @@ $app->post('/hotel-owner-register', function (Request $request, Response $respon
     // inregistrare cu success
     $mail = new \PHPMailer\PHPMailer\PHPMailer();
     $mail->setFrom('infotrip@no-reply.org', 'infotrip.org');
-    $mail->addAddress('bitzyk@yahoo.com');
+    $mail->addAddress('office@infotrip.org');
     $mail->isHTML(true);
 
     $mail->Subject  = 'Infotrip: New hotel owner account have been created';

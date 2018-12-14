@@ -240,3 +240,17 @@ $container[\Infotrip\Utils\UI\Admin\Admin::class] = function (Container $contain
         return $service;
     };
 };
+
+$container[\Infotrip\Service\HotelOwner\HotelOwnerService::class] = function (Container $container) {
+    /** @var \Infotrip\Domain\Repository\HotelRepository $hotelRepository */
+    $hotelRepository = $container->get(\Infotrip\Domain\Repository\HotelRepository::class);
+
+    /** @var \Infotrip\Domain\Repository\UserHotelRepository $userHotelRepository */
+    $userHotelRepository = $container->get(\Infotrip\Domain\Repository\UserHotelRepository::class);
+
+    return new \Infotrip\Service\HotelOwner\HotelOwnerService(
+        $hotelRepository,
+        $userHotelRepository
+    );
+};
+

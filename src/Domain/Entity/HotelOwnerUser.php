@@ -2,6 +2,8 @@
 
 namespace Infotrip\Domain\Entity;
 
+use Infotrip\Service\HotelOwner\HotelOwnerService;
+
 class HotelOwnerUser
 {
 
@@ -12,7 +14,21 @@ class HotelOwnerUser
     private static $rootUsers = [
         'bogdan.criveanu@gmail.com',
         'cristi.bitoi@gmail.com',
+
     ];
+
+    /**
+     * @var HotelOwnerService
+     */
+    private $hotelOwnerService;
+
+    public function __construct(
+        HotelOwnerService $hotelOwnerService
+    )
+    {
+        $this->hotelOwnerService = $hotelOwnerService;
+    }
+
 
     /**
      * @var Hotel[]
@@ -114,6 +130,24 @@ class HotelOwnerUser
     public function isRootUser()
     {
         return (boolean) in_array($this->email, self::$rootUsers);
+    }
+
+    /**
+     * @param $hotelId
+     * @throws \Exception
+     */
+    public function deleteHotel(
+        $hotelId
+    )
+    {
+        // check if the hotelId to delete is one of the associated hotels for the given user
+        if (! $this->hotelIdIsOneOfAssociatedHotels($hotelId)) {
+            throw new \Exception('Invalid request');
+        }
+
+        // call the service to delete hotel
+        $this->hotelOwnerService
+            ->deleteHotel($hotelId, $this->userId);
     }
 
 }

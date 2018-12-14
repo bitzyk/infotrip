@@ -76,7 +76,9 @@ abstract class AbstractAdminPageAction extends Action
 
         $currentUser = $this->authService->getCurrentUser();
 
-        $this->hotelOwnerUser = new \Infotrip\Domain\Entity\HotelOwnerUser();
+        $this->hotelOwnerUser = new \Infotrip\Domain\Entity\HotelOwnerUser(
+            $this->container->get(\Infotrip\Service\HotelOwner\HotelOwnerService::class)
+        );
 
         $this->hotelOwnerUser
             ->setUserId($currentUser['uid'])

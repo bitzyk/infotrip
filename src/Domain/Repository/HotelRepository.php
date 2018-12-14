@@ -527,6 +527,7 @@ class HotelRepository extends EntityRepository
         if (! $hotel instanceof Hotel)
             throw new \Exception('Invalid input');
 
+        // set hotel visible to 0
         $hotel
             ->setVisible(0);
 
