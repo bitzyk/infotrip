@@ -76,7 +76,7 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                                             <div class="input-field col s12">
                                                 <input required id="hotelPriceMin" name="hotelPriceMin"
                                                        type="text" class="validate" value="<?= $hotel->getMinrate(); ?>">
-                                                <label for="hotelPriceMin">Hotel zip code</label>
+                                                <label for="hotelPriceMin">Hotel min rate</label>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -354,6 +354,7 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
         $('#fileupload').fileupload({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
+            autoUpload : true,
             url: '<?= $routeHelper->gethotelOwnerAdminEditHotelImageHandlerProcessUrl($hotel->getId()); ?>',
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
         });

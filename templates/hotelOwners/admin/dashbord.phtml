@@ -51,10 +51,10 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                                 <span class="list-enq-city"><?= $associatedHotel->getCityHotel(); ?>, <?= $associatedHotel->getCountryName(); ?></span>
                             </td>
                             <td>
-                                € <?= $associatedHotel->getMinrate(); ?>
+                                <?= $associatedHotel->getAddress(); ?>, <?= $associatedHotel->getZip(); ?>
                             </td>
                             <td>
-                                <?= $associatedHotel->getAddress(); ?>, <?= $associatedHotel->getZip(); ?>
+                                € <?= $associatedHotel->getMinrate(); ?>
                             </td>
                             <td>
                                 <a href="<?= $routeHelper->getHotelUrl($associatedHotel->getName(), $associatedHotel->getId()); ?>" target="_blank"><i class="fa fa-eye" aria-hidden="true"></i></a>
