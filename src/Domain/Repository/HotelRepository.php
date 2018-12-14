@@ -515,18 +515,13 @@ class HotelRepository extends EntityRepository
     }
 
     /**
-     * @param $hotelId
-     * @throws \Exception
+     * @param Hotel $hotel
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function deleteHotel(
-        $hotelId
+        Hotel $hotel
     )
     {
-        $hotel = $this->find((int) $hotelId);
-
-        if (! $hotel instanceof Hotel)
-            throw new \Exception('Invalid input');
-
         // set hotel visible to 0
         $hotel
             ->setVisible(0);

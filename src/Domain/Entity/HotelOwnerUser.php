@@ -146,8 +146,7 @@ class HotelOwnerUser
         }
 
         // call the service to delete hotel
-        $this->hotelOwnerService
-            ->deleteHotel($hotelId, $this->userId);
+        $this->hotelOwnerService->deleteHotel($this, $hotelId);
     }
 
 }

@@ -241,6 +241,10 @@ $container[\Infotrip\Utils\UI\Admin\Admin::class] = function (Container $contain
     };
 };
 
+$container[\Infotrip\Utils\RecursiveDirectoryRemoval::class] = function (Container $container) {
+    return new \Infotrip\Utils\RecursiveDirectoryRemoval();
+};
+
 $container[\Infotrip\Service\HotelOwner\HotelOwnerService::class] = function (Container $container) {
     /** @var \Infotrip\Domain\Repository\HotelRepository $hotelRepository */
     $hotelRepository = $container->get(\Infotrip\Domain\Repository\HotelRepository::class);
@@ -248,9 +252,13 @@ $container[\Infotrip\Service\HotelOwner\HotelOwnerService::class] = function (Co
     /** @var \Infotrip\Domain\Repository\UserHotelRepository $userHotelRepository */
     $userHotelRepository = $container->get(\Infotrip\Domain\Repository\UserHotelRepository::class);
 
+    /** @var \Infotrip\Utils\RecursiveDirectoryRemoval $recursiveDirectoryRemoval */
+    $recursiveDirectoryRemoval = $container->get(\Infotrip\Utils\RecursiveDirectoryRemoval::class);
+
     return new \Infotrip\Service\HotelOwner\HotelOwnerService(
         $hotelRepository,
-        $userHotelRepository
+        $userHotelRepository,
+        $recursiveDirectoryRemoval
     );
 };
 
