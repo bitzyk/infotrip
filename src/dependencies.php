@@ -262,8 +262,24 @@ $container[\Infotrip\Service\HotelOwner\HotelOwnerService::class] = function (Co
     );
 };
 
+$container[\Infotrip\Domain\Repository\AgodaHotelRepository::class] = function (Container $container) {
+    /** @var EntityManager $entityManager */
+    $entityManager = $container[EntityManager::class];
+
+    /** @var \Infotrip\Domain\Repository\AgodaHotelRepository $repository */
+    $repository = $entityManager->getRepository(\Infotrip\Domain\Entity\AgodaHotel::class);
+
+    return $repository;
+};
+
 $container[\Infotrip\Service\Agoda\Service\AgodaImporter::class] = function (Container $container) {
-    return new \Infotrip\Service\Agoda\Service\AgodaImporter();
+
+    /** @var \Infotrip\Domain\Repository\AgodaHotelRepository $agodaHotelRepository */
+    $agodaHotelRepository = $container->get(\Infotrip\Domain\Repository\AgodaHotelRepository::class);
+
+    return new \Infotrip\Service\Agoda\Service\AgodaImporter(
+        $agodaHotelRepository
+    );
 };
 
 $container[\Infotrip\Service\Agoda\Service\AgodaAssociater::class] = function (Container $container) {
