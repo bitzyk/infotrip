@@ -14,11 +14,6 @@ class AgodaImporter
     private $csvImportPath;
 
     /**
-     * @var array
-     */
-    private $toImportIds = [];
-
-    /**
      * @var AgodaImportResponse
      */
     private $agodaImportResponse;
@@ -32,6 +27,8 @@ class AgodaImporter
      * @var array
      */
     private $headerCsvLine = [];
+
+    private $allExistingAgodaHotelIds = [];
 
     /**
      * @var AgodaHotel[]
@@ -49,6 +46,7 @@ class AgodaImporter
     /**
      * @param $csvImportPath
      * @return AgodaImportResponse
+     * @throws \Exception
      */
     public function importHotels(
         $csvImportPath
@@ -60,6 +58,7 @@ class AgodaImporter
         // set dependencies
         $this->csvImportPath = $csvImportPath;
         $this->agodaImportResponse = new AgodaImportResponse();
+        $this->allExistingAgodaHotelIds = $this->agodaHotelRepository->getAllExistingAgodaHotelIds();
 
         // read csv
         $this->readCsv();
@@ -70,6 +69,10 @@ class AgodaImporter
         return $this->agodaImportResponse;
     }
 
+    /**
+     * @param array $lineData
+     * @throws \Exception
+     */
     private function readLine(
         array $lineData
     )
@@ -79,12 +82,12 @@ class AgodaImporter
             return;
         }
 
-        // set ids to import
-        $this->toImportIds[$lineData[0]] = $lineData[0];
-
         // check if the hotelId in not already in our Agoda DB
+        if (isset($this->allExistingAgodaHotelIds[$lineData[0]])) {
+            $this->agodaImportResponse->incrementAlreadyExistingHotels();
             // -> if is already in our agodo DB -> return
-        // todo
+            return;
+        }
 
         // hydrate entity to insert
         $agodaHotel = $this->hydrateAgodaHotel($lineData);
@@ -98,10 +101,15 @@ class AgodaImporter
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     private function insertAgodaBulk()
     {
         // insert via repository
         $this->agodaHotelRepository->insertBulk($this->agodaHotelsToInsert);
+
+        $this->agodaImportResponse->setInsertedHotels(count($this->agodaHotelsToInsert));
 
         // reset the bulk variable to 0
         $this->agodaHotelsToInsert = [];
@@ -119,7 +127,9 @@ class AgodaImporter
         return false;
     }
 
-
+    /**
+     * @throws \Exception
+     */
     private function readCsv()
     {
         $i = 0;
@@ -169,9 +179,9 @@ class AgodaImporter
     private function resetService()
     {
         $this->csvImportPath = null;
-        $this->toImportIds = [];
         $this->agodaImportResponse = null;
         $this->headerCsvLine = [];
         $this->agodaHotelsToInsert = [];
+        $this->allExistingAgodaHotelIds = [];
     }
 }

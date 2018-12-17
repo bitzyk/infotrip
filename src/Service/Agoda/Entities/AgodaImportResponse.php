@@ -13,6 +13,10 @@ class AgodaImportResponse
 
     private $validLines = 0;
 
+    private $insertedHotels = 0;
+
+    private $alreadyExistingHotels = 0;
+
     /**
      * @return int
      */
@@ -48,6 +52,40 @@ class AgodaImportResponse
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getInsertedHotels()
+    {
+        return $this->insertedHotels;
+    }
+
+    /**
+     * @param int $insertedHotels
+     * @return AgodaImportResponse
+     */
+    public function setInsertedHotels($insertedHotels)
+    {
+        $this->insertedHotels = $insertedHotels;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAlreadyExistingHotels()
+    {
+        return $this->alreadyExistingHotels;
+    }
+
+    /**
+     * @return AgodaImportResponse
+     */
+    public function incrementAlreadyExistingHotels()
+    {
+        $this->alreadyExistingHotels++;
+        return $this;
+    }
 
 
 }
