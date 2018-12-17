@@ -29,6 +29,10 @@ class AgodaService
         $this->agodaAssociater = $agodaAssociater;
     }
 
+    /**
+     * @param string $csvImportPath
+     * @return Entities\AgodaImportResponse
+     */
     public function importHotels(
         $csvImportPath
     )
