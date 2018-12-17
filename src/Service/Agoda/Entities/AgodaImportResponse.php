@@ -64,9 +64,9 @@ class AgodaImportResponse
      * @param int $insertedHotels
      * @return AgodaImportResponse
      */
-    public function setInsertedHotels($insertedHotels)
+    public function incrementInsertedHotels($insertedHotels)
     {
-        $this->insertedHotels = $insertedHotels;
+        $this->insertedHotels += $insertedHotels;
         return $this;
     }
 

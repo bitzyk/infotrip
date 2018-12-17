@@ -273,6 +273,12 @@ class RouteHelper
             ->pathFor('adminRootAssociateHotelsProcess');
     }
 
+    public function getAdminRootAgodaImportHotelsUrl()
+    {
+        return $this->router
+            ->pathFor('adminRootAgodaImportHotels');
+    }
+
     public function getAdminRootAgodaImportHotelsProcessUrl()
     {
         return $this->router

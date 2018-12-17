@@ -56,6 +56,9 @@ class AgodaImporter
         $this->resetService();
 
         // set dependencies
+        ini_set('memory_limit' ,'512M');
+        set_time_limit(0);
+
         $this->csvImportPath = $csvImportPath;
         $this->agodaImportResponse = new AgodaImportResponse();
         $this->allExistingAgodaHotelIds = $this->agodaHotelRepository->getAllExistingAgodaHotelIds();
@@ -109,7 +112,7 @@ class AgodaImporter
         // insert via repository
         $this->agodaHotelRepository->insertBulk($this->agodaHotelsToInsert);
 
-        $this->agodaImportResponse->setInsertedHotels(count($this->agodaHotelsToInsert));
+        $this->agodaImportResponse->incrementInsertedHotels(count($this->agodaHotelsToInsert));
 
         // reset the bulk variable to 0
         $this->agodaHotelsToInsert = [];
@@ -172,6 +175,7 @@ class AgodaImporter
                 $agoraHotel->$methodName($lineData[$index]);
             }
         }
+        $agoraHotel->setHotelId($lineData[0]);
 
         return $agoraHotel;
     }

@@ -33,11 +33,25 @@ class AdminRootAgodaImportHotelsProcess extends AdminRootAbstractAgoda
             $importResponse = $this->agodaService
                 ->importHotels($_FILES['importFile']['tmp_name']);
 
-            print_r($importResponse);
-            exit;
+            $successMessage = sprintf(
+                'Csv lines: %s; Valid csv lines: %s; Inserted hotels: %s; Not inserted due to existing: %s',
+                $importResponse->getCsvLines(),
+                $importResponse->getCsvLines(),
+                $importResponse->getInsertedHotels(),
+                $importResponse->getAlreadyExistingHotels()
+
+            );
+            return $response
+                ->withRedirect(
+                    $this->routerHelper->getAdminRootAgodaImportHotelsUrl() . '?successMessage=' . $successMessage,
+                    301
+                );
         }
 
-        echo 'aici'; exit;
-
+        return $response
+            ->withRedirect(
+                $this->routerHelper->getAdminRootAgodaImportHotelsUrl() . '?errorMessage=An error occured.',
+                301
+            );
     }
 }

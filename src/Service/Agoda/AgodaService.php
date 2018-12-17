@@ -32,6 +32,7 @@ class AgodaService
     /**
      * @param string $csvImportPath
      * @return Entities\AgodaImportResponse
+     * @throws \Exception
      */
     public function importHotels(
         $csvImportPath

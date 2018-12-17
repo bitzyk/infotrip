@@ -23,6 +23,7 @@ class AgodaHotelRepository extends EntityRepository
         }
 
         $this->getEntityManager()->flush();
+        $this->getEntityManager()->clear();
     }
 
     /**
