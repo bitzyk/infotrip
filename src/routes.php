@@ -751,3 +751,5 @@ $app->get('/hotel-owner-admin/hotel-delete/{hotelId}', \Infotrip\Handler\Action\
 // admin root pages
 $app->get('/admin-root/associate-hotels', \Infotrip\Handler\Action\AdminRootAssociateHotels::class)->setName('adminRootAssociateHotels');
 $app->post('/admin-root/associate-hotels-process', \Infotrip\Handler\Action\AdminRootAssociateHotelsProcess::class)->setName('adminRootAssociateHotelsProcess');
+$app->get('/admin-root/agoda/import-hotels', \Infotrip\Handler\Action\Agoda\AdminRootAgodaImportHotels::class)->setName('adminRootAgodaImportHotels');
+$app->get('/admin-root/agoda/associate-hotels', \Infotrip\Handler\Action\Agoda\AdminRootAgodaAssociateHotels::class)->setName('adminRootAgodaAssociateHotels');

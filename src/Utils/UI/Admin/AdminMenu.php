@@ -85,7 +85,17 @@ class AdminMenu
                             ->setLink($this->routeHelper->buildUrlForRoute('adminRootAssociateHotels'))
                             ->setCurrentRouteName($this->routeHelper->getRouteName())
                         ,
-
+                        (new MenuItem())
+                            ->setLabel('Agoda - import hotels')
+                            ->setRouteName('adminRootAgodaImportHotels')
+                            ->setLink($this->routeHelper->buildUrlForRoute('adminRootAgodaImportHotels'))
+                            ->setCurrentRouteName($this->routeHelper->getRouteName())
+                        ,
+                        (new MenuItem())
+                            ->setLabel('Agoda - associate hotels')
+                            ->setRouteName('adminRootAgodaAssociateHotels')
+                            ->setLink($this->routeHelper->buildUrlForRoute('adminRootAgodaAssociateHotels'))
+                            ->setCurrentRouteName($this->routeHelper->getRouteName())
                     ]
                 );
         }
