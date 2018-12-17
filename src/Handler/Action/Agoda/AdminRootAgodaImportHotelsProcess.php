@@ -26,9 +26,13 @@ class AdminRootAgodaImportHotelsProcess extends AdminRootAbstractAgoda
             $args = $parentResponse;
         }
 
-        print_r($_POST);
-        print_r($_FILES);
-        exit;
+        if (
+            isset($_FILES['importFile']['tmp_name']) &&
+            $_FILES['importFile']['tmp_name']
+        ) {
+            $this->agodaService
+                ->importHotels($_FILES['importFile']['tmp_name']);
+        }
 
         echo 'aici'; exit;
 

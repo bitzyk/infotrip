@@ -262,3 +262,25 @@ $container[\Infotrip\Service\HotelOwner\HotelOwnerService::class] = function (Co
     );
 };
 
+$container[\Infotrip\Service\Agoda\Service\AgodaImporter::class] = function (Container $container) {
+    return new \Infotrip\Service\Agoda\Service\AgodaImporter();
+};
+
+$container[\Infotrip\Service\Agoda\Service\AgodaAssociater::class] = function (Container $container) {
+    return new \Infotrip\Service\Agoda\Service\AgodaAssociater();
+};
+
+$container[\Infotrip\Service\Agoda\AgodaService::class] = function (Container $container) {
+
+    /** @var \Infotrip\Service\Agoda\Service\AgodaImporter $agodaImporter */
+    $agodaImporter = $container->get(\Infotrip\Service\Agoda\Service\AgodaImporter::class);
+
+    /** @var \Infotrip\Service\Agoda\Service\AgodaAssociater $agodaAssociater */
+    $agodaAssociater = $container->get(\Infotrip\Service\Agoda\Service\AgodaAssociater::class);
+
+    return new \Infotrip\Service\Agoda\AgodaService(
+        $agodaImporter,
+        $agodaAssociater
+    );
+};
+

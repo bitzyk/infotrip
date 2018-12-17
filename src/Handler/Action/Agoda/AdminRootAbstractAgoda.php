@@ -3,11 +3,26 @@
 namespace Infotrip\Handler\Action\Agoda;
 
 use Infotrip\Handler\Action\AbstractRootAdminPageAction;
+use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 abstract class AdminRootAbstractAgoda extends AbstractRootAdminPageAction
 {
+
+    /**
+     * @var \Infotrip\Service\Agoda\AgodaService
+     */
+    protected $agodaService;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+
+        $this->agodaService = $container
+            ->get(\Infotrip\Service\Agoda\AgodaService::class);
+
+    }
 
     /**
      * @param Request $request
