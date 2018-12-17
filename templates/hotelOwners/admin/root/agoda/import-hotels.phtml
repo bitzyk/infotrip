@@ -23,7 +23,21 @@ require_once $this->getTemplatePath() . 'hotelOwners/admin/layout/layout-start.p
                         </div>
                     <?php endif; ?>
 
-                    aici
+                    <form method="post"
+                          enctype="application/x-www-form-urlencoded"
+                          action="<?= $routeHelper->getAdminRootAgodaImportHotelsProcessUrl(); ?>">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="importFile" name="importFile" required
+                                       type="file" value="" class="validate">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="submit" class="waves-effect waves-light btn-large" value="Import">
+                            </div>
+                        </div>
+                    </form>
 
                 </div>
             </div>
