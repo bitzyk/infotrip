@@ -282,8 +282,45 @@ $container[\Infotrip\Service\Agoda\Service\AgodaImporter::class] = function (Con
     );
 };
 
+$container[\Infotrip\Domain\Repository\HotelAssocRepository::class] = function (Container $container) {
+
+    /** @var EntityManager $entityManager */
+    $entityManager = $container[EntityManager::class];
+
+    /** @var \Infotrip\Domain\Repository\HotelAssocRepository $repository */
+    $repository = $entityManager->getRepository(\Infotrip\Domain\Entity\HotelAssoc::class);
+
+    return $repository;
+};
+
+
+
+
+$container[\Infotrip\Service\Agoda\Service\AgodaAssociater\AssociaterFactory::class] = function (Container $container) {
+
+    /** @var \Infotrip\Domain\Repository\AgodaHotelRepository $agodaHotelRepository */
+    $agodaHotelRepository = $container->get(\Infotrip\Domain\Repository\AgodaHotelRepository::class);
+
+    /** @var \Infotrip\Domain\Repository\HotelAssocRepository $hotelAssocRepository */
+    $hotelAssocRepository = $container->get(\Infotrip\Domain\Repository\HotelAssocRepository::class);
+
+    /** @var \Infotrip\Domain\Repository\HotelRepository $hotelRepository */
+    $hotelRepository = $container->get(\Infotrip\Domain\Repository\HotelRepository::class);
+
+    return new \Infotrip\Service\Agoda\Service\AgodaAssociater\AssociaterFactory(
+        $agodaHotelRepository,
+        $hotelAssocRepository,
+        $hotelRepository
+    );
+};
+
 $container[\Infotrip\Service\Agoda\Service\AgodaAssociater::class] = function (Container $container) {
-    return new \Infotrip\Service\Agoda\Service\AgodaAssociater();
+    /** @var \Infotrip\Service\Agoda\Service\AgodaAssociater\AssociaterFactory $associaterFactory */
+    $associaterFactory = $container->get(\Infotrip\Service\Agoda\Service\AgodaAssociater\AssociaterFactory::class);
+
+    return new \Infotrip\Service\Agoda\Service\AgodaAssociater(
+        $associaterFactory
+    );
 };
 
 $container[\Infotrip\Service\Agoda\AgodaService::class] = function (Container $container) {

@@ -41,8 +41,11 @@ class AgodaService
         return $this->agodaImporter->importHotels($csvImportPath);
     }
 
-    public function associateHotels()
+    /**
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function associateHotels($level)
     {
-        return $this->agodaAssociater->associateHotels();
+        return $this->agodaAssociater->associateHotels($level);
     }
 }
