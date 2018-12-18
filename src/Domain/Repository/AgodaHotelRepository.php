@@ -10,9 +10,28 @@ use Doctrine\ORM\Mapping;
 class AgodaHotelRepository extends EntityRepository
 {
 
+    const ASSOC_LEVEL_1_STATEMENT = '
+select ah.hotel_id as agodaHotelId,  h.id as bookingHotelId
+from agoda_hotel ah
+  left join hotels h on (h.name = ah.hotel_name and lower(h.cc1) = lower(ah.countryisocode) and lower(h.city_hotel) = lower(ah.city) and h.zip = ah.zipcode)
+  left join hotels_assoc assoc1 on assoc1.hotel_id_agoda = ah.hotel_id
+  left join hotels_assoc assoc2 on assoc2.hotel_id_booking = h.id
+where assoc1.hotel_id_agoda is null and assoc2.hotel_id_booking is null and h.id is not null
+            ';
+
+    const ASSOC_LEVEL_2_STATEMENT = '
+select ah.hotel_id as agodaHotelId,  h.id as bookingHotelId
+from agoda_hotel ah
+  left join hotels h on (h.name = ah.hotel_name and lower(h.cc1) = lower(ah.countryisocode) and lower(h.city_hotel) = lower(ah.city))
+  left join hotels_assoc assoc1 on assoc1.hotel_id_agoda = ah.hotel_id
+  left join hotels_assoc assoc2 on assoc2.hotel_id_booking = h.id
+where assoc1.hotel_id_agoda is null and assoc2.hotel_id_booking is null and h.id is not null
+            ';
+
+
     /**
      * @param $agodaHotels
-     * @throws \Exception
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function insertBulk(
         $agodaHotels
@@ -71,22 +90,108 @@ class AgodaHotelRepository extends EntityRepository
     }
 
 
-
-
-    public function test()
+    /**
+     * @param $level
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getAssocHotels(
+        $level
+    )
     {
+        if ($level == 1) {
+            $sql = self::ASSOC_LEVEL_1_STATEMENT;
+        } elseif ($level == 2) {
+            $sql = self::ASSOC_LEVEL_2_STATEMENT;
+        }
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+
+        $stmt->execute();
+
+        $hotelsInfo = [];
+        $assocAgoda = $assocBooking =  [];
+        while ($row = $stmt->fetch()) {
+
+            // already associated (unique association testriction) -> continue
+            if (
+                isset($assocAgoda[$row['agodaHotelId']]) ||
+                isset($assocBooking[$row['bookingHotelId']])
+            ) {
+                continue;
+            }
+
+            $hotelsInfo[] = array(
+                'agodaHotelId' => $row['agodaHotelId'],
+                'bookingHotelId' => $row['bookingHotelId'],
+            );
+            $assocAgoda[$row['agodaHotelId']] = $row['agodaHotelId'];
+            $assocBooking[$row['bookingHotelId']] = $row['bookingHotelId'];
+
+        }
+
+        return $hotelsInfo;
+    }
+
+    /**
+     * @param $level
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    public function getAssocHotelsLevel3()
+    {
+        // get unassoc agoda hotels
         $stmt = $this->getEntityManager()->getConnection()->prepare(
             '
-select ah.hotel_id as agodaHotelId,  h.id as bookingHotelId
+            select ah.hotel_name, ah.countryisocode, ah.city, ah.hotel_id
 from agoda_hotel ah
-left join hotels_assoc assoc on assoc.hotel_id_agoda = ah.hotel_id
-left join hotels h on (h.name = ah.hotel_name and lower(h.cc1) = lower(ah.countryisocode) and lower(h.city_hotel) = lower(ah.city))
-where assoc.hotel_id_agoda is null and h.id is not null
+left join hotels_assoc ass on ah.hotel_id = ass.hotel_id_agoda
+where ass.hotel_id_agoda is null 
             '
         );
 
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        $agodaHotelsInfo = [];
+        while ($row = $stmt->fetch()) {
+
+            $key = sprintf(
+                '%s_%s_%s',
+                str_replace('hotel', '', str_replace(' ', '', mb_strtolower($row['hotel_name']))),
+                strtolower($row['city']),
+                strtolower($row['countryisocode'])
+            );
+
+            $agodaHotelsInfo[$key] = $row['hotel_id'];
+        }
+
+        $stmt2 = $this->getEntityManager()->getConnection()->prepare(
+            '
+select h.id, h.cc1, h.city_hotel, h.name
+from hotels h
+  left join hotels_assoc ass on h.id = ass.hotel_id_booking
+where ass.hotel_id_booking is null
+            '
+        );
+
+        $stmt2->execute();
+
+        $bookingHotelsInfo = [];
+        while ($row = $stmt2->fetch()) {
+
+            $key = sprintf(
+                '%s_%s_%s',
+                str_replace('hotel', '', str_replace(' ', '', mb_strtolower($row['name']))),
+                strtolower($row['city_hotel']),
+                strtolower($row['cc1'])
+            );
+
+            $bookingHotelsInfo[$key] = $row['id'];
+        }
+
+        return [
+            'agodaHotelsInfo' => $agodaHotelsInfo,
+            'bookingHotelsInfo' => $bookingHotelsInfo,
+        ];
     }
 }

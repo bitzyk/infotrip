@@ -2,9 +2,11 @@
 
 namespace Infotrip\Service\Agoda\Service\AgodaAssociater;
 
+
+use Infotrip\Domain\Entity\HotelAssoc;
 use Infotrip\Service\Agoda\Entities\AgodaAssociateResponse;
 
-class AssociaterLevel1 extends AbstractAssociater
+class AssociaterLevel2 extends AbstractAssociater
 {
 
     /**
@@ -16,12 +18,12 @@ class AssociaterLevel1 extends AbstractAssociater
         AgodaAssociateResponse $agodaAssociateResponse
     )
     {
-        $toAssociate = $this->agodaHotelRepository->getAssocHotels($level = 1);
+        $toAssociate = $this->agodaHotelRepository->getAssocHotels($level = 2);
 
         $this->insertToAssociate($agodaAssociateResponse, $toAssociate);
 
         $agodaAssociateResponse
-            ->setNameAssociation('Association level 1: Identic hotel name, country code, city and zipcode for unassociated hotels');
+            ->setNameAssociation('Association level 2: Identic hotel name, country code, city for unassociated hotels');
 
         return $agodaAssociateResponse;
     }

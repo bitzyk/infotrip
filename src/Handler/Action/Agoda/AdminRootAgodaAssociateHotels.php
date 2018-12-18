@@ -26,9 +26,10 @@ class AdminRootAgodaAssociateHotels extends AdminRootAbstractAgoda
             $args = $parentResponse;
         }
 
-        $this->agodaService
-            ->associateHotels(1);
+        $response = $this->agodaService->associateHotels(3);
 
+        print_r($response);
+        exit;
 
         return $this->renderer->render($response, 'hotelOwners/admin/root/agoda/associate-hotels.phtml', $args);
     }
