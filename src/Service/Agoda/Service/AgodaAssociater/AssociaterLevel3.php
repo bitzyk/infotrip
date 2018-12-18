@@ -9,6 +9,8 @@ use Infotrip\Service\Agoda\Entities\AgodaAssociateResponse;
 class AssociaterLevel3 extends AbstractAssociater
 {
 
+    const ASSOC_NAME = 'Association level 3: Identic country code, city and not identic hotel name (removing hotel keywords) for unassociated hotels';
+
     /**
      * @param AgodaAssociateResponse $agodaAssociateResponse
      * @return AgodaAssociateResponse
@@ -47,7 +49,7 @@ class AssociaterLevel3 extends AbstractAssociater
         $this->insertToAssociate($agodaAssociateResponse, $toAssociate);
 
         $agodaAssociateResponse
-            ->setNameAssociation('Association level 3: Identic country code, city and not identic hotel name (removing hotel keywords) for unassociated hotels');
+            ->setNameAssociation(self::ASSOC_NAME);
 
         return $agodaAssociateResponse;
     }

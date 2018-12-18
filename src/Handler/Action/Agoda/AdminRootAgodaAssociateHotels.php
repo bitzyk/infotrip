@@ -26,11 +26,26 @@ class AdminRootAgodaAssociateHotels extends AdminRootAbstractAgoda
             $args = $parentResponse;
         }
 
-        $response = $this->agodaService->associateHotels(3);
+        if (
+            isset($args['assocLevel']) &&
+            in_array((int) $args['assocLevel'], [1, 2, 3])
+        ) {
+            $agodaResponse = $this->agodaService->associateHotels((int) $args['assocLevel']);
 
-        print_r($response);
-        exit;
+            $successMessage = sprintf(
+                'The execution of `%s` have been successfully. New association: `%s`',
+                $agodaResponse->getNameAssociation(),
+                $agodaResponse->getNewAssociations()
 
-        return $this->renderer->render($response, 'hotelOwners/admin/root/agoda/associate-hotels.phtml', $args);
+            );
+
+            return $response
+                ->withRedirect(
+                    $this->routerHelper->getAdminRootAgodaAssociateHotelsUrl() . '?successMessage=' . $successMessage,
+                    301
+                );
+        }
+
+        return $this->renderer->render($response, 'hotelOwners/admin/root/agoda/agoda-association.phtml', $args);
     }
 }

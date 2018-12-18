@@ -285,6 +285,21 @@ class RouteHelper
             ->pathFor('adminRootAgodaImportHotelsProcess');
     }
 
+    public function getAdminRootAgodaAssociateHotelsUrl(
+        $level = null
+    )
+    {
+        $args = [];
+        if ($level) {
+            $args['assocLevel'] = $level;
+        }
+
+
+
+        return $this->router
+            ->pathFor('adminRootAgodaAssociateHotels', $args);
+    }
+
     public function buildUrlForRoute($routeName)
     {
         return $this->router

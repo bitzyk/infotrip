@@ -753,4 +753,4 @@ $app->get('/admin-root/associate-hotels', \Infotrip\Handler\Action\AdminRootAsso
 $app->post('/admin-root/associate-hotels-process', \Infotrip\Handler\Action\AdminRootAssociateHotelsProcess::class)->setName('adminRootAssociateHotelsProcess');
 $app->get('/admin-root/agoda/import-hotels', \Infotrip\Handler\Action\Agoda\AdminRootAgodaImportHotels::class)->setName('adminRootAgodaImportHotels');
 $app->post('/admin-root/agoda/import-hotels-process', \Infotrip\Handler\Action\Agoda\AdminRootAgodaImportHotelsProcess::class)->setName('adminRootAgodaImportHotelsProcess');
-$app->get('/admin-root/agoda/associate-hotels', \Infotrip\Handler\Action\Agoda\AdminRootAgodaAssociateHotels::class)->setName('adminRootAgodaAssociateHotels');
+$app->get('/admin-root/agoda/associate-hotels[/{assocLevel}]', \Infotrip\Handler\Action\Agoda\AdminRootAgodaAssociateHotels::class)->setName('adminRootAgodaAssociateHotels');
