@@ -337,3 +337,19 @@ $container[\Infotrip\Service\Agoda\AgodaService::class] = function (Container $c
     );
 };
 
+$container[\Infotrip\ApiProvider\AvailabilityRequestFactory::class] = function (Container $container) {
+
+    /** @var \Infotrip\Domain\Repository\HotelAssocRepository $hotelAssocRepository */
+    $hotelAssocRepository = $container->get(\Infotrip\Domain\Repository\HotelAssocRepository::class);
+
+    return new \Infotrip\ApiProvider\AvailabilityRequestFactory(
+        $hotelAssocRepository
+    );
+};
+
+$container[\Infotrip\ApiProvider\IAvailabilityProviderAgregator::class] = function (Container $container) {
+
+    return new \Infotrip\ApiProvider\AvailabilityProviderAgregator();
+};
+
+

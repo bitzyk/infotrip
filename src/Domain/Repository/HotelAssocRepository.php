@@ -26,4 +26,20 @@ class HotelAssocRepository extends EntityRepository
         $this->getEntityManager()->flush();
         $this->getEntityManager()->clear();
     }
+
+    /**
+     * @param $internalHotelId
+     * @return HotelAssoc
+     */
+    public function getAssociationForInternalHotelId(
+        $internalHotelId
+    )
+    {
+        /** @var HotelAssoc $association */
+        $association = $this->findOneBy([
+            'hotel_id_booking' => $internalHotelId
+        ]);
+
+        return $association;
+    }
 }
