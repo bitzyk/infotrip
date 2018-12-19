@@ -62,7 +62,7 @@ abstract class AbstractAdminPageAction extends Action
         }
 
         // set dependency
-        $adminUiClosure = $this->container->get(\Infotrip\Utils\UI\Admin\Admin::class);
+        $adminUiClosure = $this->container->get(\Infotrip\Utils\UI\Admin\IAdmin::class);
         /** @var Admin $adminUiService */
         $adminUiService = $adminUiClosure($request);
         $this->adminUiService = $adminUiService;
@@ -88,8 +88,8 @@ abstract class AbstractAdminPageAction extends Action
             ->setUserAssociatedHotels($this->hotelOwnerUser);
 
         $args['hotelOwnerUser'] = $this->hotelOwnerUser;
-        $args['menu'] = $this->adminUiService->getAdminMenu()->getMenu($this->hotelOwnerUser);
-        $args['breadcrumb'] = $this->adminUiService->getAdminBreadcrumb()->buildBreadcrumb($this->hotelOwnerUser);
+        $args['menu'] = $this->adminUiService->getMenu($this->hotelOwnerUser);
+        $args['breadcrumb'] = $this->adminUiService->getBreadcrumb($this->hotelOwnerUser);
         $args['successMessage'] = $request->getParam('successMessage');
         $args['errorMessage'] = $request->getParam('errorMessage');
 

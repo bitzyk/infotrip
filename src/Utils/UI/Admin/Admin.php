@@ -2,8 +2,11 @@
 
 namespace Infotrip\Utils\UI\Admin;
 
+use Infotrip\Domain\Entity\HotelOwnerUser;
+use Infotrip\Utils\UI\Admin\Entity\BreadcrumbItem;
+use Infotrip\Utils\UI\Admin\Entity\MenuItem;
 
-class Admin
+class Admin implements IAdmin
 {
     /**
      * @var AdminMenu
@@ -25,19 +28,25 @@ class Admin
     }
 
     /**
-     * @return AdminMenu
+     * @return MenuItem[]
      */
-    public function getAdminMenu()
+    public function getMenu(
+        HotelOwnerUser $hotelOwnerUser
+    )
     {
-        return $this->adminMenu;
+        // hide delegation
+        return $this->adminMenu->getMenu($hotelOwnerUser);
     }
 
     /**
-     * @return AdminBreadcrumb
+     * @param HotelOwnerUser $hotelOwnerUser
+     * @return BreadcrumbItem
      */
-    public function getAdminBreadcrumb()
+    public function getBreadcrumb(
+        HotelOwnerUser $hotelOwnerUser
+    )
     {
-        return $this->adminBreadcrumb;
+        return $this->adminBreadcrumb->buildBreadcrumb($hotelOwnerUser);
     }
 
 

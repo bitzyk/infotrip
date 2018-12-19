@@ -223,7 +223,7 @@ $container[\Infotrip\Utils\UI\Admin\AdminBreadcrumb::class] = function (Containe
     };
 };
 
-$container[\Infotrip\Utils\UI\Admin\Admin::class] = function (Container $container) {
+$container[\Infotrip\Utils\UI\Admin\IAdmin::class] = function (Container $container) {
     return function($request) use ($container) {
 
         $adminMenuClosure = $container->get(\Infotrip\Utils\UI\Admin\AdminMenu::class);
