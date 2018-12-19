@@ -19,7 +19,8 @@
         "doctrine/orm": "^2",
         "desarrolla2/cache":  "~2.0",
         "paquettg/php-html-parser": "1.7.0",
-        "phpauth/phpauth": "dev-master"
+        "phpauth/phpauth": "dev-master",
+        "pear/http_request2": "^2.3"
     },
     "require-dev": {
         "phpunit/phpunit": ">=4.8 < 6.0"
