@@ -219,6 +219,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
             <div class="row">
                 <div class="col-md-9">
 
+                    <div class="gap gap-small"></div>
                     <h4>Hotels Near <?php echo $hotel->getName(); ?></h4>
 
                     <ul class="booking-list">
@@ -316,7 +317,6 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 </script>
 
 
-<?php if($_SERVER['REMOTE_ADDR'] == '95.76.132.122'): ?>
 <script id="availabilityRowTemplate" type="text/x-handlebars-template">
     <a href="{{landingURL}}" target="_blank">
         <div class="row availability-row">
@@ -325,7 +325,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
             </div>
             <div class="col-md-6">
                 <div class="hotel-title">
-                    {{roomtypeName}} {{hotelName}}
+                    {{#if roomtypeName}}room: {{roomtypeName}} -{{/if}} {{hotelName}}
                 </div>
                 <div class="breakfast-detail">
                     Breakfast not included
@@ -412,9 +412,6 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
     availability.init();
 </script>
-
-<?php endif; ?>
-
 
     <script>
         var nonCachedImages = new Array();

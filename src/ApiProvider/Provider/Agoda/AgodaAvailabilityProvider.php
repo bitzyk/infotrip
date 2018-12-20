@@ -117,8 +117,8 @@ class AgodaAvailabilityProvider extends AbstractAvailabilityProvider
                         'discountOnly' => false,
                         'language' => 'en-us',
                         'occupancy' => [
-                            'numberOfAdult' => 2,
-                            'numberOfChildren' => 1
+                            'numberOfAdult' => $this->availabilityRequest->getNoAdult(),
+                            'numberOfChildren' => $this->availabilityRequest->getNoChildren()
                         ]
 
                     ],
