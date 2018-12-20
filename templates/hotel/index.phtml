@@ -133,17 +133,44 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                     </div>
                 </div>
             </div>
-            <div class="gap"></div>
-            <h3>Available Rooms</h3>
+            <h3>Availability</h3>
             <div class="row">
                 <div class="col-md-9">
-                    <div class="booking-item-dates-change">
+                    <div class="booking-item-dates-change availability-box">
+
+
+                        <?php if($_SERVER['REMOTE_ADDR'] == '95.76.132.122'): ?>
+                        <?php for($i=0; $i<= 3; $i++): ?>
+                            <div class="row availability-row">
+                                <div class="col-md-3 provider-image">
+                                    <img src="/img/providers/agoda-min.png">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="hotel-title">
+                                        Guest room, 1 King or 2 Double ‐ Hotel website
+                                    </div>
+                                    <div class="breakfast-detail">
+                                        Breakfast not included
+                                    </div>
+                                </div>
+                                <div class="col-md-3 price-box">
+                                    <div>
+                                        USD 125
+                                    </div>
+
+                                    <i class="fa fa-angle-right" style=""></i>
+                                </div>
+                            </div>
+                            <?php endfor; ?>
+                        <?php endif; ?>
+
+
                         <form method="get"
                               id="checkAvailabilityForm"
                               action="<?= $routeHelper->getHotelCheckAvailabilityUrl($hotel->getName(), $hotel->getId()); ?>"
                               target="_blank">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-8">
                                     <div class="input-daterange" data-date-format="MM d, D">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -201,36 +228,12 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="form-group form-group-select-plus">
-                                        <label>Rooms</label>
-                                        <div class="btn-group btn-group-select-num" data-toggle="buttons">
-                                            <label class="btn btn-primary active">
-                                                <input type="radio" name="rooms" value="1" />1</label>
-                                            <label class="btn btn-primary">
-                                                <input type="radio" name="rooms" value="2" />2</label>
-                                            <label class="btn btn-primary">
-                                                <input type="radio" name="rooms" value="3" />3</label>
-                                            <label class="btn btn-primary">
-                                                <input type="radio" name="rooms" value="noRadio"/>3+</label>
-                                        </div>
-                                        <select name="roomsSelect" class="form-control hidden">
-                                            <?php for($i=1; $i<=6; $i++): ?>
-                                                <option value="<?= $i; ?>"><?= $i; ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input type="hidden" name="hid" value="<?= $hotel->getId(); ?>">
-                                    <input type="submit" name="checkAvailability" value="Check availability"
-                                           id="checkAvailabilitySubmit"
-                                           class="btn btn-primary">
-                                </div>
                             </div>
                         </form>
+
+
+
+
                     </div>
                     <div class="gap gap-small"></div>
 

@@ -9,3 +9,39 @@
     color: #ed8323 !important;
 }
 
+
+.availability-box {}
+
+.availability-box .availability-row {
+    margin: 10px 0; font-size: 0.9em; border: solid 1px #cdd0d2; padding: 10px 0;
+}
+
+.availability-box .availability-row:hover {
+    cursor: pointer;
+    background-color: #ebeced;
+}
+
+.availability-box .availability-row .provider-image {
+    text-align: center;
+}
+.availability-box .availability-row .provider-image img {
+    width: auto;
+}
+
+.availability-box .availability-row .hotel-title {
+    color: #000;
+}
+.availability-box .availability-row .breakfast-detail {
+    color: #697379;
+}
+.availability-box .availability-row .price-box {
+    text-align: center;
+    color: #007fad;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: relative;
+}
+
+.availability-box .availability-row .price-box .fa-angle-right {
+    position: absolute; top: 50%; right: 10px; font-size: 20px; margin-top: -10px;
+}
