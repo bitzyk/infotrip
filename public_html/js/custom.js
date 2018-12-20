@@ -473,3 +473,77 @@ function tagline_vertical_slide() {
 function abortTimer() { // to be called when you want to stop the timer
     clearInterval(tid);
 }
+
+var infotrip = new function () {
+
+    var inner = this;
+
+    this.customOverlayClass = 'custom-overlay';
+
+    this.applyMaskForElementSelector = function(
+        elementSelector
+    ) {
+
+
+        var $elem = $(elementSelector);
+        var width = $elem.width();
+        var height = $elem.height();
+        $('<div id="'+'for'+elementSelector.substring(1)+'"></div>')
+            .width(width + parseInt($elem.css('margin-left')) + + parseInt($elem.css('margin-right')))
+            .height(height)
+            .insertBefore(elementSelector)
+            .css('margin-left', parseInt($elem.css('padding-left')))
+            .addClass(inner.customOverlayClass)
+    };
+
+    this.removeMaskForElementSelector = function(
+        elementSelector
+    ) {
+        $('#for'+elementSelector.substring(1)).remove();
+    };
+
+    this.removeAllMask = function() {
+        $('.'+inner.customOverlayClass).remove();
+    };
+
+    this.scrollTo = function(elementSelector) {
+        // apply mask
+        inner.applyMaskForElementSelector(elementSelector);
+
+        $('html, body').animate({
+            scrollTop: $(elementSelector).offset().top
+        }, 250).promise().done(function (animation, jumpedToEnd) {
+            // remove mask
+            inner.removeAllMask();
+        });
+    };
+
+
+    this.initHandlebarsHelpers = function() {
+        Handlebars.registerHelper('toLowerCase', function(str) {
+            return str.toLowerCase();
+        });
+    };
+
+    return {
+        init: function() {
+            inner.initHandlebarsHelpers();
+        },
+        applyMaskForElementSelector: function (elementSelector) {
+            inner.applyMaskForElementSelector(elementSelector);
+        },
+        removeAllMask: function () {
+            inner.removeAllMask();
+        },
+        removeMaskForElementSelector: function (elementSelector) {
+            inner.removeMaskForElementSelector(elementSelector);
+        },
+        scrollTo: function (elementSelector) {
+            inner.scrollTo(elementSelector);
+        }
+    };
+
+}();
+
+
+infotrip.init();

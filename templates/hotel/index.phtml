@@ -137,9 +137,10 @@ $hotelInfo = $hotel->getExternalHotelInfo();
             </div>
             <h3>Availability</h3>
             <div class="row">
-                <div class="col-md-9">
-                    <div class="booking-item-dates-change availability-box" id="availabilityBox">
+                <div class="col-md-9" id="availabilityContainer">
+                    <div class="booking-item-dates-change availability-box">
 
+                        <div id="apiResponseContainer"></div>
 
                         <form method="get"
                               id="checkAvailabilityForm"
@@ -212,12 +213,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                 </div>
                             </div>
                         </form>
-
-
-
-
                     </div>
-                    <div class="gap gap-small"></div>
 
                 </div>
                 <div class="col-md-3">
@@ -295,16 +291,37 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 <?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
 
 <script>
-    $('#checkInDateInput').datepicker("setDate", "+1d")
-        .on('changeDate', function(e) {
-            $(this).datepicker('hide');
-            $('#checkOutDateInput').datepicker('show');
-        });
 
-    $('#checkOutDateInput').datepicker("setDate", "+2d")
-        .on('changeDate', function(e) {
-            $(this).datepicker('hide');
-        });
+    new function() {
+
+        var inner = this;
+
+        this.checkOutDateInput = '';
+        this.checkInDateInput = '';
+
+        $('#checkInDateInput').datepicker("setDate", "+1d")
+            .on('changeDate', function (e) {
+
+                $(this).datepicker('hide');
+                $('#checkOutDateInput').datepicker('show');
+
+                if(JSON.stringify(inner.checkOutDateInput) !== JSON.stringify(e.date)) {
+                    inner.checkOutDateInput = e.date;
+                    availability.checkAvailability()
+                }
+
+            });
+
+        $('#checkOutDateInput').datepicker("setDate", "+2d")
+            .on('changeDate', function (e) {
+                $(this).datepicker('hide');
+
+                if(JSON.stringify(inner.checkInDateInput) !== JSON.stringify(e.date)) {
+                    inner.checkInDateInput = e.date;
+                    availability.checkAvailability()
+                }
+            });
+    }();
 </script>
 
 
@@ -359,6 +376,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                     dataType: "json",
                     beforeSend: function (jqXHR, settings) {
                         // apply mask
+                        infotrip.applyMaskForElementSelector('#availabilityContainer');
                     }
                 })
                     .done(function (data, textStatus, jqXHR) {
@@ -372,13 +390,14 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                             html+=inner.availabilityRowTemplate(data[i]);
                         }
 
-                        $( "#availabilityBox" ).prepend( html );
+                        $( "#apiResponseContainer" ).html( html );
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
 
                     })
                     .complete(function (jqXHR, textStatus) {
                         // remove mask
+                       infotrip.removeMaskForElementSelector('#availabilityContainer');
                     })
             ;
 

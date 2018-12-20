@@ -48,3 +48,11 @@
 .availability-box .availability-row .price-box .fa-angle-right {
     position: absolute; top: 50%; right: 10px; font-size: 20px; margin-top: -10px;
 }
+
+.custom-overlay {
+    position: absolute;
+    background: #000;
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+    z-index: 1000;
+}
