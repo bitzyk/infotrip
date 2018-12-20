@@ -347,9 +347,33 @@ $container[\Infotrip\ApiProvider\AvailabilityRequestFactory::class] = function (
     );
 };
 
+
+$container[\Infotrip\ApiProvider\Provider\Agoda\BookingComAvailabilityProvider::class] = function (Container $container) {
+
+    /** @var \Infotrip\Domain\Repository\HotelRepository $hotelRepository */
+    $hotelRepository = $container->get(\Infotrip\Domain\Repository\HotelRepository::class);
+
+    return new \Infotrip\ApiProvider\Provider\Agoda\BookingComAvailabilityProvider(
+        $hotelRepository
+    );
+};
+
+$container[\Infotrip\ApiProvider\Provider\Agoda\AgodaAvailabilityProvider::class] = function (Container $container) {
+
+    return new \Infotrip\ApiProvider\Provider\Agoda\AgodaAvailabilityProvider();
+};
+
+
 $container[\Infotrip\ApiProvider\IAvailabilityProviderAgregator::class] = function (Container $container) {
 
-    return new \Infotrip\ApiProvider\AvailabilityProviderAgregator();
+    $providers = [
+        $container->get(\Infotrip\ApiProvider\Provider\Agoda\BookingComAvailabilityProvider::class),
+        $container->get(\Infotrip\ApiProvider\Provider\Agoda\AgodaAvailabilityProvider::class),
+    ];
+
+    return new \Infotrip\ApiProvider\AvailabilityProviderAgregator(
+        $providers
+    );
 };
 
 

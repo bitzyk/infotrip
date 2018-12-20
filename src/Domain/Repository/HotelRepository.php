@@ -542,4 +542,33 @@ class HotelRepository extends EntityRepository
         $this->getEntityManager()->flush($hotel);
     }
 
+    /**
+     * @param $hotelId
+     * @return Hotel
+     * @throws \Exception
+     */
+    public function getApiHotel(
+        $hotelId
+    )
+    {
+        // count how many related hotels there is
+        $query = $this->getEntityManager()
+            ->createQuery(
+                "SELECT h.name, h.minrate, h.bookingHotelUrl, h.currencycode FROM Infotrip\Domain\Entity\Hotel h
+                  WHERE h.id = :hotelId"
+            );
+
+        $query->setParameter('hotelId', $hotelId);
+
+        $hotelData = $query->getSingleResult();
+
+        $hotel = new Hotel();
+        $hotel->setName($hotelData['name']);
+        $hotel->setMinrate($hotelData['minrate']);
+        $hotel->setBookingHotelUrl($hotelData['bookingHotelUrl']);
+        $hotel->setCurrencycode($hotelData['currencycode']);
+
+        return $hotel;
+    }
+
 }

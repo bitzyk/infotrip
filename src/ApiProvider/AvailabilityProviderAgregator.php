@@ -14,10 +14,16 @@ class AvailabilityProviderAgregator implements IAvailabilityProviderAgregator
      */
     private $availabilityProvider = [];
 
-    public function __construct()
+    /**
+     * AvailabilityProviderAgregator constructor.
+     *
+     * @param IAvailabilityProvider[] $availabilityProviders
+     */
+    public function __construct(
+        array $availabilityProviders
+    )
     {
-        // todo -> read from config
-        $this->availabilityProvider[] = new AgodaAvailabilityProvider();
+        $this->availabilityProvider = $availabilityProviders;
     }
 
     /**
@@ -38,6 +44,5 @@ class AvailabilityProviderAgregator implements IAvailabilityProviderAgregator
 
         return $availabilityResponses;
     }
-
 
 }
