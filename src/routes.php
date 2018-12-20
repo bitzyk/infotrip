@@ -166,7 +166,7 @@ $app->get('/hotel/check-availability/{hotelName}', function (Request $request, R
 
     // compute availability url
     $availabilityUrl = $bookingComAvailabilityChecker->getAvailabilityUrl(
-        $request,
+        $request->getParams(),
         $hotel
     );
 

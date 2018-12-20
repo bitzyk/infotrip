@@ -1,33 +1,27 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cbitoi
- * Date: 11/05/2018
- * Time: 00:32
- */
 
 namespace Infotrip\HotelParser\AvailabilityChecker;
 
 use Infotrip\Domain\Entity\Hotel;
-use Slim\Http\Request;
 
 class BookingComAvailabilityChecker implements AvailabilityChecker
 {
 
     /**
-     * @param Request $request
+     * @param array $params
      * @param Hotel $hotel
      * @return string - availability url
      */
     public function getAvailabilityUrl(
-        Request $request,
+        array $params,
         Hotel $hotel
     )
     {
         $bookingQueryParams = [];
 
         if (
-            ($startTime = $request->getParam('start')) &&
+            isset($params['start']) &&
+            ($startTime = $params['start']) &&
             (boolean) ($startTime = strtotime($startTime))
         ) {
             $startDay = date('d', $startTime);
@@ -40,7 +34,8 @@ class BookingComAvailabilityChecker implements AvailabilityChecker
         }
 
         if (
-            ($endTime = $request->getParam('end')) &&
+            isset($params['end']) &&
+            ($endTime = $params['end']) &&
             (boolean) ($endTime = strtotime($endTime))
         ) {
             $endDay = date('d', $endTime);
@@ -53,39 +48,45 @@ class BookingComAvailabilityChecker implements AvailabilityChecker
         }
 
         if(
-            ($adults = $request->getParam('adults')) &&
+            isset($params['adults']) &&
+            ($adults = $params['adults']) &&
             is_numeric($adults)
         ) {
             $bookingQueryParams['group_adults'] = (int) $adults;
         } elseif (
-            $request->getParam('adults') == 'noRadio' &&
-            ($adults = $request->getParam('adultsSelect')) &&
+            isset($params['adults']) &&
+            $params['adults'] == 'noRadio' &&
+            ($adults = $params['adultsSelect']) &&
             is_numeric($adults)
         ) {
             $bookingQueryParams['group_adults'] = (int) $adults;
         }
 
         if(
-            ($childrens = $request->getParam('childrens')) &&
+            isset($params['childrens']) &&
+            ($childrens = $params['childrens']) &&
             is_numeric($childrens)
         ) {
             $bookingQueryParams['group_children'] = (int) $childrens;
         } elseif (
-            $request->getParam('childrens') == 'noRadio' &&
-            ($childrens = $request->getParam('childrensSelect')) &&
+            isset($params['childrens']) &&
+            $params['childrens'] == 'noRadio' &&
+            ($childrens = $params['childrensSelect']) &&
             is_numeric($childrens)
         ) {
             $bookingQueryParams['group_children'] = (int) $childrens;
         }
 
         if(
-            ($rooms = $request->getParam('rooms')) &&
+            isset($params['rooms']) &&
+            ($rooms = $params['rooms']) &&
             is_numeric($rooms)
         ) {
             $bookingQueryParams['no_rooms'] = (int) $rooms;
         } elseif (
-            $request->getParam('rooms') == 'noRadio' &&
-            ($rooms = $request->getParam('roomsSelect')) &&
+            isset($params['rooms']) &&
+            $params['rooms'] == 'noRadio' &&
+            ($rooms = $params['roomsSelect']) &&
             is_numeric($rooms)
         ) {
             $bookingQueryParams['no_rooms'] = (int) $rooms;
