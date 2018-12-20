@@ -53,7 +53,8 @@ class BookingComAvailabilityProvider extends AbstractAvailabilityProvider
         $availabilityResponse->setPricePerNight($hotel->getMinrate());
         $availabilityResponse->setIncludeBreakfast(false);
         $availabilityResponse->setLandingURL($hotel->getBookingHotelUrl());
-        $availabilityResponse->setProviderImageUrl('/img/providers/booking-min.png');
+        $availabilityResponse->setHotelName($hotel->getName());
+        $availabilityResponse->setProviderImageUrl('/img/providers/booking-com-min.png');
 
         return $availabilityResponse;
     }

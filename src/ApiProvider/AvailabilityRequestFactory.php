@@ -49,6 +49,8 @@ class AvailabilityRequestFactory
             ->setCheckInDate(new \DateTime(date('Y-m-d', strtotime($params['checkInDate']))))
             ->setCheckOutDate(new \DateTime(date('Y-m-d', strtotime($params['checkOutDate']))))
             ->setInternalHotelId($internalHotelId)
+            ->setNoAdult((int) $params['noAdult'])
+            ->setNoChildren((int) $params['noChildren'])
             ->setHotelAssoc(
                 $association
             );
@@ -65,7 +67,9 @@ class AvailabilityRequestFactory
         if (
             ! isset($params['currency']) || ! $params['currency'] ||
             ! isset($params['checkInDate']) || ! $params['checkInDate'] ||
-            ! isset($params['checkOutDate']) || ! $params['checkOutDate']
+            ! isset($params['checkOutDate']) || ! $params['checkOutDate'] ||
+            ! isset($params['noAdult']) ||
+            ! isset($params['noChildren'])
         ) {
             throw new \Exception('Invalid request');
         }

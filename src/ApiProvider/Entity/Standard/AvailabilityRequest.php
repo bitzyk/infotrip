@@ -39,6 +39,16 @@ class AvailabilityRequest
     private $hotelAssoc;
 
     /**
+     * @var int
+     */
+    private $noAdult = 2;
+
+    /**
+     * @var int
+     */
+    private $noChildren = 0;
+
+    /**
      * @return string
      */
     public function getProviderHotelId()
@@ -147,5 +157,40 @@ class AvailabilityRequest
         return $this;
     }
 
+    /**
+     * @return int
+     */
+    public function getNoAdult()
+    {
+        return $this->noAdult;
+    }
+
+    /**
+     * @param int $noAdult
+     * @return AvailabilityRequest
+     */
+    public function setNoAdult($noAdult)
+    {
+        $this->noAdult = $noAdult;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNoChildren()
+    {
+        return $this->noChildren;
+    }
+
+    /**
+     * @param int $noChildren
+     * @return AvailabilityRequest
+     */
+    public function setNoChildren($noChildren)
+    {
+        $this->noChildren = $noChildren;
+        return $this;
+    }
 
 }

@@ -32,6 +32,16 @@ class AvailabilityResponse implements \JsonSerializable
     private $providerImageUrl;
 
     /**
+     * @var string
+     */
+    private $hotelName = '';
+
+    /**
+     * @var string
+     */
+    private $roomtypeName = '';
+
+    /**
      * @return float
      */
     public function getPricePerNight()
@@ -125,5 +135,43 @@ class AvailabilityResponse implements \JsonSerializable
     {
         return get_object_vars($this);
     }
+
+    /**
+     * @return string
+     */
+    public function getHotelName()
+    {
+        return $this->hotelName;
+    }
+
+    /**
+     * @param string $hotelName
+     * @return AvailabilityResponse
+     */
+    public function setHotelName($hotelName)
+    {
+        $this->hotelName = $hotelName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoomtypeName()
+    {
+        return $this->roomtypeName;
+    }
+
+    /**
+     * @param string $roomtypeName
+     * @return AvailabilityResponse
+     */
+    public function setRoomtypeName($roomtypeName)
+    {
+        $this->roomtypeName = $roomtypeName;
+        return $this;
+    }
+
+
 
 }

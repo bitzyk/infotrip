@@ -36,7 +36,9 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                         </p>
                     </div>
                     <div class="col-md-3">
-                        <p class="booking-item-header-price"><small>price from</small>  <span class="text-lg"><?= $hotel->getCurrencucodeShort(); ?><?= $hotel->getMinrate(); ?></span>/night</p>
+                        <p class="booking-item-header-price">
+                            <small>price from</small>  <span class="text-lg"><?= $hotel->getCurrencucodeShort(); ?><?= $hotel->getMinrate(); ?></span>/night
+                        </p>
                     </div>
                 </div>
             </header>
@@ -150,7 +152,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                             <div class="col-md-6">
                                                 <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
                                                     <label>Check in</label>
-                                                    <input class="form-control" name="start" type="text" id="checkInDateInput" />
+                                                    <input class="form-control" name="start" type="text" id="checkInDateInput"  />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -166,16 +168,19 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                     <div class="form-group form-group-select-plus">
                                         <label>Adults</label>
                                         <div class="btn-group btn-group-select-num" data-toggle="buttons">
-                                            <label class="btn btn-primary active">
-                                                <input type="radio" name="adults" value="1" />1</label>
-                                            <label class="btn btn-primary">
-                                                <input type="radio" name="adults" value="2" />2</label>
-                                            <label class="btn btn-primary">
+                                            <label class="btn btn-primary active" onclick="$('#adultsSelect').val(1).trigger('change');">
+                                                <input type="radio" name="adults" value="1">1</label>
+                                            <label class="btn btn-primary" onclick="$('#adultsSelect').val(2).trigger('change');">
+                                                <input type="radio" name="adults" value="2">2</label>
+                                            <label class="btn btn-primary" onclick="$('#adultsSelect').val(3).trigger('change');">
                                                 <input type="radio" name="adults" value="3" />3</label>
                                             <label class="btn btn-primary">
                                                 <input type="radio" name="adults" value="noRadio" />4+</label>
                                         </div>
-                                        <select name="adultsSelect" class="form-control hidden">
+                                        <select name="adultsSelect"
+                                                id="adultsSelect"
+                                                onchange="availability.checkAvailability();"
+                                                class="form-control hidden">
                                             <?php for($i=1; $i<=6; $i++): ?>
                                             <option value="<?= $i; ?>"><?= $i; ?></option>
                                             <?php endfor; ?>
@@ -186,16 +191,19 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                     <div class="form-group form-group-select-plus">
                                         <label>Children</label>
                                         <div class="btn-group btn-group-select-num" data-toggle="buttons">
-                                            <label class="btn btn-primary active">
+                                            <label class="btn btn-primary active" onclick="$('#childrensSelect').val(0).trigger('change');">
                                                 <input type="radio" name="childrens" value="0" />0</label>
-                                            <label class="btn btn-primary">
+                                            <label class="btn btn-primary" onclick="$('#childrensSelect').val(1).trigger('change');">
                                                 <input type="radio" name="childrens" value="1" />1</label>
-                                            <label class="btn btn-primary">
+                                            <label class="btn btn-primary" onclick="$('#childrensSelect').val(2).trigger('change');">
                                                 <input type="radio" name="childrens" value="2" />2</label>
                                             <label class="btn btn-primary">
                                                 <input type="radio" name="childrens" value="noRadio"/>2+</label>
                                         </div>
-                                        <select name="childrensSelect" class="form-control hidden">
+                                        <select name="childrensSelect"
+                                                id="childrensSelect"
+                                                onchange="availability.checkAvailability();"
+                                                class="form-control hidden">
                                             <?php for($i=1; $i<=6; $i++): ?>
                                                 <option value="<?= $i; ?>"><?= $i; ?></option>
                                             <?php endfor; ?>
@@ -286,28 +294,45 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
 <?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
 
+<script>
+    $('#checkInDateInput').datepicker("setDate", "+1d")
+        .on('changeDate', function(e) {
+            $(this).datepicker('hide');
+            $('#checkOutDateInput').datepicker('show');
+        });
+
+    $('#checkOutDateInput').datepicker("setDate", "+2d")
+        .on('changeDate', function(e) {
+            $(this).datepicker('hide');
+        });
+</script>
+
+
 <?php if($_SERVER['REMOTE_ADDR'] == '95.76.132.122'): ?>
 <script id="availabilityRowTemplate" type="text/x-handlebars-template">
-    <div class="row availability-row">
-        <div class="col-md-3 provider-image">
-            <img src="/img/providers/agoda-min.png">
-        </div>
-        <div class="col-md-6">
-            <div class="hotel-title">
-                Guest room, 1 King or 2 Double ‐ Hotel website
+    <a href="{{landingURL}}" target="_blank">
+        <div class="row availability-row">
+            <div class="col-md-3 provider-image">
+                <img src="{{providerImageUrl}}">
             </div>
-            <div class="breakfast-detail">
-                Breakfast not included
+            <div class="col-md-6">
+                <div class="hotel-title">
+                    {{roomtypeName}} {{hotelName}}
+                </div>
+                <div class="breakfast-detail">
+                    Breakfast not included
+                </div>
             </div>
-        </div>
-        <div class="col-md-3 price-box">
-            <div>
-                USD 125
-            </div>
+            <div class="col-md-3 price-box">
+                <div>
+                    {{currency}} {{pricePerNight}}
+                    <small>per night</small>
+                </div>
 
-            <i class="fa fa-angle-right" style=""></i>
+                <i class="fa fa-angle-right" style=""></i>
+            </div>
         </div>
-    </div>
+    </a>
 </script>
 
 
@@ -326,8 +351,10 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                     method: "GET",
                     data: {
                         'currency': 'EUR',
-                        'checkInDate': 'checkInDate',
-                        'checkOutDate': 'checkOutDate',
+                        'checkInDate': $('#checkInDateInput').datepicker({ dateFormat: 'yy-mm-dd' }).val(),
+                        'checkOutDate': $('#checkOutDateInput').datepicker({ dateFormat: 'yy-mm-dd' }).val(),
+                        'noAdult': $('#adultsSelect').val(),
+                        'noChildren': $('#childrensSelect').val(),
                     },
                     dataType: "json",
                     beforeSend: function (jqXHR, settings) {
@@ -340,7 +367,11 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                             return;
                         }
 
-                        var html = inner.availabilityRowTemplate({});
+                        var html = '';
+                        for(i=0; i< data.length; i++) {
+                            html+=inner.availabilityRowTemplate(data[i]);
+                        }
+
                         $( "#availabilityBox" ).prepend( html );
                     })
                     .fail(function (jqXHR, textStatus, errorThrown) {
@@ -620,18 +651,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
         }
     </script>
 
-    <script>
-        $('#checkInDateInput').datepicker()
-            .on('changeDate', function(e) {
-                $(this).datepicker('hide');
-                $('#checkOutDateInput').datepicker('show');
-            });
 
-        $('#checkOutDateInput').datepicker()
-            .on('changeDate', function(e) {
-                $(this).datepicker('hide');
-            });
-    </script>
 
 
 <?php require_once $this->getTemplatePath() . 'includes/footer.phtml'; ?>

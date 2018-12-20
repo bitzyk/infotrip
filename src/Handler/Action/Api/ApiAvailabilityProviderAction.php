@@ -52,6 +52,8 @@ class ApiAvailabilityProviderAction extends Action
                     'currency' => $request->getParam('currency'),
                     'checkInDate' => $request->getParam('checkInDate'),
                     'checkOutDate' => $request->getParam('checkOutDate'),
+                    'noAdult' => $request->getParam('noAdult'),
+                    'noChildren' => $request->getParam('noChildren'),
                 ]
             );
             $response = $this->availabilityProviderAgregator->checkAvailability($availabilityRequest);

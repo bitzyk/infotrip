@@ -41,6 +41,9 @@
     font-size: 1.2em;
     position: relative;
 }
+.availability-box .availability-row .price-box small {
+    color: #007fad;
+}
 
 .availability-box .availability-row .price-box .fa-angle-right {
     position: absolute; top: 50%; right: 10px; font-size: 20px; margin-top: -10px;

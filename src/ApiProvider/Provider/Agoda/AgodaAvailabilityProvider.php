@@ -59,6 +59,8 @@ class AgodaAvailabilityProvider extends AbstractAvailabilityProvider
         $availabilityResponse->setPricePerNight((float)$decodedResponse->results[0]->dailyRate);
         $availabilityResponse->setIncludeBreakfast((boolean)$decodedResponse->results[0]->includeBreakfast);
         $availabilityResponse->setLandingURL($decodedResponse->results[0]->landingURL);
+        $availabilityResponse->setHotelName($decodedResponse->results[0]->hotelName);
+        $availabilityResponse->setRoomtypeName($decodedResponse->results[0]->landingURL);
         $availabilityResponse->setProviderImageUrl('/img/providers/agoda-min.png');
 
         return $availabilityResponse;
