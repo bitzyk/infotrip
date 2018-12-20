@@ -169,9 +169,9 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                     <div class="form-group form-group-select-plus">
                                         <label>Adults</label>
                                         <div class="btn-group btn-group-select-num" data-toggle="buttons">
-                                            <label class="btn btn-primary active" onclick="$('#adultsSelect').val(1).trigger('change');">
+                                            <label class="btn btn-primary" onclick="$('#adultsSelect').val(1).trigger('change');">
                                                 <input type="radio" name="adults" value="1">1</label>
-                                            <label class="btn btn-primary" onclick="$('#adultsSelect').val(2).trigger('change');">
+                                            <label class="btn btn-primary active" onclick="$('#adultsSelect').val(2).trigger('change');">
                                                 <input type="radio" name="adults" value="2">2</label>
                                             <label class="btn btn-primary" onclick="$('#adultsSelect').val(3).trigger('change');">
                                                 <input type="radio" name="adults" value="3" />3</label>
@@ -183,7 +183,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                                 onchange="availability.checkAvailability();"
                                                 class="form-control hidden">
                                             <?php for($i=1; $i<=6; $i++): ?>
-                                            <option value="<?= $i; ?>"><?= $i; ?></option>
+                                            <option value="<?= $i; ?>" <?php if($i==2) echo 'selected'; ?>><?= $i; ?></option>
                                             <?php endfor; ?>
                                         </select>
                                     </div>
@@ -199,13 +199,13 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                             <label class="btn btn-primary" onclick="$('#childrensSelect').val(2).trigger('change');">
                                                 <input type="radio" name="childrens" value="2" />2</label>
                                             <label class="btn btn-primary">
-                                                <input type="radio" name="childrens" value="noRadio"/>2+</label>
+                                                <input type="radio" name="childrens" value="noRadio"/>3+</label>
                                         </div>
                                         <select name="childrensSelect"
                                                 id="childrensSelect"
                                                 onchange="availability.checkAvailability();"
                                                 class="form-control hidden">
-                                            <?php for($i=1; $i<=6; $i++): ?>
+                                            <?php for($i=0; $i<=6; $i++): ?>
                                                 <option value="<?= $i; ?>"><?= $i; ?></option>
                                             <?php endfor; ?>
                                         </select>
@@ -363,13 +363,19 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
         this.checkAvailability = function() {
 
+            var $checkInDateInput = $('#checkInDateInput');
+            var checkInDate = $checkInDateInput.datepicker('getDate').getFullYear() + '-' +($checkInDateInput.datepicker('getDate').getMonth()+1) + '-' +$checkInDateInput.datepicker('getDate').getDate();
+
+            var $checkOutDateInput = $('#checkOutDateInput');
+            var checkOutDate = $checkOutDateInput.datepicker('getDate').getFullYear() + '-' +($checkOutDateInput.datepicker('getDate').getMonth()+1) + '-' +$checkOutDateInput.datepicker('getDate').getDate();
+
             var request = $.ajax({
                     url: "<?= $routeHelper->getApiAvailabilityProviderUrl($hotel->getId()); ?>",
                     method: "GET",
                     data: {
                         'currency': 'EUR',
-                        'checkInDate': $('#checkInDateInput').datepicker({ dateFormat: 'yy-mm-dd' }).val(),
-                        'checkOutDate': $('#checkOutDateInput').datepicker({ dateFormat: 'yy-mm-dd' }).val(),
+                        'checkInDate': checkInDate,
+                        'checkOutDate': checkOutDate,
                         'noAdult': $('#adultsSelect').val(),
                         'noChildren': $('#childrensSelect').val(),
                     },

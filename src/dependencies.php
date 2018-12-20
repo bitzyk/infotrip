@@ -353,8 +353,11 @@ $container[\Infotrip\ApiProvider\Provider\Agoda\BookingComAvailabilityProvider::
     /** @var \Infotrip\Domain\Repository\HotelRepository $hotelRepository */
     $hotelRepository = $container->get(\Infotrip\Domain\Repository\HotelRepository::class);
 
+    $bookingComAvailabilityChecker = $container->get(\Infotrip\HotelParser\AvailabilityChecker\BookingComAvailabilityChecker::class);
+
     return new \Infotrip\ApiProvider\Provider\Agoda\BookingComAvailabilityProvider(
-        $hotelRepository
+        $hotelRepository,
+        $bookingComAvailabilityChecker
     );
 };
 
