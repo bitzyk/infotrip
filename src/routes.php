@@ -756,4 +756,4 @@ $app->post('/admin-root/agoda/import-hotels-process', \Infotrip\Handler\Action\A
 $app->get('/admin-root/agoda/associate-hotels[/{assocLevel}]', \Infotrip\Handler\Action\Agoda\AdminRootAgodaAssociateHotels::class)->setName('adminRootAgodaAssociateHotels');
 
 // api
-$app->get('/api-availability-provider/{hotelId}', \Infotrip\Handler\Action\Api\ApiAvailabilityProviderAction::class)->setName('apiAvailabilityProvider/');
+$app->get('/api-availability-provider/{hotelId}', \Infotrip\Handler\Action\Api\ApiAvailabilityProviderAction::class)->setName('apiAvailabilityProvider');

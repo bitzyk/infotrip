@@ -34,11 +34,12 @@ class AgodaAvailabilityProvider extends AbstractAvailabilityProvider
         return $this->hydrateAvailabilityResponse($httpResponse);
     }
 
-    protected function setProviderHotelId()
+    /**
+     * @return string
+     */
+    protected function getProviderHotelId()
     {
-        $this->availabilityRequest->setProviderHotelId(
-            $this->availabilityRequest->getHotelAssoc()->getHotelIdAgoda()
-        );
+        return $this->availabilityRequest->getHotelAssoc()->getHotelIdAgoda();
     }
 
     /**

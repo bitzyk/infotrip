@@ -136,33 +136,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
             <h3>Availability</h3>
             <div class="row">
                 <div class="col-md-9">
-                    <div class="booking-item-dates-change availability-box">
-
-
-                        <?php if($_SERVER['REMOTE_ADDR'] == '95.76.132.122'): ?>
-                        <?php for($i=0; $i<= 3; $i++): ?>
-                            <div class="row availability-row">
-                                <div class="col-md-3 provider-image">
-                                    <img src="/img/providers/agoda-min.png">
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="hotel-title">
-                                        Guest room, 1 King or 2 Double ‐ Hotel website
-                                    </div>
-                                    <div class="breakfast-detail">
-                                        Breakfast not included
-                                    </div>
-                                </div>
-                                <div class="col-md-3 price-box">
-                                    <div>
-                                        USD 125
-                                    </div>
-
-                                    <i class="fa fa-angle-right" style=""></i>
-                                </div>
-                            </div>
-                            <?php endfor; ?>
-                        <?php endif; ?>
+                    <div class="booking-item-dates-change availability-box" id="availabilityBox">
 
 
                         <form method="get"
@@ -311,6 +285,88 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
 
 <?php require_once $this->getTemplatePath() . 'includes/scripts.phtml'; ?>
+
+<?php if($_SERVER['REMOTE_ADDR'] == '95.76.132.122'): ?>
+<script id="availabilityRowTemplate" type="text/x-handlebars-template">
+    <div class="row availability-row">
+        <div class="col-md-3 provider-image">
+            <img src="/img/providers/agoda-min.png">
+        </div>
+        <div class="col-md-6">
+            <div class="hotel-title">
+                Guest room, 1 King or 2 Double ‐ Hotel website
+            </div>
+            <div class="breakfast-detail">
+                Breakfast not included
+            </div>
+        </div>
+        <div class="col-md-3 price-box">
+            <div>
+                USD 125
+            </div>
+
+            <i class="fa fa-angle-right" style=""></i>
+        </div>
+    </div>
+</script>
+
+
+<script>
+
+    availability = new function () {
+
+        var inner = this;
+
+        this.availabilityRowTemplate = Handlebars.compile(document.getElementById("availabilityRowTemplate").innerHTML);
+
+        this.checkAvailability = function() {
+
+            var request = $.ajax({
+                    url: "<?= $routeHelper->getApiAvailabilityProviderUrl($hotel->getId()); ?>",
+                    method: "GET",
+                    data: {
+                        'currency': 'EUR',
+                        'checkInDate': 'checkInDate',
+                        'checkOutDate': 'checkOutDate',
+                    },
+                    dataType: "json",
+                    beforeSend: function (jqXHR, settings) {
+                        // apply mask
+                    }
+                })
+                    .done(function (data, textStatus, jqXHR) {
+
+                        if(typeof data['error'] !== "undefined") {
+                            return;
+                        }
+
+                        var html = inner.availabilityRowTemplate({});
+                        $( "#availabilityBox" ).prepend( html );
+                    })
+                    .fail(function (jqXHR, textStatus, errorThrown) {
+
+                    })
+                    .complete(function (jqXHR, textStatus) {
+                        // remove mask
+                    })
+            ;
+
+        };
+
+        return {
+            init: function() {
+                inner.checkAvailability();
+            },
+            checkAvailability: function() {
+                inner.checkAvailability();
+            },
+        };
+    }();
+
+    availability.init();
+</script>
+
+<?php endif; ?>
 
 
     <script>

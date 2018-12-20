@@ -285,6 +285,14 @@ class RouteHelper
             ->pathFor('adminRootAgodaImportHotelsProcess');
     }
 
+    public function getApiAvailabilityProviderUrl($hotelId)
+    {
+        return $this->router
+            ->pathFor('apiAvailabilityProvider', [
+                'hotelId' => $hotelId,
+            ]);
+    }
+
     public function getAdminRootAgodaAssociateHotelsUrl(
         $level = null
     )

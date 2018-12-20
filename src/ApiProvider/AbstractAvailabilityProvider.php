@@ -12,12 +12,26 @@ abstract class AbstractAvailabilityProvider implements IAvailabilityProvider
      */
     protected $availabilityRequest;
 
+    /**
+     * @param AvailabilityRequest $availabilityRequest
+     * @return AvailabilityResponse|null
+     */
     public function checkAvailability(AvailabilityRequest $availabilityRequest)
     {
         // set request
         $this->availabilityRequest = $availabilityRequest;
 
-        $this->setProviderHotelId();
+        // check if it has association -> if it does not have -> do not run for current provider
+        if (! $this->hasProviderAssoc()) {
+            return null;
+        }
+
+        // set specific provider id
+        $this->availabilityRequest->setProviderHotelId(
+            $this->getProviderHotelId()
+        );
+
+        $this->getProviderHotelId();
         return $this->_checkAvailability();
     }
 
@@ -27,7 +41,15 @@ abstract class AbstractAvailabilityProvider implements IAvailabilityProvider
     abstract protected function _checkAvailability();
 
     /**
-     * @return void
+     * @return string
      */
-    abstract protected function setProviderHotelId();
+    abstract protected function getProviderHotelId();
+
+    /**
+     * @return bool
+     */
+    private function hasProviderAssoc()
+    {
+        return (boolean) $this->getProviderHotelId();
+    }
 }

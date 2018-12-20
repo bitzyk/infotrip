@@ -45,19 +45,24 @@ class ApiAvailabilityProviderAction extends Action
         $routeHelperNamespace = $this->container->get(\Infotrip\ViewHelpers\RouteHelper::class);
         $this->routerHelper = $routeHelperNamespace($request);
 
-        $availabilityRequest = $this->availabilityRequestFactory->getAvailabilityRequest(
-            $args['hotelId'],
-            [
-                'currency' => $request->getParam('currency'),
-                'checkInDate' => $request->getParam('checkInDate'),
-                'checkOutDate' => $request->getParam('checkOutDate'),
-            ]
-        );
-
-        $response = $this->availabilityProviderAgregator->checkAvailability($availabilityRequest);
-
-        echo json_encode(
-            $response
-        );
+        try {
+            $availabilityRequest = $this->availabilityRequestFactory->getAvailabilityRequest(
+                $args['hotelId'],
+                [
+                    'currency' => $request->getParam('currency'),
+                    'checkInDate' => $request->getParam('checkInDate'),
+                    'checkOutDate' => $request->getParam('checkOutDate'),
+                ]
+            );
+            $response = $this->availabilityProviderAgregator->checkAvailability($availabilityRequest);
+            echo json_encode(
+                $response
+            );
+        } catch (\Exception $e) {
+            echo json_encode([
+                    'error' => $e->getMessage()
+                ]
+            );
+        }
     }
 }

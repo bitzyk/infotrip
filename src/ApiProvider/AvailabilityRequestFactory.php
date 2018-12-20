@@ -37,7 +37,9 @@ class AvailabilityRequestFactory
         $association = $this->hotelAssocRepository->getAssociationForInternalHotelId($internalHotelId);
 
         if (! $association instanceof HotelAssoc) {
-            throw new \Exception('Association does not exist');
+            // set a single booking assoc if any other assoc does not exist
+            $association = new HotelAssoc();
+            $association->setHotelIdBooking($internalHotelId);
         }
 
         $availabilityRequest = new AvailabilityRequest();
