@@ -36,9 +36,11 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                         </p>
                     </div>
                     <div class="col-md-3">
+                        <?php /*
                         <p class="booking-item-header-price">
                             <small>price from</small>  <span class="text-lg"><?= $hotel->getCurrencucodeShort(); ?><?= $hotel->getMinrate(); ?></span>/night
                         </p>
+ */ ?>
                     </div>
                 </div>
             </header>
@@ -141,17 +143,27 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                 <div class="col-md-8">
                                     <div class="input-daterange" data-date-format="MM d, D">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
                                                     <label>Check in</label>
                                                     <input class="form-control" name="start" type="text" id="checkInDateInput"  />
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-5">
                                                 <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
                                                     <label>Check out</label>
                                                     <input class="form-control" name="end" type="text" id="checkOutDateInput" />
                                                 </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="currencySelect">Currency</label>
+                                                <select name="currencySelect"
+                                                        id="currencySelect"
+                                                        onchange="availability.checkAvailability();"
+                                                        class="form-control">
+                                                        <option value="USD">USD</option>
+                                                        <option value="EUR">EUR</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -364,11 +376,11 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                     url: "<?= $routeHelper->getApiAvailabilityProviderUrl($hotel->getId()); ?>",
                     method: "GET",
                     data: {
-                        'currency': 'EUR',
                         'checkInDate': checkInDate,
                         'checkOutDate': checkOutDate,
                         'noAdult': $('#adultsSelect').val(),
                         'noChildren': $('#childrensSelect').val(),
+                        'currency': $('#currencySelect').val(),
                     },
                     dataType: "json",
                     beforeSend: function (jqXHR, settings) {
