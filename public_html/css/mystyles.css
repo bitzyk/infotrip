@@ -56,3 +56,8 @@
     filter: alpha(opacity=75);
     z-index: 1000;
 }
+
+.availability-box  .form-control[readonly] {
+    cursor: default;
+    background-color: #fff;
+}

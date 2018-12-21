@@ -128,7 +128,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                     </div>
                 </div>
             </div>
-            <h3>Availability</h3>
+            <h3 style="margin-top: 10px;">Availability</h3>
             <div class="row">
                 <div class="col-md-9" id="availabilityContainer">
                     <div class="booking-item-dates-change availability-box">
@@ -145,14 +145,14 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                         <div class="row">
                                             <div class="col-md-5">
                                                 <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
-                                                    <label>Check in</label>
-                                                    <input class="form-control" name="start" type="text" id="checkInDateInput"  />
+                                                    <label for="checkInDateInput">Check in</label>
+                                                    <input class="form-control" name="start" type="text" id="checkInDateInput" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
                                                 <div class="form-group form-group-icon-left"><i class="fa fa-calendar input-icon input-icon-hightlight"></i>
-                                                    <label>Check out</label>
-                                                    <input class="form-control" name="end" type="text" id="checkOutDateInput" />
+                                                    <label for="checkOutDateInput">Check out</label>
+                                                    <input class="form-control" name="end" type="text" id="checkOutDateInput" readonly>
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
