@@ -348,14 +348,14 @@ $container[\Infotrip\ApiProvider\AvailabilityRequestFactory::class] = function (
 };
 
 
-$container[\Infotrip\ApiProvider\Provider\Agoda\BookingComAvailabilityProvider::class] = function (Container $container) {
+$container[\Infotrip\ApiProvider\Provider\Booking\BookingComAvailabilityProvider::class] = function (Container $container) {
 
     /** @var \Infotrip\Domain\Repository\HotelRepository $hotelRepository */
     $hotelRepository = $container->get(\Infotrip\Domain\Repository\HotelRepository::class);
 
     $bookingComAvailabilityChecker = $container->get(\Infotrip\HotelParser\AvailabilityChecker\BookingComAvailabilityChecker::class);
 
-    return new \Infotrip\ApiProvider\Provider\Agoda\BookingComAvailabilityProvider(
+    return new \Infotrip\ApiProvider\Provider\Booking\BookingComAvailabilityProvider(
         $hotelRepository,
         $bookingComAvailabilityChecker
     );
@@ -370,7 +370,7 @@ $container[\Infotrip\ApiProvider\Provider\Agoda\AgodaAvailabilityProvider::class
 $container[\Infotrip\ApiProvider\IAvailabilityProviderAgregator::class] = function (Container $container) {
 
     $providers = [
-        $container->get(\Infotrip\ApiProvider\Provider\Agoda\BookingComAvailabilityProvider::class),
+        $container->get(\Infotrip\ApiProvider\Provider\Booking\BookingComAvailabilityProvider::class),
         $container->get(\Infotrip\ApiProvider\Provider\Agoda\AgodaAvailabilityProvider::class),
     ];
 

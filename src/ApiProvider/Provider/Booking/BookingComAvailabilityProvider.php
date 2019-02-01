@@ -1,6 +1,6 @@
 <?php
 
-namespace Infotrip\ApiProvider\Provider\Agoda;
+namespace Infotrip\ApiProvider\Provider\Booking;
 
 use Infotrip\ApiProvider\AbstractAvailabilityProvider;
 use Infotrip\ApiProvider\Entity\Standard\AvailabilityRequest;

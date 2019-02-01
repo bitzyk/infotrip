@@ -757,3 +757,6 @@ $app->get('/admin-root/agoda/associate-hotels[/{assocLevel}]', \Infotrip\Handler
 
 // api
 $app->get('/api-availability-provider/{hotelId}', \Infotrip\Handler\Action\Api\ApiAvailabilityProviderAction::class)->setName('apiAvailabilityProvider');
+
+// cron pages
+$app->get('/cron/parse-booking-country-csv', \Infotrip\Handler\Action\Cron\ParseBookingCountryCsv::class)->setName('parseBookingCountryCsv');
