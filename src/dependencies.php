@@ -379,4 +379,22 @@ $container[\Infotrip\ApiProvider\IAvailabilityProviderAgregator::class] = functi
     );
 };
 
+$container[\Infotrip\Service\Booking\CountryCsvImporter\Service\LineParserInterface::class] = function (Container $container) {
+    return new \Infotrip\Service\Booking\CountryCsvImporter\Service\LineParser();
+};
+
+$container[\Infotrip\Service\Booking\CountryCsvImporter\ImporterInterface::class] = function (Container $container) {
+
+    /** @var \Infotrip\Service\Booking\CountryCsvImporter\Service\LineParserInterface $lineParser */
+    $lineParser = $container->get(\Infotrip\Service\Booking\CountryCsvImporter\Service\LineParserInterface::class);
+
+    /** @var HotelRepository $hotelRepository */
+    $hotelRepository = $container->get(HotelRepository::class);
+
+    return new \Infotrip\Service\Booking\CountryCsvImporter\Importer(
+        $lineParser,
+        $hotelRepository
+    );
+};
+
 

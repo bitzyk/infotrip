@@ -20,6 +20,8 @@ class Importer implements ImporterInterface
      */
     private $hotelRepository;
 
+    const PATH_QUEUE_IMPORT = '/public_html/var/booking_hotel_csv/queue';
+
     public function __construct(
         LineParserInterface $lineParser,
         HotelRepository $hotelRepository
@@ -34,7 +36,34 @@ class Importer implements ImporterInterface
     {
         $importResult = new ImportResult();
 
+        $nextToImportFilePath = $this->getNextToImportFilePath();
+
+        if (! $nextToImportFilePath) {
+            $importResult->setStatusSuccess(true);
+            return $importResult;
+        }
+
+        var_dump($nextToImportFilePath);
+        exit;
+
         return $importResult;
+    }
+
+    /**
+     * @return null|string
+     */
+    private function getNextToImportFilePath()
+    {
+        $queueDir = realpath(APP_ROOT . '/..' . self::PATH_QUEUE_IMPORT);
+
+        $files = array_diff(scandir($queueDir), ['..', '.']);
+
+        $nextToImportFilePath = null;
+        if (! empty($files)) {
+            $nextToImportFilePath = $queueDir . '/' . array_shift($files);
+        }
+
+        return $nextToImportFilePath;
     }
 
 
