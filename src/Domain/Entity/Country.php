@@ -23,6 +23,7 @@ class Country
     private $continent;
 
     public static $COUNTRY_CODE_LIST = array(
+        'XA' => 'Abkhazia',
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
         'AL' => 'Albania',

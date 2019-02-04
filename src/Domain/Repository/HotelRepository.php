@@ -27,14 +27,13 @@ class HotelRepository extends EntityRepository
 
     /**
      * @param int $hotelId
+     * @param bool $strict
      * @return Hotel
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
      * @throws \Exception
      */
     public function getHotel(
-        $hotelId
+        $hotelId,
+        $strict = true
     )
     {
         $hotel = $this->getEntityManager()
@@ -44,7 +43,10 @@ class HotelRepository extends EntityRepository
                 'visible' => '1',
             ));
 
-        if (! $hotel instanceof Hotel) {
+        if (
+            ! $hotel instanceof Hotel &&
+            $strict
+        ) {
             throw new \Exception('Hotel not found');
         }
 
@@ -539,6 +541,18 @@ class HotelRepository extends EntityRepository
     )
     {
         $this->getEntityManager()->merge($hotel);
+        $this->getEntityManager()->flush($hotel);
+    }
+
+    /**
+     * @param Hotel $hotel
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function insertHotel(
+        Hotel $hotel
+    )
+    {
+        $this->getEntityManager()->persist($hotel);
         $this->getEntityManager()->flush($hotel);
     }
 

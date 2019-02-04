@@ -24,11 +24,9 @@ class ParseBookingCountryCsv extends Action
 
     public function __invoke(Request $request, Response $response, $args = [])
     {
-        $importResult= $this->bookingImporterService->import();
+        $importResult = $this->bookingImporterService->import();
 
-        return $response->withJson(array(
-            'success' => $importResult->isStatusSuccess()
-        ));
+        return $response->withJson($importResult);
     }
 
 }

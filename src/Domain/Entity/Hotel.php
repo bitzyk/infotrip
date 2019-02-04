@@ -30,7 +30,6 @@ class Hotel extends Base implements \JsonSerializable
     /**
      * @Id
      * @Column(type="integer")
-     * @GeneratedValue
      */
     private $id;
 
