@@ -111,6 +111,28 @@ class BookingComParser extends AbstractHotelParser
         // hydrate facilities
         $this->hydrateFacilities($hotelInfo);
 
+        if (
+        ! $this->hotel->getAddress()
+        ) {
+            // hydrate address
+            $this->hydrateAddress($hotelInfo);
+        }
+
+        if (
+        ! $this->hotel->getDescEn()
+        ) {
+            // hydrate description
+            $this->hydrateDescription($hotelInfo);
+        }
+
+        if (
+            ! $this->hotel->getLatitude() ||
+            ! $this->hotel->getLongitude()
+        ) {
+            // hydrate description
+            $this->hydrateGeoLocation($hotelInfo);
+        }
+
         // hydration complete -> compute some maths
         $hotelInfo->compute();
 
@@ -184,6 +206,55 @@ class BookingComParser extends AbstractHotelParser
             );
         }
     }
+
+    /**
+     * @param HotelInfo $hotelInfo
+     */
+    private function hydrateAddress(HotelInfo $hotelInfo)
+    {
+        $found = preg_match('/hp_address_subtitle[^>]*>(((?!<\/span>).)*)<\/span>/sm', $this->html, $matches);
+
+        if (
+            $found &&
+            isset($matches[1])
+        ) {
+            $hotelInfo->setAddress(trim(strip_tags($matches[1])));
+        }
+    }
+
+    /**
+     * @param HotelInfo $hotelInfo
+     */
+    private function hydrateDescription(HotelInfo $hotelInfo)
+    {
+        $found = preg_match('/id="summary"[^>]*>(.*)hp-desc-review-highlight/sm', $this->html, $matches);
+
+        if (
+            $found &&
+            isset($matches[1])
+        ) {
+            $hotelInfo->setDescription(trim(strip_tags($matches[1])));
+        }
+    }
+
+    /**
+     * @param HotelInfo $hotelInfo
+     */
+    private function hydrateGeoLocation(HotelInfo $hotelInfo)
+    {
+        $foundLat = preg_match('/b_map_center_latitude = (((?!;).)*);/sm', $this->html, $matchesLat);
+        $foundLong = preg_match('/b_map_center_longitude = (((?!;).)*);/sm', $this->html, $matchesLong);
+
+
+        if (
+            $foundLat && $foundLong &&
+            isset($matchesLat[1]) && isset($matchesLong[2])
+        ) {
+            $hotelInfo->setLatitude(trim(strip_tags($matchesLat[1])));
+            $hotelInfo->setLongitude(trim(strip_tags($matchesLong[1])));
+        }
+    }
+
 
     /**
      * @param HotelInfo $hotelInfo

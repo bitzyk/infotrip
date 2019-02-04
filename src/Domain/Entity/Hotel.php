@@ -430,6 +430,7 @@ class Hotel extends Base implements \JsonSerializable
     /**
      * @param HotelParser $hotelParser
      * @param bool $cached
+     * @throws \Exception
      */
     public function requestExternalHotelInfo(
         HotelParser $hotelParser, $cached = true
@@ -444,6 +445,31 @@ class Hotel extends Base implements \JsonSerializable
 
         if ($hotelInfo instanceof HotelInfo) {
             $this->setExternalHotelInfo($hotelInfo);
+
+            // update some of the hotel info (if the info does not exist) from the hotel info external entity
+            $toUpdate = false;
+            if (! $this->getDescEn() && $hotelInfo->getDescription()) {
+                $this->setDescEn($hotelInfo->getDescription());
+                $toUpdate = true;
+            }
+            if (! $this->getAddress() && $hotelInfo->getAddress()) {
+                $this->setAddress($hotelInfo->getAddress());
+                $toUpdate = true;
+            }
+            if (! $this->getLatitude() && $hotelInfo->getLatitude()) {
+                $this->setLatitude($hotelInfo->getLatitude());
+                $toUpdate = true;
+            }
+            if (! $this->getLongitude() && $hotelInfo->getLongitude()) {
+                $this->setLongitude($hotelInfo->getLongitude());
+                $toUpdate = true;
+            }
+
+            if ($toUpdate === true) {
+                $this->repository->updateHotel($this);
+            }
+            // end update
+
         } else {
             $this->setExternalHotelInfo(
                 (new NullHotelInfo())

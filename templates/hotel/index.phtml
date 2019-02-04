@@ -345,8 +345,10 @@ $hotelInfo = $hotel->getExternalHotelInfo();
             </div>
             <div class="col-md-3 price-box">
                 <div>
+                    {{#if pricePerNight}}
                     {{currency}} {{pricePerNight}}
                     <small>per night</small>
+                    {{/if}}
                 </div>
 
                 <i class="fa fa-angle-right" style=""></i>

@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: cbitoi
- * Date: 09/05/2018
- * Time: 00:33
- */
 
 namespace Infotrip\HotelParser\Entity;
-
 
 use Infotrip\Domain\Entity\Image;
 
@@ -73,6 +66,26 @@ class HotelInfo implements \JsonSerializable
      * @var string
      */
     private $facilities;
+
+    /**
+     * @var string
+     */
+    private $address;
+
+    /**
+     * @var string
+     */
+    private $description;
+
+    /**
+     * @var string
+     */
+    private $latitude;
+
+    /**
+     * @var string
+     */
+    private $longitude;
 
     /**
      * @return string
@@ -332,5 +345,76 @@ class HotelInfo implements \JsonSerializable
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param string $address
+     * @return HotelInfo
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return HotelInfo
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @param string $latitude
+     * @return HotelInfo
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param string $longitude
+     * @return HotelInfo
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+        return $this;
+    }
 
 }
