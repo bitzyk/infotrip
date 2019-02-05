@@ -145,7 +145,7 @@ class Hotel extends Base implements \JsonSerializable
      */
     public function getLatitude()
     {
-        return $this->latitude;
+        return (string) $this->latitude;
     }
 
     /**
@@ -177,7 +177,7 @@ class Hotel extends Base implements \JsonSerializable
      */
     public function getLongitude()
     {
-        return $this->longitude;
+        return (string) $this->longitude;
     }
 
 
@@ -454,6 +454,10 @@ class Hotel extends Base implements \JsonSerializable
             }
             if (! $this->getAddress() && $hotelInfo->getAddress()) {
                 $this->setAddress($hotelInfo->getAddress());
+                $toUpdate = true;
+            }
+            if (! $this->getZip() && $hotelInfo->getPostalCode()) {
+                $this->setZip($hotelInfo->getPostalCode());
                 $toUpdate = true;
             }
             if (! $this->getLatitude() && $hotelInfo->getLatitude()) {

@@ -75,6 +75,11 @@ class HotelInfo implements \JsonSerializable
     /**
      * @var string
      */
+    private $postalCode;
+
+    /**
+     * @var string
+     */
     private $description;
 
     /**
@@ -414,6 +419,24 @@ class HotelInfo implements \JsonSerializable
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostalCode()
+    {
+        return $this->postalCode;
+    }
+
+    /**
+     * @param string $postalCode
+     * @return HotelInfo
+     */
+    public function setPostalCode($postalCode)
+    {
+        $this->postalCode = $postalCode;
         return $this;
     }
 

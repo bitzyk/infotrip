@@ -212,13 +212,22 @@ class BookingComParser extends AbstractHotelParser
      */
     private function hydrateAddress(HotelInfo $hotelInfo)
     {
-        $found = preg_match('/hp_address_subtitle[^>]*>(((?!<\/span>).)*)<\/span>/sm', $this->html, $matches);
+        $foundAddress = preg_match('/streetAddress" : "(((?!").)*)"/sm', $this->html, $matchesAddress);
+        $foundPostalCode = preg_match('/postalCode" : "(((?!").)*)"/sm', $this->html, $matchesPostalCode);
+
 
         if (
-            $found &&
-            isset($matches[1])
+            $foundAddress &&
+            isset($matchesAddress[1])
         ) {
-            $hotelInfo->setAddress(trim(strip_tags($matches[1])));
+            $hotelInfo->setAddress(trim(strip_tags($matchesAddress[1])));
+        }
+
+        if (
+            $foundPostalCode &&
+            isset($matchesPostalCode[1])
+        ) {
+            $hotelInfo->setPostalCode(trim(strip_tags($matchesPostalCode[1])));
         }
     }
 
