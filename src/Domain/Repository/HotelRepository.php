@@ -557,6 +557,14 @@ class HotelRepository extends EntityRepository
     }
 
     /**
+     *
+     */
+    public function clear()
+    {
+        $this->getEntityManager()->clear();
+    }
+
+    /**
      * @param $hotelId
      * @return Hotel
      * @throws \Exception

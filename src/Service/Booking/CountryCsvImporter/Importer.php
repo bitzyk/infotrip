@@ -145,6 +145,8 @@ class Importer implements ImporterInterface
             $this->hotelRepository->insertHotel($hotelEntity);
             $importResult->setInsertedHotels($importResult->getInsertedHotels() + 1);
         }
+
+        $this->hotelRepository->clear();
     }
 
     /**
