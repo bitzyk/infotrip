@@ -28,20 +28,27 @@ class HotelRepository extends EntityRepository
     /**
      * @param int $hotelId
      * @param bool $strict
+     * @param bool $onlyVisible
      * @return Hotel
      * @throws \Exception
      */
     public function getHotel(
         $hotelId,
-        $strict = true
+        $strict = true,
+        $onlyVisible = true
     )
     {
+        $where = array(
+            'id' => $hotelId,
+        );
+
+        if ($onlyVisible) {
+            $where['visible'] = '1';
+        }
+
         $hotel = $this->getEntityManager()
             ->getRepository('Infotrip\Domain\Entity\Hotel')
-            ->findOneBy(array(
-                'id' => $hotelId,
-                'visible' => '1',
-            ));
+            ->findOneBy($where);
 
         if (
             ! $hotel instanceof Hotel &&

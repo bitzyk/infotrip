@@ -150,6 +150,7 @@ class Importer implements ImporterInterface
     {
         $hotelDbRow = $this->hotelRepository->getHotel(
             $hotelCsvLine->getHotelIdBooking(),
+            false,
             false
         );
 
