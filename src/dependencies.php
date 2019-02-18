@@ -133,6 +133,19 @@ $container[\Infotrip\Domain\Repository\UserHotelRepository::class] = function (C
     return $userHotelRepository;
 };
 
+$container[\Infotrip\Domain\Repository\CountryRepository::class] = function (Container $container) {
+    /** @var EntityManager $entityManager */
+    $entityManager = $container[EntityManager::class];
+
+    /** @var HotelRepository $hotelRepository */
+    $repository = new \Infotrip\Domain\Repository\CountryRepository(
+        $entityManager,
+        $entityManager->getClassMetadata(\Infotrip\Domain\Entity\Hotel::class)
+    );
+
+    return $repository;
+};
+
 $container[\Infotrip\Domain\Repository\ResourceContentRepository::class] = function ($container) {
     /** @var EntityManager $entityManager */
     $entityManager = $container[EntityManager::class];
@@ -393,7 +406,8 @@ $container[\Infotrip\Service\Booking\CountryCsvImporter\ImporterInterface::class
 
     return new \Infotrip\Service\Booking\CountryCsvImporter\Importer(
         $lineParser,
-        $hotelRepository
+        $hotelRepository,
+        $container->get(\Infotrip\Domain\Repository\CountryRepository::class)
     );
 };
 

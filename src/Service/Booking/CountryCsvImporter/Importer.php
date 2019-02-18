@@ -7,6 +7,7 @@ use Infotrip\Domain\Repository\HotelRepository;
 use Infotrip\Service\Booking\CountryCsvImporter\Entity\HotelCsvLine;
 use Infotrip\Service\Booking\CountryCsvImporter\Entity\ImportResult;
 use Infotrip\Service\Booking\CountryCsvImporter\Service\LineParserInterface;
+use Infotrip\Domain\Repository\CountryRepository;
 
 class Importer implements ImporterInterface
 {
@@ -21,19 +22,32 @@ class Importer implements ImporterInterface
      */
     private $hotelRepository;
 
+    /**
+     * @var CountryRepository
+     */
+    private $countryRepository;
+
     const PATH_QUEUE_IMPORT = '/public_html/var/booking_hotel_csv/queue';
 
     const PATH_PROCESSED_IMPORT = '/public_html/var/booking_hotel_csv/processed';
 
     const PATH_ERROR_IMPORT = '/public_html/var/booking_hotel_csv/error';
 
+    /**
+     * @var string
+     */
+    private $continentIdForCurrentImport;
+
     public function __construct(
         LineParserInterface $lineParser,
-        HotelRepository $hotelRepository
+        HotelRepository $hotelRepository,
+        CountryRepository $countryRepository
     )
     {
         $this->lineParser = $lineParser;
         $this->hotelRepository = $hotelRepository;
+        $this->countryRepository = $countryRepository;
+
         set_time_limit(0);
         ini_set('memory_limit', '1G');
     }
@@ -56,7 +70,15 @@ class Importer implements ImporterInterface
 
             try {
                 $hotelCsvLine = $this->hydrateCsvLine($lineData, $importResult);
+
                 if ($hotelCsvLine instanceof HotelCsvLine) {
+
+                    // if the continentId for current import is not yet computed -> then compute
+                    if (! $this->continentIdForCurrentImport) {
+                        $this->computeContinentIdForImport(
+                            $hotelCsvLine->getCountryCode()
+                        );
+                    }
                     $this->importCsvLine($hotelCsvLine, $importResult);
                 }
             } catch (\Exception $e) {
@@ -142,6 +164,7 @@ class Importer implements ImporterInterface
             $this->hotelRepository->updateHotel($hotelEntity);
             $importResult->setUpdatedHotels($importResult->getUpdatedHotels() + 1);
         } else {
+            $hotelEntity->setContinentId($this->continentIdForCurrentImport);
             $this->hotelRepository->insertHotel($hotelEntity);
             $importResult->setInsertedHotels($importResult->getInsertedHotels() + 1);
         }
@@ -204,6 +227,16 @@ class Importer implements ImporterInterface
     private function getErrorPath()
     {
         return realpath(APP_ROOT . '/..' . self::PATH_ERROR_IMPORT);
+    }
+
+    /**
+     * @param $countryCode
+     * @return string
+     * @throws \Exception
+     */
+    private function computeContinentIdForImport($countryCode)
+    {
+        $this->continentIdForCurrentImport = $this->countryRepository->getContinentIdForCountryCode($countryCode);
     }
 
 }
