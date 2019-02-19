@@ -1,11 +1,12 @@
 <?php
 
+/** @var \Infotrip\Domain\Entity\HotelSearchResult $hotelSearchResult */
+/** @var \Infotrip\Domain\Entity\ResourceContent $resourceContent */
+/** @var array $viewHelpers */
+
 /** @var $routeHelper \Infotrip\ViewHelpers\RouteHelper */
 $routeHelper = $viewHelpers['routeHelper'];
 
-/** @var \Infotrip\Domain\Entity\HotelSearchResult $hotelSearchResult */
-
-//throw new Exception('test');
 require_once $this->getTemplatePath() . 'includes/header.phtml';
 ?>
 
@@ -59,9 +60,10 @@ require_once $this->getTemplatePath() . 'includes/header.phtml';
                            $hotel->getName(),
                            $hotel->getId()
                        ); ?>">
-                        <img src="<?= $hotel->getImages()[0]->getSrc(); ?>"
-                             style="height: 200px;"
-                             title="Image hotel" />
+                            <img src="<?= $hotel->getImages()[0]->getSrc(); ?>"
+                                 onerror="if (this.src != '/img/default-hotel-263x200.jpg') this.src = '/img/default-hotel-263x200.jpg';"
+                                 style="height: 200px;"
+                                 title="Image hotel">
                         <div class="hover-inner hover-inner-block hover-inner-bottom hover-inner-bg-black hover-hold">
                             <div class="text-small">
                                 <h5><?= $hotel->getName(); ?></h5>

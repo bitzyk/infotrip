@@ -248,6 +248,7 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                                         <div class="row">
                                             <div class="col-md-3" style="height: 130px; overflow: hidden;">
                                                 <img src="<?= $relatedHotel->getImages()[0]->getSrc(); ?>"
+                                                     onerror="if (this.src != '/img/default-hotel-263x200.jpg') this.src = '/img/default-hotel-263x200.jpg';"
                                                     <?php if (! $relatedHotel->getImages()[0]->isCached()): ?>
                                                         data-no-cache-image="1"
                                                     <?php endif; ?>
