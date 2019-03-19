@@ -115,7 +115,7 @@ class Hotel extends Base implements \JsonSerializable
      */
     const CACHE_DIR = '/var/cache/bookingImages';
 
-    const BOOKING_ID_PARAM = 'aid=1518628';
+    const BOOKING_ID_PARAM = 'aid=1728672';
     /**
      * @return string
      */
@@ -356,11 +356,19 @@ class Hotel extends Base implements \JsonSerializable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getBookingHotelUrl()
     {
         return $this->bookingHotelUrl . '?' . self::BOOKING_ID_PARAM;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBookingHotelNative()
+    {
+        return $this->bookingHotelUrl;
     }
 
     /**

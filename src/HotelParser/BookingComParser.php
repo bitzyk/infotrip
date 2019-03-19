@@ -535,7 +535,7 @@ class BookingComParser extends AbstractHotelParser
         // create temporary cookie file
         $cookieFile = tempnam(APP_ROOT . '/../public_html/var/parser/booking/cookie','cookie_');
 
-        $curl = curl_init($this->hotel->getBookingHotelUrl());
+        $curl = curl_init($this->hotel->getBookingHotelNative());
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_TIMEOUT,self::CURL_TIMEOUT);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
