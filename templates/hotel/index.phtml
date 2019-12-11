@@ -139,6 +139,25 @@ $hotelInfo = $hotel->getExternalHotelInfo();
 
                         <div id="apiResponseContainer"></div>
 
+                        <a href="http://www.jdoqocy.com/click-8992731-13831060" target="_blank">
+                            <div class="row availability-row">
+                                <div class="col-md-3 provider-image">
+                                    <img src="/img/providers/hotels-com-min.png">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="hotel-title">
+                                        <?php echo $hotel->getName(); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 price-box">
+                                    <div>
+                                        See best price
+                                    </div>
+                                    <i class="fa fa-angle-right" style=""></i>
+                                </div>
+                            </div>
+                        </a>
+
                         <form method="get"
                               id="checkAvailabilityForm"
                               action="<?= $routeHelper->getHotelCheckAvailabilityUrl($hotel->getName(), $hotel->getId()); ?>"
