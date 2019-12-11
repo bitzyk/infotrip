@@ -1,5 +1,5 @@
 <?php
-
+//
 use Slim\Container;
 use Doctrine\ORM\EntityManager;
 use Infotrip\Domain\Repository\HotelRepository;
