@@ -1,3 +1,3 @@
-# INFOTRIP m3
+# INFOTRIP m4
 
 Hotel price agregator
