@@ -41,9 +41,9 @@ return [
                 'driver' => 'pdo_mysql',
                 'host' => (ENV == 'PROD') ? 'localhost' : '33.33.33.10',
                 'port' => 3306,
-                'dbname' => (ENV == 'PROD') ? 'infotrip_booking' : 'infotrip',
-                'user' => (ENV == 'PROD') ? 'infotrip_infotri' : 'cbitoi',
-                'password' => (ENV == 'PROD') ? '98J*KjKIgo=i' : 'arivederci',
+                'dbname' => (ENV == 'PROD') ? 'infotrip_booking3' : '',
+                'user' => (ENV == 'PROD') ? 'infotrip_infotri' : '',
+                'password' => (ENV == 'PROD') ? '98J*KjKIgo=i' : '',
                 'charset' => 'utf8'
             ]
         ],
