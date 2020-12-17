@@ -158,6 +158,9 @@ $hotelInfo = $hotel->getExternalHotelInfo();
                             </div>
                         </a>
 
+                        <div id="apiResponseContainer"></div>
+
+                        
                         <form method="get"
                               id="checkAvailabilityForm"
                               action="<?= $routeHelper->getHotelCheckAvailabilityUrl($hotel->getName(), $hotel->getId()); ?>"
